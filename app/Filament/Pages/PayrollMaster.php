@@ -90,10 +90,7 @@ class PayrollMaster extends Page
                            'deductions' => $payroll_datum['deductions'],
                            'benefits' => $payroll_datum['deductions'],
                        ];
-
-
                    }
-
 
                    $payroll->payrollLines()->createUpdateOrDelete($data);
 
