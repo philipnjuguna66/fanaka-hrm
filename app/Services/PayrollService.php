@@ -40,7 +40,9 @@ class PayrollService
             'personal_relief' => $this->getPersonalRelief(),
             'insurance_relief' => $this->calculateInsuranceRelief($employee),
             'net_payee' => $this->getNetPayee($employee),
-            'net_pay' =>$this->getNetPay($employee)
+            'net_pay' =>$this->getNetPay($employee),
+            'deductions' => $this->getAllDeductions($employee),
+            'benefits' => $this->getAllDeductions($employee),
         ];
     }
 
@@ -229,6 +231,15 @@ class PayrollService
 
         return  $employee->employeeDeductions
             ->groupBy('deduction_type_id')
+            ->sum(function (Collection $deductions){
+                return  $deductions->sum('pivot.amount');
+            });
+    }
+    private function getAllBenefits($employee){
+
+        $employee->refresh()->loadMissing('employeeBenefits');
+
+        return  $employee->employeBenefits
             ->sum(function (Collection $deductions){
                 return  $deductions->sum('pivot.amount');
             });

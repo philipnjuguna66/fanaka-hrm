@@ -68,6 +68,8 @@ class PayrollMaster extends Page
                    foreach ($payroll_data as $payroll_datum){
                        $payroll_datum['created_at'] = $date;
                        unset($payroll_datum['employee_name']);
+
+
                    }
                    $payroll->payrollLines()->createUpdateOrDelete($payroll_data);
 
