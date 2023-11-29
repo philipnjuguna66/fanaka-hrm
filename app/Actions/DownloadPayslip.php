@@ -36,8 +36,6 @@ class DownloadPayslip
         $payslipTemplate->setValue('net_paye', number_format( $paySlip->payrollLine->net_payee, 2));
         $payslipTemplate->setValue('net_pay',  number_format($paySlip->payrollLine->net_pay, 2));
 
-
-
         $payslipTemplate->cloneRow('benefits', $line->employee->employeeBenefits->count());
         $payslipTemplate->cloneRow('deductions', $line->employee->employeeDeductions->count());
 
