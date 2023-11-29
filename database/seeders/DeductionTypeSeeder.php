@@ -52,6 +52,13 @@ class DeductionTypeSeeder extends Seeder
                 'name' => "Insurance Relief",
                 'code' => 'ir'
             ]);
+        $fanakaDeductions = DeductionType::factory()
+            ->taxAllowable()
+            ->capped(5000)
+            ->create([
+                'name' => "Fanaka Deductions ",
+                'code' => 'Fanaka-dedcutions'
+            ]);
 
     }
 }

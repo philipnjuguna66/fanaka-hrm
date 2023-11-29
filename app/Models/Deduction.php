@@ -49,9 +49,6 @@ class Deduction extends Model
 
             return  ($this->percentage_value / 100) * app(PayrollService::class)->runPayrollForEmployee($employee)['nhif'];
         }
-
-
-
         return  ($this->percentage_value / 100) * app(PayrollService::class)->getGrossSalary($employee);
     }
 }

@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
 
         Deduction::factory()
                 ->create([
-                'deduction_type_id' =>7,
+                'deduction_type_id' =>6,
                 'name' => 'Laptop Grant',
                 'type' => 'percentage',
                 'percentage_value' => 2.5,
@@ -57,13 +57,15 @@ class DatabaseSeeder extends Seeder
 
         Deduction::factory()
                 ->create([
-                'deduction_type_id' =>8,
+                'deduction_type_id' =>6,
                 'name' => 'Welfare',
                 'type' => 'fixed_amount',
-                'percentage_value' => 300,
+                'fixed_amount' => 300,
             ]);
 
         Benefit::factory()->taxable()->fixed(20000)->create(['name'=>'House Allowance']);
+        Benefit::factory()->taxable()->fixed(20000)->create(['name'=>'Cash Awards']);
+        Benefit::factory()->taxable()->fixed(20000)->create(['name'=>'Commissions']);
 
         StatutoryDeduction::factory()->create([
             'name' => 'NSSF',
@@ -71,29 +73,16 @@ class DatabaseSeeder extends Seeder
             'ranges' => [
                 [
                     'min_range' =>0,
-                    'max_range' =>3000,
-                    'deduction'=> 180,
+                    'max_range' =>14999,
+                    'type' => "percentage",
+                    'deduction'=> 16,
                 ],
                 [
-                    'min_range' =>3001,
-                    'max_range' =>4500,
-                    'deduction'=> 270,
+                    'min_range' =>15000,
+                    'max_range' =>9999999999999999999,
+                    'type' =>"fixed_amount",
+                    'deduction'=> 1080,
                 ],
-                [
-                    'min_range' =>4501,
-                    'max_range' =>6000,
-                    'deduction'=> 360,
-                ],
-                [
-                    'min_range' =>6001,
-                    'max_range' =>10000,
-                    'deduction'=> 600,
-                ],
-                [
-                    'min_range' =>10001,
-                    'max_range' =>14000,
-                    'deduction'=> 840,
-                ]
             ]
         ]);
         StatutoryDeduction::factory()->create([
@@ -102,97 +91,97 @@ class DatabaseSeeder extends Seeder
             'ranges' => [
                 [
                     'min_range' =>0,
-                    'max_range' =>6000,
+                    'max_range' =>5999,
                     'type' =>"fixed_amount",
                     'deduction'=> 150,
                 ],
                 [
                     'min_range' =>6000,
-                    'max_range' =>8000,
+                    'max_range' =>7999,
                     'type' =>"fixed_amount",
                     'deduction'=> 300,
                 ],
                 [
                     'min_range' =>8000,
-                    'max_range' =>12000,
+                    'max_range' =>11999,
                     'type' =>"fixed_amount",
                     'deduction'=> 400,
                 ],
                 [
                     'min_range' =>12000,
-                    'max_range' =>15000,
+                    'max_range' =>14999,
                     'type' =>"fixed_amount",
                     'deduction'=> 500,
                 ],
                 [
                     'min_range' =>15000,
                     'type' =>"fixed_amount",
-                    'max_range' =>20000,
+                    'max_range' =>19999,
                     'deduction'=> 600,
                 ],
                 [
                     'min_range' =>20000,
-                    'max_range' =>25000,
+                    'max_range' =>24999,
                     'type' =>"fixed_amount",
                     'deduction'=> 750,
                 ],
                 [
                     'min_range' =>25000,
-                    'max_range' =>30000,
+                    'max_range' =>29999,
                     'type' =>"fixed_amount",
                     'deduction'=> 850,
                 ],
                 [
                     'min_range' =>30000,
-                    'max_range' =>35000,
+                    'max_range' =>34999,
                     'type' =>"fixed_amount",
                     'deduction'=> 900,
                 ],
                 [
                     'min_range' =>35000,
-                    'max_range' =>40000,
+                    'max_range' =>39999,
                     'type' =>"fixed_amount",
                     'deduction'=> 950,
                 ],
                 [
                     'min_range' =>40000,
-                    'max_range' =>45000,
+                    'max_range' =>44999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1000,
                 ],
                 [
                     'min_range' =>45000,
-                    'max_range' =>50000,
+                    'max_range' =>49999,
                     'deduction'=> 1100,
                     'type' =>"fixed_amount",
                 ],
                 [
                     'min_range' =>50000,
-                    'max_range' =>60000,
+                    'max_range' =>59999,
                     'deduction'=> 1200,
                     'type' =>"fixed_amount",
                 ],
                 [
                     'min_range' =>60000,
-                    'max_range' =>70000,
+                    'max_range' =>69999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1300,
                 ],
                 [
                     'min_range' =>70000,
-                    'max_range' =>80000,
+                    'max_range' => 79999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1400,
                 ],
                 [
                     'min_range' =>80000,
-                    'max_range' =>90000,
+                    'max_range' =>89999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1500,
                 ],
                 [
                     'min_range' =>90000,
-                    'max_range' =>100000,
+                    'max_range' =>99999999999999999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1600,
                 ],
