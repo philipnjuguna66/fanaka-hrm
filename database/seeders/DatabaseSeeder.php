@@ -199,7 +199,6 @@ class DatabaseSeeder extends Seeder
                 ],
             ]
         ]);
-
         JobGrade::factory()->create([
             'title' => 'Entry Level'
         ]);
