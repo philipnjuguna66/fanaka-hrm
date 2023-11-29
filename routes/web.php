@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,3 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/admin');
+
+
+Route::get('/test', function (){
+
+    Schema::table('payroll_lines', function (Blueprint $table) {
+        $table->decimal('paye',13,2)->nullable();
+    });
+
+
+});
