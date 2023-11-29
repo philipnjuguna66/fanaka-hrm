@@ -63,6 +63,15 @@ class DatabaseSeeder extends Seeder
                 'fixed_amount' => 300,
             ]);
 
+        Deduction::factory()
+                ->create([
+                'deduction_type_id' => 5,
+                'name' => 'Insurance Relief',
+                'type' => 'percentage',
+                'percentage_of' => 'NHIF',
+                'percentage_value' => 15,
+            ]);
+
         Benefit::factory()->taxable()->fixed(20000)->create(['name'=>'House Allowance']);
         Benefit::factory()->taxable()->fixed(20000)->create(['name'=>'Cash Awards']);
         Benefit::factory()->taxable()->fixed(20000)->create(['name'=>'Commissions']);
