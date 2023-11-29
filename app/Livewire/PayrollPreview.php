@@ -34,24 +34,26 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
     {
 
         $statutory =StatutoryDeduction::all()->map(function ($deduction){
-            return TextColumn::make(str($deduction->name)->lower()->value()) ->money(currency: 'kes');
+            return TextColumn::make(str($deduction->name)->lower()->value());
         })->all();
 
 
         return $table
             ->query(IPayroll::query())
             ->columns([
-                TextColumn::make('employee_name')->money(currency: 'kes'),
-                TextColumn::make('basic_pay')->money(currency: 'kes'),
-                TextColumn::make('gross_pay')->money(currency: 'kes'),
-                TextColumn::make('tax_allowable_deductions')->wrap()->money(currency: 'kes'),
-                TextColumn::make('taxable_income')->money(currency: 'kes'),
+                TextColumn::make('employee_name'),
+                TextColumn::make('basic_pay'),
+                TextColumn::make('gross_pay'),
+                TextColumn::make('tax_allowable_deductions')->wrap(),
+                TextColumn::make('car_benefits'),
+                TextColumn::make('housing_benefits'),
+                TextColumn::make('taxable_income'),
                     ...$statutory,
-                TextColumn::make('paye')->money(currency: 'kes'),
-                TextColumn::make('personal_relief')->money(currency: 'kes'),
-                TextColumn::make('insurance_relief')->money(currency: 'kes'),
-                TextColumn::make('net_payee')->label("PAYE")->money(currency: 'kes'),
-                TextColumn::make('net_pay')->money(currency: 'kes'),
+                TextColumn::make('paye'),
+                TextColumn::make('personal_relief'),
+                TextColumn::make('insurance_relief'),
+                TextColumn::make('net_payee')->label("PAYE"),
+                TextColumn::make('net_pay'),
             ])
             ->filters([
                 // ...
