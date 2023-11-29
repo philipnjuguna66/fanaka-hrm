@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\DeductionPercentageOf;
 use App\Models\Benefit;
 use App\Models\Deduction;
 use App\Models\Employee;
@@ -68,7 +69,7 @@ class DatabaseSeeder extends Seeder
                 'deduction_type_id' => 5,
                 'name' => 'Insurance Relief',
                 'type' => 'percentage',
-                'percentage_of' => 'NHIF',
+                'percentage_of' => DeductionPercentageOf::NHIF,
                 'percentage_value' => 15,
             ]);
 
