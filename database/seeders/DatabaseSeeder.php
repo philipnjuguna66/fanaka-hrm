@@ -193,7 +193,7 @@ class DatabaseSeeder extends Seeder
                     'min_range' =>90000,
                     'max_range' =>99999999999999999,
                     'type' =>"fixed_amount",
-                    'deduction'=> 1600,
+                    'deduction'=> 1700,
                 ],
             ]
         ]);
