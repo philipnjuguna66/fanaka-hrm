@@ -28,6 +28,7 @@ class PayrollLine extends Model
         'net_payee',
         'net_pay',
         'deductions',
+        'statutory',
         'benefits',
     ];
 
@@ -35,6 +36,7 @@ class PayrollLine extends Model
     protected $casts = [
         'benefits' => 'json',
         'deductions' => 'json',
+        'statutory' => 'json',
     ];
 
 

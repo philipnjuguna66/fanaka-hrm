@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Benefit;
 use App\Models\Deduction;
 use App\Models\Employee;
+use App\Models\EmployeeBenefit;
 use App\Models\StatutoryDeduction;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -41,8 +43,9 @@ class PayrollService
             'insurance_relief' => $this->calculateInsuranceRelief($employee),
             'net_payee' => $this->getNetPayee($employee),
             'net_pay' =>$this->getNetPay($employee),
-            'deductions' => $this->getAllDeductions($employee),
-            'benefits' => $this->getAllDeductions($employee),
+            'deductions' => $this->getAllDeductionArrayKeys($employee),
+            'benefits' => $this->getAllBenefitsArrayKeys($employee),
+            'statutory' =>  $statutory,
         ];
     }
 
@@ -235,14 +238,29 @@ class PayrollService
                 return  $deductions->sum('pivot.amount');
             });
     }
-    private function getAllBenefits($employee){
+    private function getAllBenefitsArrayKeys(Employee $employee){
 
         $employee->refresh()->loadMissing('employeeBenefits');
 
-        return  $employee->employeBenefits
-            ->sum(function (Collection $deductions){
-                return  $deductions->sum('pivot.amount');
-            });
+        return  $employee->employeeBenefits?->map(function (Benefit $benefit){
+                return [
+                   $benefit->name => $benefit->pivot->amount,
+                ];
+            })
+            ->collapse()->all();
+
+    }
+    private function getAllDeductionArrayKeys(Employee $employee){
+
+        $employee->refresh()->loadMissing('employeeDeductions');
+
+        return  $employee->employeeDeductions?->map(function (Deduction $deduction){
+                return [
+                    $deduction->name => $deduction->pivot->amount,
+                ];
+            })
+            ->collapse()->all();
+
     }
 
     private function totalStatutoryDeductions(Employee $employee)

@@ -21,6 +21,10 @@ Route::redirect('/', '/admin');
 Route::get('/test', function (){
 
     Schema::table('payroll_lines', function (Blueprint $table) {
+
+        $table->json('deductions')->nullable()->change();
+        $table->json('statutory')->nullable()->change();
+        $table->json('benefits')->nullable()->change();
         $table->decimal('house_levy',13,2)->nullable()->change();
     });
 
