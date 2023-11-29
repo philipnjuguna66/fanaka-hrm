@@ -27,6 +27,14 @@ class PayrollLine extends Model
         'insurance_relief',
         'net_payee',
         'net_pay',
+        'deductions',
+        'benefits',
+    ];
+
+
+    protected $casts = [
+        'benefits' => 'json',
+        'deductions' => 'json',
     ];
 
 

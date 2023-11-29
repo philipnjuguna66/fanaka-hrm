@@ -28,6 +28,8 @@ return new class extends Migration
             $table->decimal('insurance_relief',13,2);
             $table->decimal('net_payee',13,2);
             $table->decimal('net_pay',13,2);
+            $table->json('deductions')->nullable();
+            $table->json('benefits')->nullable();
             $table->timestamps();
         });
     }
