@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Filament\Resources\EmployeeResource\RelationManagers;
+
+use App\Actions\DownloadPayslip;
+use App\Models\Employee;
+use App\Models\PaySlip;
+use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class PayslipsRelationManager extends RelationManager
+{
+    protected static string $relationship = 'payslips';
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('created_at')
+            ->columns([
+                Tables\Columns\TextColumn::make('created_at')
+                    ->wrapHeader()
+                    ->label('Month')
+                    ->formatStateUsing(fn(Carbon $state) => str($state->year)->padRight(10)->append($state->monthName))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('payrollLine.payroll.payroll_number')
+                    ->label('Payroll Number')
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('Download')
+                    ->action(function (PaySlip $paySlip){
+
+                      return   (new DownloadPayslip())
+                            ->download($paySlip);
+
+                    })
+                    ->color('primary')->icon('heroicon-o-arrow-down-tray'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}
