@@ -21,7 +21,7 @@ Route::redirect('/', '/admin');
 Route::get('/test', function (){
 
     Schema::table('payroll_lines', function (Blueprint $table) {
-        $table->decimal('house_levy',13,2)->nullable();
+        $table->decimal('house_levy',13,2)->nullable()->change();
     });
 
 
