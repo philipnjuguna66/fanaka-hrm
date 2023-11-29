@@ -18,8 +18,8 @@ return new class extends Migration
             $table->decimal('basic_pay',13,2);
             $table->decimal('gross_pay',13,2);
             $table->decimal('tax_allowable_deductions',13,2);
-            $table->decimal('car_benefits',13,2);
-            $table->decimal('housing_benefits',13,2);
+            $table->decimal('car_benefits',13,2)->nullable();
+            $table->decimal('housing_benefits',13,2)->nullable();
             $table->decimal('taxable_income',10,2);
             $table->decimal('nhif',13,2);
             $table->decimal('nssf',13,2);

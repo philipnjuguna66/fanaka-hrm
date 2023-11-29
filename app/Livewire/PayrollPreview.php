@@ -45,8 +45,6 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
                 TextColumn::make('basic_pay'),
                 TextColumn::make('gross_pay'),
                 TextColumn::make('tax_allowable_deductions')->wrap(),
-                TextColumn::make('car_benefits'),
-                TextColumn::make('housing_benefits'),
                 TextColumn::make('taxable_income'),
                     ...$statutory,
                 TextColumn::make('paye'),
