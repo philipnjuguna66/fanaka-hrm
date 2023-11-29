@@ -43,6 +43,8 @@ class IPayroll extends Model
 
     public function getRows()
     {
+        $data = [];
+
         $payroll_data =(new PayrollService)->runPayrollForAllEmployee();
 
         foreach ($payroll_data as $payroll_datum){
