@@ -139,18 +139,18 @@ class EmployeeResource extends Resource
                 ]),
             ])->striped();
     }
-    
+
     public static function getRelations(): array
     {
         return [
             EmployeeBenefitsRelationManager::class,
             RelationManagers\EmployeeDeductionsRelationManager::class,
-            RelationManagers\CarBenefitsRelationManager::class,
-            RelationManagers\HousingBenefitsRelationManager::class,
+           // RelationManagers\CarBenefitsRelationManager::class,
+           // RelationManagers\HousingBenefitsRelationManager::class,
             RelationManagers\PayslipsRelationManager::class,
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -158,5 +158,5 @@ class EmployeeResource extends Resource
             'create' => Pages\CreateEmployee::route('/create'),
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
-    }    
+    }
 }

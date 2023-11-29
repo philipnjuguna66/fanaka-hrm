@@ -22,6 +22,8 @@ class HousingBenefitTypeResource extends Resource
     protected static ?string $navigationGroup = 'Payroll';
 
 
+    protected static bool $shouldRegisterNavigation =  false;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -69,14 +71,14 @@ class HousingBenefitTypeResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -85,5 +87,5 @@ class HousingBenefitTypeResource extends Resource
             'view' => Pages\ViewHousingBenefitType::route('/{record}'),
             'edit' => Pages\EditHousingBenefitType::route('/{record}/edit'),
         ];
-    }    
+    }
 }
