@@ -14,7 +14,7 @@ class StaffNumber implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return generateNumberPrefix($value,'STAFF-');
+        return generateNumberPrefix($value,'Fan-');
     }
 
     /**

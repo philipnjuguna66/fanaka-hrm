@@ -67,12 +67,14 @@ class EmployeeImport implements ToCollection, WithHeadingRow, ShouldQueue, WithC
                         else{
                             $jobTitle = $jobTitle->first();
 
+
                         }
 
-                        $employee->hrDetail()->create([
-                            'staff_number' => $data['staff_no'] ?? $employee->id,
-                            'job_title_id' => $jobTitle->id,
 
+
+                        $employee->hrDetail()->create([
+                            'staff_number' => $data['staff_no'],
+                            'job_title_id' => $jobTitle->id,
                             'date_of_employment' => isset($data['date_joining']) ? Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])) : null,
                             'contract_start' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
                         ]);
