@@ -21,6 +21,8 @@ class EmployeeImport implements ToCollection, WithHeadingRow
         $collection->each(function ($data){
 
 
+            dd($data);
+
            if (! Employee::query()->where('legal_document_number', $data['id_no'])->exists()){
 
                if (isset($data['full_name']))
