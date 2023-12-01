@@ -46,6 +46,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                         'nssf_no' => $data['nssf_no'] ?? 0,
                         'nhif_no' => $data['nhif_no'] ?? 0,
                     ]), function (Employee $employee) use ($data){
+                        dump($employee, $data);
 
                         $employee->salaryDetail()->create([
                             'basic_salary' => $data['basic_salary'] ?? 0
