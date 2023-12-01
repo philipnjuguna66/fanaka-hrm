@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Employee;
+use App\Models\JobTitle;
 use Carbon\Carbon;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -50,6 +51,21 @@ class EmployeeImport implements ToCollection, WithHeadingRow, WithChunkReading, 
                ]), function (Employee $employee) use ($data){
                    $employee->salaryDetail()->create([
                        'basic_salary' => $data['basic_salary'] ?? 0
+                   ]);
+
+                   $employee->hrDetail()->create([
+                       'staff_number' => $data['staff_no'] ?? $employee->id,
+                       'job_title_id' => JobTitle::query()->where('name', "like", "%{$data['job_title']}%")
+                       ->firstOrCreate([
+                           'name' => $data['job_title']
+                       ]),
+
+                       'date_of_employment' => Carbon::parse(Date::dateTimeToExcel($data['date_joining'])),
+                       'contract_start' => Carbon::parse(Date::dateTimeToExcel($data['date_joining'])),
+                   ]);
+
+                   $employee->hrContact()->create([
+                       'office_phone_number' => $data['phone_number'] ?? 0
                    ]);
                });
            }
