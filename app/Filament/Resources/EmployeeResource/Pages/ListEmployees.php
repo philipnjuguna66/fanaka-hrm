@@ -9,6 +9,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -31,6 +32,9 @@ class ListEmployees extends ListRecords
         return  Actions\Action::make('import Employees')
             ->form([
                 FileUpload::make('employee_file')
+                    ->disk('public')
+                    ->directory('employee_file')
+                    ->visibility('public')
                     ->reactive()
                 ->required()
             ])
@@ -39,14 +43,11 @@ class ListEmployees extends ListRecords
             ->action(function (array $data){
                 try {
 
-                    $file = storage_path($data['employee_file']);
+
+                    $path = $data['employee_file'];
 
 
-                    $spreadsheet = IOFactory::load($file);
-
-                    $worksheet =  $spreadsheet->getFirstSheetIndex();
-
-                    dd($worksheet->getCellCollection());
+                  Excel::import(new EmployeeImport(), $path);
 
 
                     return Notification::make('error')
