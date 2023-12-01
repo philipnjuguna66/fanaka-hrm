@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('nationality')->nullable();
             $table->string('passport_photo')->nullable();
             $table->json('config')->nullable();
-            $table->boolean('should_pay_payee')->default(false);
+            $table->boolean('should_pay_payee')->default(true);
             $table->boolean('should_pay_nhif')->default(true);
             $table->boolean('should_pay_nssf')->default(true);
             $table->string('status')->default(\App\Enums\EmployeeStatusEnum::ACTIVE);
