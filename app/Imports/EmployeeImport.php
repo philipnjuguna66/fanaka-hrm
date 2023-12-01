@@ -55,12 +55,23 @@ class EmployeeImport implements ToCollection, WithHeadingRow, ShouldQueue, WithC
                             'basic_salary' => $data['basic_salary'] ?? 0
                         ]);
 
+                        $jobTitle  = JobTitle::query()->where('label', "like", "%{$data['job_title']}%");
+
+                        if (! $jobTitle->exists())
+                        {
+                            $jobTitle = JobTitle::create([
+                                'label' => $data['job_title']
+                            ]);
+
+                        }
+                        else{
+                            $jobTitle = $jobTitle->first();
+
+                        }
+
                         $employee->hrDetail()->create([
                             'staff_number' => $data['staff_no'] ?? $employee->id,
-                            'job_title_id' => JobTitle::query()->where('label', "like", "%{$data['job_title']}%")
-                                ->firstOrCreate([
-                                    'label' => $data['job_title']
-                                ]),
+                            'job_title_id' => $jobTitle->id,
 
                             'date_of_employment' => isset($data['date_joining']) ? Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])) : null,
                             'contract_start' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
