@@ -22,7 +22,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
         $collection->each(function ($data){
 
             try {
-
+                DB::beginTransaction();
                 if (! Employee::query()->where('legal_document_number', $data['id_no'])->exists()){
 
                     if (isset($data['full_name']))
@@ -46,8 +46,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                         'nssf_no' => $data['nssf_no'] ?? 0,
                         'nhif_no' => $data['nhif_no'] ?? 0,
                     ]), function (Employee $employee) use ($data){
-                        dump($employee, $data);
-
                         $employee->salaryDetail()->create([
                             'basic_salary' => $data['basic_salary'] ?? 0
                         ]);
@@ -60,7 +58,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                                 ]),
 
                             'date_of_employment' => isset($data['date_joining']) ? Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])) : null,
-                            'contract_start' => $data['date_joining'] ? Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])) : null,
+                            'contract_start' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
                         ]);
 
                         $employee->hrContact()->create([
@@ -71,12 +69,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                     });
                 }
 
-
+                DB::commit();
             }
             catch (\Exception $e)
             {
-                dd($e->getMessage());
-
+                DB::rollBack();
             }
 
 
