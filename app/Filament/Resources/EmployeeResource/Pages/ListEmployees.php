@@ -8,8 +8,10 @@ use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ListEmployees extends ListRecords
 {
@@ -28,7 +30,8 @@ class ListEmployees extends ListRecords
         return  Actions\Action::make('import Employees')
             ->form([
                 FileUpload::make('employee_file')
-                ->required()
+                    ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
+                    ->required()
             ])
             ->slideOver()
             ->closeModalByClickingAway()
@@ -37,7 +40,8 @@ class ListEmployees extends ListRecords
             ->action(function (array $data){
                 try {
 
-                    Excel::import(new EmployeeImport, ($data['employee_file']), "public",\Maatwebsite\Excel\Excel::XLSX);
+
+                    Excel::import(import: new EmployeeImport(), filePath: ($data['employee_file']), readerType: \Maatwebsite\Excel\Excel::XLSX);
 
                     return Notification::make('error')
                         ->success()
@@ -46,6 +50,8 @@ class ListEmployees extends ListRecords
                 }
                 catch (\Exception $exception)
                 {
+                    dump($exception->getMessage());
+
                     return Notification::make('error')
                         ->danger()
                         ->title("Something went wrong")
