@@ -17,7 +17,6 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class EmployeeImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
-    use Importable;
     /**
     * @param Collection $collection
     */
