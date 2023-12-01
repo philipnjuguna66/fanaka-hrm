@@ -57,7 +57,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow, ShouldQueue, WithC
 
                         $employee->hrDetail()->create([
                             'staff_number' => $data['staff_no'] ?? $employee->id,
-                            'job_title_id' => JobTitle::query()->where('name', "like", "%{$data['job_title']}%")
+                            'job_title_id' => JobTitle::query()->where('label', "like", "%{$data['job_title']}%")
                                 ->firstOrCreate([
                                     'label' => $data['job_title']
                                 ]),
