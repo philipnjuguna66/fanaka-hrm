@@ -28,10 +28,10 @@ class StatutoryDeduction extends Model
 
     public function getAmount(Employee $employee, $gross)
     {
-        if (! $employee->should_pay_payee)
+      /*  if (! $employee->should_pay_payee)
         {
             return  0;
-        }
+        }*/
 
         $employee->loadMissing('salaryDetail');
 
