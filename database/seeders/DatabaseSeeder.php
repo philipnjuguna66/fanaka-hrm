@@ -17,6 +17,7 @@ use App\Models\SalaryDetail;
 use App\Models\StatutoryDeduction;
 use Database\Factories\JobGradeFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,7 +28,8 @@ class DatabaseSeeder extends Seeder
     {
          \App\Models\User::factory()->create([
              'name' => 'Admin User',
-             'email' => 'admin@admin.com',
+             'email' => 'info@fanaka.co.ke',
+             'password' => Hash::make(env('DEFAULT_PASSWORD'))
          ]);
 
          $this->call(DeductionTypeSeeder::class);
@@ -240,10 +242,5 @@ class DatabaseSeeder extends Seeder
             'label' => 'CT0'
         ]);
 
-        Employee::factory(1)
-             ->has(SalaryDetail::factory()->basicSalary(100000))
-             ->has(HrDetail::factory()->for($mid)->for($cto))
-             ->has(HrContact::factory())
-             ->create();
     }
 }
