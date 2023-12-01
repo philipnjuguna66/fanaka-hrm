@@ -22,7 +22,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
         $collection->each(function ($data){
 
             try {
-                DB::beginTransaction();
+
                 if (! Employee::query()->where('legal_document_number', $data['id_no'])->exists()){
 
                     if (isset($data['full_name']))
@@ -69,11 +69,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                     });
                 }
 
-                DB::commit();
+
             }
             catch (\Exception $e)
             {
-                DB::rollBack();
+
             }
 
 
