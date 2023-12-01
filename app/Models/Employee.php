@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Enums\EmployeeStatusEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,25 +39,12 @@ class Employee extends Model implements HasMedia
 
     protected $casts = [
         'config' => 'array',
-        'should_pay_payee' => 'boolean'
+        'should_pay_payee' => 'boolean',
+        'status' => EmployeeStatusEnum::class,
     ];
 
-    protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'gender',
-        'marital_status',
-        'date_of_birth',
-        'residential_status',
-        'legal_document_type',
-        'legal_document_number',
-        'kra_pin_no',
-        'nssf_no',
-        'nhif_no',
-        'passport_photo',
-        'nationality',
-        'should_pay_payee',
+    protected $guarded = [
+
     ];
 
     public function salaryDetail(): \Illuminate\Database\Eloquent\Relations\HasOne

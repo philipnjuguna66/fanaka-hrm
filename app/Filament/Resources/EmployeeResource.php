@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\EmployeeStatusEnum;
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Filament\Resources\EmployeeResource\RelationManagers\EmployeeBenefitsRelationManager;
 use App\Models\Employee;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -135,11 +137,17 @@ class EmployeeResource extends Resource
                     ->relationship('hrDetail.department', 'title'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->modalSubmitAction(false),
+                Tables\Actions\EditAction::make()->modalSubmitAction(false)->icon(null),
+                Action::make('Deactivate')
+                ->visible(fn(Employee $employee) : bool => $employee->status == EmployeeStatusEnum::ACTIVE)
+                ->action(fn(Employee $employee) => $employee->updateQuietly(['status' => EmployeeStatusEnum::NOT_ACTIVE])),
+                Action::make('Activate')
+                ->visible(fn(Employee $employee) : bool => $employee->status == EmployeeStatusEnum::NOT_ACTIVE)
+                ->action(fn(Employee $employee) => $employee->updateQuietly(['status' => EmployeeStatusEnum::ACTIVE]))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    //Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->striped();
     }
