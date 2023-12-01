@@ -40,7 +40,7 @@ class ListEmployees extends ListRecords
                     Excel::import(new EmployeeImport(),  $data['employee_file']);
 
                     return Notification::make('error')
-                        ->sucess()
+                        ->success()
                         ->title("Uploading")
                         ->send();
                 }
