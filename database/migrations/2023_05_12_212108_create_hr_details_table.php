@@ -16,17 +16,17 @@ return new class extends Migration
         Schema::create('hr_details', function (Blueprint $table) {
             $table->id();
             $table->string('staff_number')->nullable();
-            $table->date('date_of_employment');
-            $table->date('contract_start');
-            $table->date('contract_end');
+            $table->date('date_of_employment')->nullable();
+            $table->date('contract_start')->nullable();
+            $table->date('contract_end')->nullable();
             $table->boolean('board_director')->default(false);
             $table->unsignedInteger('employee_id');
-            $table->unsignedInteger('region_id');
-            $table->unsignedInteger('job_grade_id');
-            $table->unsignedInteger('job_title_id');
-            $table->unsignedInteger('department_id');
-            $table->unsignedInteger('reports_to_job_title_id');
-            $table->unsignedInteger('business_unit_id');
+            $table->unsignedInteger('region_id')->nullable();
+            $table->unsignedInteger('job_grade_id')->nullable();
+            $table->unsignedInteger('job_title_id')->nullable();
+            $table->unsignedInteger('department_id')->nullable();
+            $table->unsignedInteger('reports_to_job_title_id')->nullable();
+            $table->unsignedInteger('business_unit_id')->nullable();
             $table->timestamps();
         });
     }

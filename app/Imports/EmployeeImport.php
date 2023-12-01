@@ -24,7 +24,18 @@ class EmployeeImport implements ToCollection, WithHeadingRow, WithChunkReading, 
     {
         $collection->each(function ($data){
 
+
            if (! Employee::query()->where('legal_document_number', $data['id_no'])->exists()){
+
+               if (isset($data['full_name']))
+               {
+                   $full_name = explode('_', str($data['full_name'])->slug('_')->value() );
+
+                   $data['first_name'] = $full_name[0] ?? null;
+                   $data['middle_name'] = $full_name[1] ?? null;
+                   $data['last_name'] = $full_name[2] ?? null;
+               }
+
                tap(Employee::create([
                    'first_name' => $data['first_name'],
                    'middle_name' => $data['middle_name'],
@@ -34,11 +45,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow, WithChunkReading, 
                    'legal_document_type' => 'nat',
                    'legal_document_number' => $data['id_no'],
                    'kra_pin_no' => $data['kra_pin_no'],
-                   'nssf_no' => $data['nssf_no'],
-                   'nhif_no' => $data['nhif_no'],
+                   'nssf_no' => $data['nssf_no'] ?? 0,
+                   'nhif_no' => $data['nhif_no'] ?? 0,
                ]), function (Employee $employee) use ($data){
                    $employee->salaryDetail()->create([
-                       'basic_salary' => $data['basic_salary']
+                       'basic_salary' => $data['basic_salary'] ?? 0
                    ]);
                });
            }
