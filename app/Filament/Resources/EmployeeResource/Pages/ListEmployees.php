@@ -46,8 +46,7 @@ class ListEmployees extends ListRecords
 
                     $path = $data['employee_file'];
 
-
-                  Excel::import(new EmployeeImport(), $path);
+                    Excel::import(new EmployeeImport, $path);
 
 
                     return Notification::make('error')
