@@ -33,7 +33,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                    $data['last_name'] = $full_name[2] ?? null;
                }
 
-               tap(Employee::create([
+               tap(Employee::query()->where([ 'legal_document_number' => $data['id_no']])->firstOrCreate([
                    'first_name' => $data['first_name'],
                    'middle_name' => $data['middle_name'],
                    'last_name' => $data['last_name'],
