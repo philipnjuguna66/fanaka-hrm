@@ -2,12 +2,10 @@
 
 namespace App\Filament\Pages;
 
-use App\Livewire\PayrollPreview;
-use App\Models\Employee;
 use App\Models\Payroll;
 use App\Services\PayrollService;
 use Carbon\Carbon;
-use Closure;
+
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
@@ -19,6 +17,7 @@ class PayrollMaster extends Page
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
 
     protected static string $view = 'filament.pages.payroll-master';
+
     protected static ?string $navigationGroup = 'Payroll';
 
 

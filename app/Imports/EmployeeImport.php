@@ -21,7 +21,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
         $collection->each(function ($data){
 
 
-            dd($data);
 
            if (! Employee::query()->where('legal_document_number', $data['id_no'])->exists()){
 
@@ -39,10 +38,10 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                    'middle_name' => $data['middle_name'],
                    'last_name' => $data['last_name'],
                    'gender' => $data['gender'],
-                   'date_of_birth' => Carbon::parse(Date::dateTimeToExcel($data['date_of_birth'])),
+                   'date_of_birth' => Carbon::parse(Date::excelToDateTimeObject($data['date_of_birth'])),
                    'legal_document_type' => 'nat',
                    'legal_document_number' => $data['id_no'],
-                   'kra_pin_no' => $data['kra_pin_no'],
+                   'kra_pin_no' => $data['kra_pin_no'] ?? null,
                    'nssf_no' => $data['nssf_no'] ?? 0,
                    'nhif_no' => $data['nhif_no'] ?? 0,
                ]), function (Employee $employee) use ($data){
@@ -57,8 +56,8 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                            'name' => $data['job_title']
                        ]),
 
-                       'date_of_employment' => Carbon::parse(Date::dateTimeToExcel($data['date_joining'])),
-                       'contract_start' => Carbon::parse(Date::dateTimeToExcel($data['date_joining'])),
+                       'date_of_employment' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
+                       'contract_start' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
                    ]);
 
                    $employee->hrContact()->create([
@@ -71,8 +70,4 @@ class EmployeeImport implements ToCollection, WithHeadingRow
         });
     }
 
-    public function chunkSize(): int
-    {
-        return  50;
-    }
 }

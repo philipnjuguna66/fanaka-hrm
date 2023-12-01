@@ -37,7 +37,7 @@ class ListEmployees extends ListRecords
             ->action(function (array $data){
                 try {
 
-                    Excel::import(new EmployeeImport, ($data['employee_file']));
+                    Excel::import(new EmployeeImport, ($data['employee_file']), "public",\Maatwebsite\Excel\Excel::XLSX);
 
                     return Notification::make('error')
                         ->success()
