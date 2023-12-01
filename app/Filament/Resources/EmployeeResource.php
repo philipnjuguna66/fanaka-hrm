@@ -56,6 +56,10 @@ class EmployeeResource extends Resource
                     ->label('Last Name')
                     ->wrapHeader()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('legal_document_number')
+                    ->label('legal_document_number')
+                    ->wrapHeader()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('hrDetail.staff_number')
                     ->label('Staff No.')
                     ->searchable(),
