@@ -53,7 +53,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                        'staff_number' => $data['staff_no'] ?? $employee->id,
                        'job_title_id' => JobTitle::query()->where('name', "like", "%{$data['job_title']}%")
                        ->firstOrCreate([
-                           'name' => $data['job_title']
+                           'label' => $data['job_title']
                        ]),
 
                        'date_of_employment' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
