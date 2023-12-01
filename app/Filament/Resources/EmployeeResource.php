@@ -72,6 +72,10 @@ class EmployeeResource extends Resource
                     ->label('JobTitle')
                     ->badge()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('hrDetail.department.title')
                     ->label('Department')
                     ->badge()
