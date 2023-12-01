@@ -67,6 +67,8 @@ class EmployeeImport implements ToCollection, WithHeadingRow, WithChunkReading, 
                    $employee->hrContact()->create([
                        'office_phone_number' => $data['phone_number'] ?? 0
                    ]);
+
+
                });
            }
         });
