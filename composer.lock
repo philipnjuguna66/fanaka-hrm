@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9dccf91861a89c7076dc6c5a00f7359",
+    "content-hash": "c565adb629b3aa55916e0515169d69fb",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2547,6 +2547,78 @@
                 "source": "https://github.com/kirschbaum-development/eloquent-power-joins/tree/3.3.3"
             },
             "time": "2023-10-31T18:01:18+00:00"
+        },
+        {
+            "name": "konnco/filament-import",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/konnco/filament-import.git",
+                "reference": "809eb090761b9722d859d3164d329d0937ef8442"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/konnco/filament-import/zipball/809eb090761b9722d859d3164d329d0937ef8442",
+                "reference": "809eb090761b9722d859d3164d329d0937ef8442",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3",
+                "filament/notifications": "^3.0",
+                "illuminate/contracts": "^10",
+                "illuminate/support": "^10.0",
+                "livewire/livewire": "^3",
+                "maatwebsite/excel": "^3.1.48",
+                "php": "^8.0",
+                "psr/simple-cache": "^2.0|^3.0",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.11",
+                "nunomaduro/collision": "^6.4|^7.0",
+                "nunomaduro/larastan": "^2.6.4",
+                "orchestra/testbench": "^8.8",
+                "pestphp/pest": "^2",
+                "pestphp/pest-plugin-laravel": "^2",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.3.1",
+                "phpstan/phpstan-deprecation-rules": "^1.1.4",
+                "phpstan/phpstan-phpunit": "^1.3.13",
+                "phpunit/phpunit": "^9.6.10|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Konnco\\FilamentImport\\FilamentImportServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Konnco\\FilamentImport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Franky So",
+                    "email": "frankyso.mail@gmail.com"
+                }
+            ],
+            "keywords": [
+                "filament-import",
+                "import",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/konnco/filament-import/issues",
+                "source": "https://github.com/konnco/filament-import/tree/1.6.1"
+            },
+            "time": "2023-08-28T13:56:51+00:00"
         },
         {
             "name": "laminas/laminas-escaper",
