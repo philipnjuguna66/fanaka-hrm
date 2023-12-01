@@ -26,7 +26,7 @@ class EditEmployee extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+           // Actions\DeleteAction::make(),
         ];
     }
 
@@ -35,6 +35,24 @@ class EditEmployee extends EditRecord
 //        dd($this->record->salaryDetail);
 
         return $data;
+    }
+
+    protected function validateFormAndUpdateRecordAndCallHooks(): void
+    {
+        $this->callHook('beforeValidate');
+
+        $data = $this->form->getState();
+
+        $this->callHook('afterValidate');
+
+        $data = $this->mutateFormDataBeforeSave($data);
+
+
+        $this->callHook('beforeSave');
+
+        $this->handleRecordUpdate($this->getRecord(), $data);
+
+        $this->callHook('afterSave');
     }
 
     protected function getSteps() :array

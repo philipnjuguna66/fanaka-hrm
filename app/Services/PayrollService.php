@@ -13,58 +13,71 @@ class PayrollService
 {
     public function runPayrollForAllEmployee(): array
     {
-         $employees = Employee::all();
+        $employees = Employee::all();
 
-        return  $employees->map(fn($employee) => $this->runPayrollForEmployee($employee))->all();
+        return $employees->map(fn($employee) => $this->runPayrollForEmployee($employee))->all();
     }
+
     public function runPayrollForEmployee(Employee $employee): array
     {
 
-        $gross  = $this->getGrossSalary($employee);
+        $gross = $this->getGrossSalary($employee);
 
 
-        $statutory = StatutoryDeduction::all()->map(function ($deduction)use($gross, $employee){
-
-            return [ str($deduction->name)->lower()->value() => $deduction->getAmount(employee: $employee , gross: $gross)];
+        $statutory = StatutoryDeduction::all()->map(function ($deduction) use ($gross, $employee) {
+            return [str($deduction->name)->lower()->value() => $deduction->getAmount(employee: $employee, gross: $gross)];
         })->collapse()->all();
+
 
         return [
             'employee_id' => $employee->id,
             'employee_name' => $employee->first_name,
             'basic_pay' => $employee->salaryDetail->basic_salary,
-            'gross_pay' =>$gross,
-            'tax_allowable_deductions' =>$this->calculateTaxAllowableDeductions($employee),
+            'gross_pay' => $gross,
+            'tax_allowable_deductions' => $this->calculateTaxAllowableDeductions($employee),
             'car_benefits' => $this->calculateCarBenefits($employee),
-            'housing_benefits' => $this->calculateHousingBenefits($employee,$this->getGrossSalary($employee)),
-            'taxable_income' =>  $this->getTaxableIncome($employee),
+            'housing_benefits' => $this->calculateHousingBenefits($employee, $this->getGrossSalary($employee)),
+            'taxable_income' => $this->getTaxableIncome($employee),
             ...$statutory,
-            'paye' => $this->calculatePayee($this->getTaxableIncome($employee)),
-            'personal_relief' => $this->getPersonalRelief(),
+            'paye' => $this->calculatePayee(employee: $employee, taxableIncome: $this->getTaxableIncome($employee)),
+            'withholding_tax' => $this->getWithhodlingTax(employee: $employee, incomeTaX: $this->getTaxableIncome($employee)),
+            'personal_relief' => $this->getPersonalRelief($employee),
             'insurance_relief' => $this->calculateInsuranceRelief($employee),
             'net_payee' => $this->getNetPayee($employee),
-            'net_pay' =>$this->getNetPay($employee),
+            'net_pay' => $this->getNetPay($employee),
             'deductions' => $this->getAllDeductionArrayKeys($employee),
             'benefits' => $this->getAllBenefitsArrayKeys($employee),
-            'statutory' =>  $statutory,
+            'statutory' => $statutory,
         ];
     }
 
-    protected function calculatePayee($taxableIncome): float|int
+    public function getWithhodlingTax(Employee $employee, $incomeTaX)
     {
+        if ($employee->should_pay_payee) {
+            return 0;
+        }
+
+        return (5 / 100) * $incomeTaX;
+
+    }
+
+    protected function calculatePayee(Employee $employee, $taxableIncome): float|int
+    {
+
 
         $bands = [];
 
         // less than 24000
-        if($taxableIncome < 24000) {
+        if ($taxableIncome < 24000) {
             return 0;
         }
 
-        if($taxableIncome < 32332){
+        if ($taxableIncome < 32332) {
             $bands[] = 24000 * 0.1;
-            $bands[] = ($taxableIncome  - 24000) * 0.25;
+            $bands[] = ($taxableIncome - 24000) * 0.25;
         }
 
-        if($taxableIncome > 32332){
+        if ($taxableIncome > 32332) {
             $bands[] = 24000 * 0.1;
             $bands[] = (32332 - 24000) * 0.25;
             $bands[] = ($taxableIncome - 32332) * 0.30;
@@ -147,21 +160,23 @@ class PayrollService
     public function getGrossSalary(Employee $employee): mixed
     {
 
-        $employee->refresh()->loadMissing(['employeeBenefits','salaryDetail']);
+        $employee->refresh()->loadMissing(['employeeBenefits', 'salaryDetail']);
 
         return $employee->employeeBenefits
-                ->sum('pivot.amount')  + $employee->salaryDetail->basic_salary;
+                ->sum('pivot.amount') + $employee->salaryDetail->basic_salary;
     }
 
 
     private function calculateTaxAllowableDeductions(Employee $employee)
     {
 
+
+
         $gross = $this->getGrossSalary($employee);
 
         $employee->refresh()->loadMissing('employeeDeductions'); //
 
-        $nssf = StatutoryDeduction::query()->where('name','NSSF')->first();
+        $nssf = StatutoryDeduction::query()->where('name', 'NSSF')->first();
 
         return ($nssf->getAmount($employee, $gross));
 
@@ -172,100 +187,113 @@ class PayrollService
     {
         $gross = $this->getGrossSalary($employee);
 
-       return $gross + $this->calculateCarBenefits($employee) + $this->calculateHousingBenefits($employee,$gross) - $this->calculateTaxAllowableDeductions($employee);
+        return $gross + $this->calculateCarBenefits($employee) + $this->calculateHousingBenefits($employee, $gross) - $this->calculateTaxAllowableDeductions($employee);
     }
 
-    private function getPersonalRelief(): int
+    private function getPersonalRelief(?Employee $employee = null): int
     {
+
 
         return 2400;
     }
 
-    protected function calculateInsuranceRelief($employee){
+    protected function calculateInsuranceRelief($employee)
+    {
+
 
         $gross = $this->getGrossSalary($employee);
 
         $tax_relief_deductions = $employee->employeeDeductions
             ->filter(fn($deduction) => (bool)$deduction->deductionType?->tax_relief)
             ->groupBy('deduction_type_id')
-            ->sum(function (Collection $deductions) use($gross, $employee){
+            ->sum(function (Collection $deductions) use ($gross, $employee) {
                 /** @var Deduction $deduction */
                 $deduction = $deductions->first();
                 $statutory_additions = $deduction->deductionType?->statutoryDeductions->sum(fn(StatutoryDeduction $deduction) => $deduction->getAmount($employee, $gross));
                 $capped = $deduction->deductionType?->capped;
                 $limit = $deduction->deductionType?->cap_limit;
-                $total =  $deductions->sum('pivot.amount') + $statutory_additions;
-                if($capped)  return min($total,$limit);
-                return  $total;
+                $total = $deductions->sum('pivot.amount') + $statutory_additions;
+                if ($capped) return min($total, $limit);
+                return $total;
             });
 
         return $tax_relief_deductions;
 
-       // $percentage = (0.15 * $tax_relief_deductions);
+        // $percentage = (0.15 * $tax_relief_deductions);
 
-      //  return min($percentage, 5000); //todo add Insurance Relief rate monthly max
+        //  return min($percentage, 5000); //todo add Insurance Relief rate monthly max
 
     }
 
     private function getNetPayee(Employee $employee)
     {
-        if ($this->calculatePayee($this->getTaxableIncome($employee)) === 0)
-        {
+
+
+        if ($this->calculatePayee($employee, $this->getTaxableIncome($employee)) === 0) {
             return 0;
         }
-      return  $this->calculatePayee($this->getTaxableIncome($employee))
-      - $this->getPersonalRelief()
-      - $this->calculateInsuranceRelief($employee);
+        return $this->calculatePayee($employee, $this->getTaxableIncome($employee))
+            - $this->getPersonalRelief()
+            - $this->calculateInsuranceRelief($employee);
     }
 
     private function getNetPay(Employee $employee)
     {
+
         return $this->getGrossSalary($employee)
-        - $this->getNetPayee($employee)
-                +$this->calculateInsuranceRelief($employee)
-        - $this->totalStatutoryDeductions($employee)
+            - $this->getWithhodlingTax($employee, $this->getTaxableIncome($employee))
+            - $this->getNetPayee($employee)
+            + $this->calculateInsuranceRelief($employee)
+            - $this->totalStatutoryDeductions($employee)
             - $this->getAllDeductions($employee);
     }
 
 
-    private function getAllDeductions($employee){
+    private function getAllDeductions($employee)
+    {
 
         $employee->refresh()->loadMissing('employeeDeductions');
 
-        return  $employee->employeeDeductions
+        return $employee->employeeDeductions
             ->groupBy('deduction_type_id')
-            ->sum(function (Collection $deductions){
-                return  $deductions->sum('pivot.amount');
+            ->sum(function (Collection $deductions) {
+                return $deductions->sum('pivot.amount');
             });
     }
-    private function getAllBenefitsArrayKeys(Employee $employee){
+
+    private function getAllBenefitsArrayKeys(Employee $employee)
+    {
 
         $employee->refresh()->loadMissing('employeeBenefits');
 
-        return  $employee->employeeBenefits?->map(function (Benefit $benefit){
-                return [
-                   $benefit->name => $benefit->pivot->amount,
-                ];
-            })
+        return $employee->employeeBenefits?->map(function (Benefit $benefit) {
+            return [
+                $benefit->name => $benefit->pivot->amount,
+            ];
+        })
             ->collapse()->all();
 
     }
-    private function getAllDeductionArrayKeys(Employee $employee){
+
+    private function getAllDeductionArrayKeys(Employee $employee)
+    {
 
         $employee->refresh()->loadMissing('employeeDeductions');
 
-        return  $employee->employeeDeductions?->map(function (Deduction $deduction){
-                return [
-                    $deduction->name => $deduction->pivot->amount,
-                ];
-            })
+        return $employee->employeeDeductions?->map(function (Deduction $deduction) {
+            return [
+                $deduction->name => $deduction->pivot->amount,
+            ];
+        })
             ->collapse()->all();
 
     }
 
     private function totalStatutoryDeductions(Employee $employee)
     {
-        return StatutoryDeduction::get()->sum(fn(StatutoryDeduction $deduction) => $deduction->getAmount($employee , $this->getGrossSalary($employee)));
+
+
+        return StatutoryDeduction::get()->sum(fn(StatutoryDeduction $deduction) => $deduction->getAmount($employee, $this->getGrossSalary($employee)));
 
     }
 }

@@ -37,7 +37,8 @@ class Employee extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'config' => 'array'
+        'config' => 'array',
+        'should_pay_payee' => 'boolean'
     ];
 
     protected $fillable = [
@@ -55,6 +56,7 @@ class Employee extends Model implements HasMedia
         'nhif_no',
         'passport_photo',
         'nationality',
+        'should_pay_payee',
     ];
 
     public function salaryDetail(): \Illuminate\Database\Eloquent\Relations\HasOne

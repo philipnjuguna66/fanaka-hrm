@@ -28,6 +28,11 @@ class StatutoryDeduction extends Model
 
     public function getAmount(Employee $employee, $gross)
     {
+        if (! $employee->should_pay_payee)
+        {
+            return  0;
+        }
+
         $employee->loadMissing('salaryDetail');
 
         foreach ($this->ranges as $range) {
@@ -38,10 +43,9 @@ class StatutoryDeduction extends Model
 
             if ($gross >= $min && $gross <= $max) {
 
-
-                if ($type === "fixed_amount")  return $deduction;
-
-
+                if ($type === "fixed_amount") {
+                    return $deduction;
+                }
 
                 return  ($deduction / 100) *  $gross;
 

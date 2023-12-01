@@ -29,6 +29,11 @@ return new class extends Migration
             $table->string('marital_status')->nullable();
             $table->string('nationality')->nullable();
             $table->string('passport_photo')->nullable();
+            $table->json('config')->nullable();
+            $table->boolean('should_pay_payee')->default(false);
+            $table->boolean('should_pay_nhif')->default(false);
+            $table->boolean('should_pay_nssf')->default(false);
+            $table->string('status')->default(\App\Enums\EmployeeStatusEnum::ACTIVE);
             $table->timestamps();
         });
     }

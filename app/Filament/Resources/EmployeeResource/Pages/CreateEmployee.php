@@ -13,6 +13,7 @@ use App\Models\JobTitle;
 use App\Models\Region;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Forms;
 use Filament\Support\Exceptions\Halt;
@@ -55,7 +56,18 @@ class CreateEmployee extends CreateRecord
 
             DB::commit();
 
+            Notification::make()
+                ->success()
+                ->body("Employee recorded successfully")
+                ->send();
+
         } catch (Halt $exception) {
+
+            Notification::make()
+                ->success()
+                ->body($exception->getMessage())
+                ->send();
+
             DB::rollBack();
             return;
         }
@@ -87,6 +99,7 @@ class CreateEmployee extends CreateRecord
                 Forms\Components\TextInput::make('basic_salary')
                     ->required()
                     ->numeric(),
+
                 Forms\Components\Toggle::make('has_disability')->required()
                     ->live(),
                 Forms\Components\Fieldset::make('Persons With Disability')->schema([
@@ -150,6 +163,10 @@ class CreateEmployee extends CreateRecord
                     Forms\Components\TextInput::make('nhif_no')
                         ->label('NHIF NUMBER')
                         ->required(),
+                    Forms\Components\Toggle::make('should_pay_payee')
+
+                        ->required()
+                        ->live(),
                 ])
             ]),
         ];
@@ -164,14 +181,17 @@ class CreateEmployee extends CreateRecord
                 Forms\Components\Fieldset::make('Hr Details')->relationship('hrDetail')->schema([
                     Forms\Components\TextInput::make('staff_number')
                         ->numeric()
-                        ->default(fn() => "STAFF" . Employee::count() +1 )
+                        ->default("" . Employee::count() +1 )
                         ->readOnlyOn('edit')
                         ->required(),
                     Forms\Components\DatePicker::make('date_of_employment')
+                        ->closeOnDateSelection()
                         ->required(),
                     Forms\Components\DatePicker::make('contract_start')
+                        ->closeOnDateSelection()
                         ->required(),
                     Forms\Components\DatePicker::make('contract_end')
+                        ->closeOnDateSelection()
                         ->required(),
                     Forms\Components\Select::make('job_grade_id')
                         ->relationship('jobGrade','title')

@@ -34,7 +34,7 @@ class HrDetail extends Model
 
 
     protected $casts = [
-        'staff_number' => StaffNumber::class
+
     ];
 
 

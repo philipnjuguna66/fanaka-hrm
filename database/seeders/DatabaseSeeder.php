@@ -184,14 +184,20 @@ class DatabaseSeeder extends Seeder
                     'deduction'=> 1400,
                 ],
                 [
-                    'min_range' =>80000,
-                    'max_range' =>89999,
+                    'min_range' =>80_000,
+                    'max_range' =>89_999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1500,
                 ],
                 [
                     'min_range' =>90000,
-                    'max_range' =>99999999999999999,
+                    'max_range' =>99_999,
+                    'type' =>"fixed_amount",
+                    'deduction'=> 1700,
+                ],
+                [
+                    'min_range' =>100_000,
+                    'max_range' =>9_999_999,
                     'type' =>"fixed_amount",
                     'deduction'=> 1700,
                 ],
@@ -202,7 +208,7 @@ class DatabaseSeeder extends Seeder
             'maximum'=> 1700,
             'ranges' => [
                 [
-                    'min_range' =>0,
+                    'min_range' => 0,
                     'max_range' =>99999999999999999999,
                     'type' =>"percentage",
                     'deduction'=> 1.5,
