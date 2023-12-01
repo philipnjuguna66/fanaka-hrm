@@ -5,17 +5,13 @@ namespace App\Imports;
 use App\Models\Employee;
 use App\Models\JobTitle;
 use Carbon\Carbon;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class EmployeeImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class EmployeeImport implements ToCollection, WithHeadingRow
 {
     /**
     * @param Collection $collection
