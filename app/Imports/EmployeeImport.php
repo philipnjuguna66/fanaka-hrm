@@ -39,7 +39,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                         'middle_name' => $data['middle_name'],
                         'last_name' => $data['last_name'],
                         'gender' => $data['gender'],
-                        'date_of_birth' => Carbon::parse(Date::excelToDateTimeObject($data['date_of_birth'])),
+                        'date_of_birth' => isset($data['date_of_birth']) ? Carbon::parse(Date::excelToDateTimeObject($data['date_of_birth'])) : null,
                         'legal_document_type' => 'nat',
                         'legal_document_number' => $data['id_no'],
                         'kra_pin_no' => $data['kra_pin_no'] ?? null,
@@ -57,8 +57,8 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                                     'label' => $data['job_title']
                                 ]),
 
-                            'date_of_employment' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
-                            'contract_start' => Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])),
+                            'date_of_employment' => isset($data['date_joining']) ? Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])) : null,
+                            'contract_start' => $data['date_joining'] ? Carbon::parse(Date::excelToDateTimeObject($data['date_joining'])) : null,
                         ]);
 
                         $employee->hrContact()->create([
