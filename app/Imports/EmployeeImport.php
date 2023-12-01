@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -16,6 +17,9 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class EmployeeImport implements ToCollection, WithHeadingRow, ShouldQueue, WithChunkReading
 {
+    use Importable;
+
+
     /**
     * @param Collection $collection
     */

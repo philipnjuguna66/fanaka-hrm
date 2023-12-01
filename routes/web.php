@@ -20,9 +20,10 @@ Route::redirect('/', '/admin');
 
 Route::get('/test', function (){
 
+
     \Maatwebsite\Excel\Facades\Excel::import(
-        new \App\Imports\EmployeeImport(),
-      public_path('templates/employee.xlsx'),
+        new \App\Imports\EmployeeImport,
+      ('templates/employee_template.xlsx'),
     );
 
 
