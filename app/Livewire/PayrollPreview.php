@@ -10,6 +10,7 @@ use App\Models\EmployeeBenefit;
 use App\Models\EmployeeDeduction;
 use App\Models\IPayroll;
 use App\Models\StatutoryDeduction;
+use App\Models\TempPayroll;
 use App\Services\PayrollService;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -22,9 +23,10 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
 use Livewire\Component;
 
-class PayrollPreview extends Component implements HasTable,HasForms,HasActions
+class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 {
 
     use InteractsWithForms;
@@ -39,42 +41,36 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
     public function table(Table $table): Table
     {
 
-        $statutory =StatutoryDeduction::all()->map(function ($deduction){
-            return TextColumn::make(str($deduction->name)->lower()->value());
-        })->all();
 
-        $deductions = Deduction::query()->get()->map(function (Deduction $deduction){
-            return TextColumn::make(str($deduction->name)->lower()->value());
-        })->all();
+        $temps = TempPayroll::query()->get();
 
-        $benefits = Benefit::query()->get()->map(function (Benefit $benefit){
-            return TextColumn::make(str($benefit->name)->lower()->value());
-        })->all();
+        $columns = [];
+
+        foreach ($temps as  $payroll) {
+
+            foreach ($payroll->temp as $index => $value)
+            {
+                $columns[] = TextColumn::make($index)->default($value);
+            }
+        }
+
 
 
         return $table
-            ->query(IPayroll::query())
+            ->query(TempPayroll::query())
             ->columns([
-                TextColumn::make('employee_name'),
-                TextColumn::make('basic_pay'),
-                TextColumn::make('gross_pay'),
-                TextColumn::make('tax_allowable_deductions')->wrap(),
-                TextColumn::make('taxable_income'),
-                    ...$statutory,
-                TextColumn::make('paye'),
-                TextColumn::make('withholding_tax'),
-                ...$benefits,
-               ...$deductions,
-                TextColumn::make('personal_relief'),
-                TextColumn::make('insurance_relief'),
-                TextColumn::make('net_payee')->label("PAYE"),
-                TextColumn::make('net_pay'),
+                ...$columns,
             ])
             ->filters([
-                // ...
+
+
+            ])
+            ->headerActions([
+                Action::make('refresh payroll')
+                ->action(fn() => Artisan::call("app:temp-payroll"))
             ])
             ->actions([
-                Action::make('view')->url(fn(Model $row) => EmployeeResource::getUrl(name:'edit',parameters: ['record' => $row->employee_id]))
+                Action::make('view')->url(fn(Model $row) => EmployeeResource::getUrl(name: 'edit', parameters: ['record' => $row->employee_id]))
             ])
             ->bulkActions([
                 // ...
