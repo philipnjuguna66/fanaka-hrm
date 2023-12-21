@@ -180,7 +180,6 @@ class CreateEmployee extends CreateRecord
                 Forms\Components\Fieldset::make('Hr Details')->relationship('hrDetail')->schema([
                     Forms\Components\TextInput::make('staff_number')
                         ->numeric()
-                        ->default("" . Employee::count() +1 )
                         ->readOnlyOn('edit')
                         ->nullable(),
                     Forms\Components\DatePicker::make('date_of_employment')

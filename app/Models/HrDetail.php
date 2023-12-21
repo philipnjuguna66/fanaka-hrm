@@ -20,9 +20,6 @@ class HrDetail extends Model
     protected $guarded = [];
 
 
-    protected $casts = [
-
-    ];
 
 
     public function jobTitle(): \Illuminate\Database\Eloquent\Relations\BelongsTo
