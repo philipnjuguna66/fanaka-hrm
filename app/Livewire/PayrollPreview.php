@@ -50,11 +50,11 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                     $columns[] = TextColumn::make($index)->default($value);
                 }
                 else{
-                    $columns['personal_relief'] = TextColumn::make('personal_relief')->default($payroll->temp['personal_relief']);
-                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->default($payroll->temp['insurance_relief']);
+                    $columns['net_pay'] = TextColumn::make('net_pay')->default($payroll->temp['net_pay']);
                     $columns['paye'] = TextColumn::make('paye')->default($payroll->temp['paye']);
                     $columns['net_payee'] = TextColumn::make('net_payee')->default($payroll->temp['net_payee']);
-                    $columns['net_pay'] = TextColumn::make('net_pay')->default($payroll->temp['net_pay']);
+                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->default($payroll->temp['insurance_relief']);
+                    $columns['personal_relief'] = TextColumn::make('personal_relief')->default($payroll->temp['personal_relief']);
                 }
             }
         }
@@ -65,7 +65,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             ->query(TempPayroll::query())
             ->columns([
                 TextColumn::make("employee_name"),
-                ...$columns,
+                ...collect($columns)->reverse()->toArray(),
             ])
             ->filters([
 
