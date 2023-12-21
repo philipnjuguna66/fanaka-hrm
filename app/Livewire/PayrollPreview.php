@@ -40,11 +40,17 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
         $columns = [];
 
+        $grossAndBasic = [];
+
         foreach ($temps as  $payroll) {
 
             foreach ($payroll->temp as $index => $value)
             {
-                if (! in_array($index, ["net_pay",'paye','employee_id',"net_payee",'car_benefits','housing_benefits','personal_relief','insurance_relief']))
+                $grossAndBasic = [
+                    TextColumn::make('basic_pay')->default($payroll->temp['basic_pay']),
+                    TextColumn::make('gross_pay')->default($payroll->temp['gross_pay']),
+                ];
+                if (! in_array($index, ["net_pay",'paye','gross_pay','basic_pay','employee_id',"net_payee",'car_benefits','housing_benefits','personal_relief','insurance_relief']))
                 {
 
                     $columns[] = TextColumn::make($index)->default($value);
@@ -65,6 +71,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             ->query(TempPayroll::query())
             ->columns([
                 TextColumn::make("employee_name"),
+                ...$grossAndBasic,
                 ...collect($columns)->reverse()->toArray(),
             ])
             ->filters([
