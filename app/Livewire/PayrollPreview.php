@@ -65,7 +65,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             ->query(TempPayroll::query())
             ->columns([
                 TextColumn::make("employee_name"),
-                ...collect($columns)->reverse()->toArray(),
+                ...$columns,
             ])
             ->filters([
 
