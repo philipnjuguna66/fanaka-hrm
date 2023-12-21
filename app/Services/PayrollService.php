@@ -58,7 +58,12 @@ class PayrollService
             return 0;
         }
 
-        return (5 / 100) * $incomeTaX;
+        if ($incomeTaX >= 24_001)
+        {
+            return (5 / 100) * $incomeTaX;
+        }
+
+        return  0;
 
     }
 
