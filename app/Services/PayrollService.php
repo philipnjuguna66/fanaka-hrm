@@ -255,7 +255,7 @@ class PayrollService
             return 0;
         }
         return $this->calculatePayee($employee, $this->getTaxableIncome($employee))
-            - $this->getPersonalRelief()
+            - $this->getPersonalRelief($employee)
             - $this->calculateInsuranceRelief($employee);
     }
 
