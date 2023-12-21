@@ -48,6 +48,8 @@ class PayrollService
             'net_pay' => $this->getNetPay($employee),
             'deductions' => $this->getAllDeductionArrayKeys($employee),
             'benefits' => $this->getAllBenefitsArrayKeys($employee),
+            ... $this->getAllBenefitsArrayKeys($employee),
+            ...$this->getAllDeductionArrayKeys($employee),
             'statutory' => $statutory,
         ];
     }
