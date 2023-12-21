@@ -48,19 +48,21 @@ class IPayroll extends Model
 
         foreach ($payroll_data as $payroll_datum){
 
+            $payrollData = $payroll_datum;
+
             unset($payroll_datum['statutory']);
             unset($payroll_datum['benefits']);
             unset($payroll_datum['deductions']);
 
             $data[] = $payroll_datum;
 
-            foreach ($payroll_datum['benefits'] as $index => $benefit)
+            foreach ($payrollData['benefits'] as $index => $benefit)
             {
                 $data[$index] =  $benefit;
 
             }
 
-            foreach ($payroll_datum['deductions'] as $index => $deduction)
+            foreach ($payrollData['deductions'] as $index => $deduction)
             {
                 $data[$index] =  $deduction;
 
