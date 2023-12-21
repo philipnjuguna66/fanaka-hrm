@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Filament\Resources\EmployeeResource;
+use App\Models\Deduction;
+use App\Models\Employee;
 use App\Models\EmployeeBenefit;
 use App\Models\EmployeeDeduction;
 use App\Models\IPayroll;
@@ -40,16 +42,17 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
             return TextColumn::make(str($deduction->name)->lower()->value());
         })->all();
 
-        $deductions = EmployeeDeduction::query()->get()
-            ->map(function ($deduction) {
+        $deductions = Employee::query()->active()->with('employeeDeduction')->get()
+            ->map(function (Employee $employee) {
 
-                return TextColumn::make(str($deduction->name)->lower()->value());
-            });
-        $benefits = EmployeeBenefit::query()->get()
-            ->map(function ($benefit) {
+                $employee->employeeDeduction?->map(function (Deduction $deduction) {
+                    return [
+                        $deduction->name => $deduction->pivot->amount,
+                    ];
+                });
 
-                return TextColumn::make(str($benefit->name)->lower()->value());
-            });
+            }) ->collapse()->all();
+        $benefits = [];
 
         return $table
             ->query(IPayroll::query())
