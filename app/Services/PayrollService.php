@@ -58,15 +58,17 @@ class PayrollService
             return 0;
         }
 
-        return 0;
-
-      //  return (5 / 100) * $incomeTaX;
+        return (5 / 100) * $incomeTaX;
 
     }
 
     protected function calculatePayee(Employee $employee, $taxableIncome): float|int
     {
 
+
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
         $bands = [];
 
@@ -173,6 +175,9 @@ class PayrollService
     private function calculateTaxAllowableDeductions(Employee $employee)
     {
 
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
 
         $gross = $this->getGrossSalary($employee);
@@ -188,6 +193,10 @@ class PayrollService
 
     private function getTaxableIncome($employee)
     {
+        if ($employee->should_pay_payee) {
+            return 0;
+        }
+
         $gross = $this->getGrossSalary($employee);
 
         return $gross + $this->calculateCarBenefits($employee) + $this->calculateHousingBenefits($employee, $gross) - $this->calculateTaxAllowableDeductions($employee);
@@ -195,6 +204,9 @@ class PayrollService
 
     private function getPersonalRelief(?Employee $employee = null): int
     {
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
 
         return 2400;
@@ -202,6 +214,10 @@ class PayrollService
 
     protected function calculateInsuranceRelief($employee)
     {
+
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
 
         $gross = $this->getGrossSalary($employee);
@@ -230,6 +246,9 @@ class PayrollService
 
     private function getNetPayee(Employee $employee)
     {
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
         return $this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief()
             - $this->calculateInsuranceRelief($employee);
@@ -239,7 +258,7 @@ class PayrollService
     {
 
         return $this->getGrossSalary($employee)
-         //   - $this->getWithhodlingTax($employee, $this->getTaxableIncome($employee))
+           - $this->getWithhodlingTax($employee, $this->getTaxableIncome($employee))
             - $this->getNetPayee($employee)
             + $this->calculateInsuranceRelief($employee)
             - $this->totalStatutoryDeductions($employee)
@@ -289,6 +308,10 @@ class PayrollService
 
     private function totalStatutoryDeductions(Employee $employee)
     {
+
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
 
         return StatutoryDeduction::get()->sum(fn(StatutoryDeduction $deduction) => $deduction->getAmount($employee, $this->getGrossSalary($employee)));
