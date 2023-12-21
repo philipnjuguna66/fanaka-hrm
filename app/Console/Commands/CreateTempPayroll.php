@@ -41,32 +41,18 @@ class CreateTempPayroll extends Command
 
             $data[] = $payroll_datum;
 
-            foreach ($payrollData['benefits'] as $index => $benefit)
-            {
-                $data[$index] =  $benefit;
-
-            }
 
 
-
-            foreach ($payrollData['deductions'] as $index => $deduction)
-            {
-                $data[$index] =  $deduction;
-
-            }
 
         }
 
 
         TempPayroll::query()->delete();
 
-       // dd($data);
+
 
         foreach ($data as $datum)
         {
-
-
-
             TempPayroll::create([
                 'employee_name' => $datum['employee_name'],
                 'employee_id' => $datum['employee_id'],

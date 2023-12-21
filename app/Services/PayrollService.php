@@ -14,7 +14,7 @@ class PayrollService
 {
     public function runPayrollForAllEmployee(): array
     {
-        $employees = Employee::query()->active()->cursor();
+        $employees = Employee::query()->active()->get();
 
         return $employees->map(fn($employee) => $this->runPayrollForEmployee($employee))->all();
     }
