@@ -49,6 +49,8 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
                     ...$statutory,
                 TextColumn::make('paye'),
                 TextColumn::make('withholding_tax'),
+                TextColumn::make('benefits'),
+                TextColumn::make('deductions'),
                 TextColumn::make('personal_relief'),
                 TextColumn::make('insurance_relief'),
                 TextColumn::make('net_payee')->label("PAYE"),
