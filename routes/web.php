@@ -20,11 +20,12 @@ Route::redirect('/', '/admin');
 
 Route::get('/test', function (){
 
+/** @var \App\Models\Employee $employee */
+    foreach (\App\Models\Employee::all() as $employee) {
 
-    \Maatwebsite\Excel\Facades\Excel::import(
-        new \App\Imports\EmployeeImport,
-      ('templates/employee_template.xlsx'),
-    );
+        $employee->employeeDeductions()->attach(4);
+
+    }
 
 
 });
