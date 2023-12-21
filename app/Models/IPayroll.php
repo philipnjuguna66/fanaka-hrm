@@ -12,26 +12,7 @@ class IPayroll extends Model
 {
     use Sushi;
 
-    protected $fillable = [
-        'employee_id',
-        'payroll_id',
-        'basic_pay',
-        'gross_pay',
-        'tax_allowable_deductions',
-        'taxable_income',
-        'nhif',
-        'nssf',
-        'paye',
-        'personal_relief',
-        'insurance_relief',
-        'net_payee',
-        'net_pay',
-        'deductions',
-        'statutory',
-        'withholding_tax',
-        'benefits',
-    ];
-
+    protected $guarded = [];
     protected $casts = [
         'benefits' => 'json',
         'deductions' => 'json',
