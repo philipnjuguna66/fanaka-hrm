@@ -268,8 +268,10 @@ class CreateEmployee extends CreateRecord
                             ->email()
                             ->nullable(),
                         PhoneInput::make('personal_phone_number')
+                            ->initialCountry('ke')
                             ->nullable(),
                         PhoneInput::make('office_phone_number')
+                            ->initialCountry('ke')
                             ->nullable(),
                         TextInput::make('office_phone_extension')
                             ->numeric()
@@ -288,7 +290,7 @@ class CreateEmployee extends CreateRecord
                         Forms\Components\Grid::make(2)->schema([
                             TextInput::make('name'),
                             TextInput::make('relation'),
-                            PhoneInput::make('phone'),
+                            PhoneInput::make('phone')->initialCountry('ke'),
                             TextInput::make('email')->email(),
                         ])
 
