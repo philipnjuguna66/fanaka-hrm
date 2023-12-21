@@ -100,7 +100,7 @@ class CreateEmployee extends CreateRecord
                     ->required()
                     ->numeric(),
 
-                Forms\Components\Toggle::make('has_disability')->required()
+                Forms\Components\Toggle::make('has_disability')->nullable()
                     ->live(),
                 Forms\Components\Fieldset::make('Persons With Disability')->schema([
                     Forms\Components\TextInput::make('disability_exemption_amount')
@@ -182,16 +182,16 @@ class CreateEmployee extends CreateRecord
                         ->numeric()
                         ->default("" . Employee::count() +1 )
                         ->readOnlyOn('edit')
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\DatePicker::make('date_of_employment')
                         ->closeOnDateSelection()
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\DatePicker::make('contract_start')
                         ->closeOnDateSelection()
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\DatePicker::make('contract_end')
                         ->closeOnDateSelection()
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('job_grade_id')
                         ->relationship('jobGrade','title')
                         ->label('Job Grade')
@@ -200,7 +200,7 @@ class CreateEmployee extends CreateRecord
                                 ->required()
                                 ->unique(table: (new JobGrade())->getTable(),ignoreRecord: true),
                         ])
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('job_title_id')
                         ->relationship('jobTitle','label')
                         ->label('Job Title')
@@ -209,7 +209,7 @@ class CreateEmployee extends CreateRecord
                                 ->required()
                                 ->unique(table: (new JobTitle())->getTable(),ignoreRecord: true),
                         ])
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('department_id')
                         ->relationship('department','title')
                         ->label('Department')
@@ -221,11 +221,11 @@ class CreateEmployee extends CreateRecord
                                 ->required()
                                 ->unique(table: (new Department())->getTable(),ignoreRecord: true),
                         ])
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('reports_to_job_title_id')
                         ->label('Reports to')
                         ->options(JobTitle::all()->pluck('label', 'id'))
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('region_id')
                         ->relationship('region','title')
                         ->label('Region')
@@ -234,7 +234,7 @@ class CreateEmployee extends CreateRecord
                                 ->required()
                                 ->unique(table: (new Region())->getTable(),ignoreRecord: true),
                         ])
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('business_unit_id')
                         ->relationship('businessUnit','title')
                         ->label('Business Unit')
@@ -243,10 +243,10 @@ class CreateEmployee extends CreateRecord
                                 ->required()
                                 ->unique(table: (new BusinessUnit())->getTable(),ignoreRecord: true),
                         ])
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Toggle::make('board_director')
                         ->default(false)
-                        ->required(),
+                        ->nullable(),
                 ]),
 
             ])
@@ -267,7 +267,7 @@ class CreateEmployee extends CreateRecord
                             ->nullable(),
                         TextInput::make('personal_email')
                             ->email()
-                            ->required(),
+                            ->nullable(),
                         PhoneInput::make('personal_phone_number')
                             ->required(),
                         PhoneInput::make('office_phone_number')
@@ -277,13 +277,13 @@ class CreateEmployee extends CreateRecord
                             ->nullable(),
                         Select::make('country')->options([
                             'ke' => "Kenya"
-                        ])->required(),
+                        ])->nullable(),
                     ]),
                     Forms\Components\Grid::make(3)->schema([
-                        Forms\Components\TextInput::make('city')->required(),
-                        Forms\Components\TextInput::make('county')->required(),
-                        Forms\Components\TextInput::make('postal_code')->required(),
-                        Forms\Components\Textarea::make('address')->required(),
+                        Forms\Components\TextInput::make('city')->nullable(),
+                        Forms\Components\TextInput::make('county')->nullable(),
+                        Forms\Components\TextInput::make('postal_code')->nullable(),
+                        Forms\Components\Textarea::make('address')->nullable(),
                     ]),
                     Forms\Components\Repeater::make('next_of_kin')->schema([
                         Forms\Components\Grid::make(2)->schema([
