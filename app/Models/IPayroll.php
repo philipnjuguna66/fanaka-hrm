@@ -49,8 +49,6 @@ class IPayroll extends Model
         foreach ($payroll_data as $payroll_datum){
 
             unset($payroll_datum['statutory']);
-            unset($payroll_datum['benefits']);
-            unset($payroll_datum['deductions']);
 
             $data[] = $payroll_datum;
 

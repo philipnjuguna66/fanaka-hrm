@@ -23,7 +23,7 @@ Route::get('/test', function (){
 /** @var \App\Models\Employee $employee */
     foreach (\App\Models\Employee::all() as $employee) {
 
-        $employee->employeeDeductions()->attach([1 => ['amount' => 300 ]]);
+     //   $employee->employeeDeductions()->attach([1 => ['amount' => 300 ]]);
 
     }
 
