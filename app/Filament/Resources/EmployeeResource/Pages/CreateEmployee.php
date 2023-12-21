@@ -268,7 +268,7 @@ class CreateEmployee extends CreateRecord
                             ->email()
                             ->nullable(),
                         PhoneInput::make('personal_phone_number')
-                            ->required(),
+                            ->nullable(),
                         PhoneInput::make('office_phone_number')
                             ->nullable(),
                         TextInput::make('office_phone_extension')
