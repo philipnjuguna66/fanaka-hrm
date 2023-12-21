@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\EmployeeStatusEnum;
 use App\Models\Benefit;
 use App\Models\Deduction;
 use App\Models\Employee;
@@ -13,7 +14,7 @@ class PayrollService
 {
     public function runPayrollForAllEmployee(): array
     {
-        $employees = Employee::all();
+        $employees = Employee::query()->where('status', EmployeeStatusEnum::ACTIVE)->cursor();
 
         return $employees->map(fn($employee) => $this->runPayrollForEmployee($employee))->all();
     }
