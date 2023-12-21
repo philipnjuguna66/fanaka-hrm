@@ -29,7 +29,7 @@ class PayrollLinesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('employee.first_name')
             ->columns([
-                Tables\Columns\TextColumn::make('employee.first_name')
+                Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('basic_pay')

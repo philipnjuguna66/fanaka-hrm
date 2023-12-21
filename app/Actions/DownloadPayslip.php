@@ -3,6 +3,8 @@
 namespace App\Actions;
 
 use App\Models\PaySlip;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpWord\Exception\CopyFileException;
 use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -28,7 +30,7 @@ class DownloadPayslip
         $payslipTemplate->setValue('employee_name', $line->employee?->name);
         $payslipTemplate->setValue('staff_no', $line->employee?->hrDetail?->staff_number);
         $payslipTemplate->setValue('job_title', $line->employee?->hrDetail?->jobTitle?->label);
-        $payslipTemplate->setValue('payroll_period', $paySlip->payrollLine?->payroll?->payroll_number);
+        $payslipTemplate->setValue('payroll_period', Carbon::parse($paySlip->payrollLine?->payroll?->created_at)->format('Y-F'));
         $payslipTemplate->setValue('basic_pay', number_format($paySlip->payrollLine->basic_pay, 2));
         $payslipTemplate->setValue('gross_pay', number_format($paySlip->payrollLine->gross_pay));
         $payslipTemplate->setValue('nssf', number_format($paySlip->payrollLine->nssf, 2));
@@ -73,6 +75,16 @@ class DownloadPayslip
             ->download(
                 public_path('templates/results/'.$line->employee?->name.'-payslip.docx')
             );
+
+    }
+
+    public function mail(string $path, string $to, string $subject)
+    {
+        Mail::raw("Payslip", fn($message) => $message->to($to)
+            ->subject($subject)
+            ->attach($path, ['as' => "payslip.docx"])
+        );
+
 
     }
 
