@@ -3,8 +3,11 @@
 namespace App\Livewire;
 
 use App\Filament\Resources\EmployeeResource;
+use App\Models\EmployeeBenefit;
+use App\Models\EmployeeDeduction;
 use App\Models\IPayroll;
 use App\Models\StatutoryDeduction;
+use App\Services\PayrollService;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -37,6 +40,16 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
             return TextColumn::make(str($deduction->name)->lower()->value());
         })->all();
 
+        $deductions = EmployeeDeduction::query()->get()
+            ->map(function ($deduction) {
+
+                return TextColumn::make(str($deduction->name)->lower()->value());
+            });
+        $benefits = EmployeeBenefit::query()->get()
+            ->map(function ($benefit) {
+
+                return TextColumn::make(str($benefit->name)->lower()->value());
+            });
 
         return $table
             ->query(IPayroll::query())
@@ -49,8 +62,8 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
                     ...$statutory,
                 TextColumn::make('paye'),
                 TextColumn::make('withholding_tax'),
-                TextColumn::make('benefits'),
-                TextColumn::make('deductions'),
+                ...$benefits,
+               ...$deductions,
                 TextColumn::make('personal_relief'),
                 TextColumn::make('insurance_relief'),
                 TextColumn::make('net_payee')->label("PAYE"),
