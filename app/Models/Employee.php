@@ -47,6 +47,11 @@ class Employee extends Model implements HasMedia
 
     ];
 
+    public function scopeActive($query)
+    {
+        $query->where('status', EmployeeStatusEnum::ACTIVE);
+    }
+
     public function salaryDetail(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
 
