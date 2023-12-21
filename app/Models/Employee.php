@@ -107,7 +107,9 @@ class Employee extends Model implements HasMedia
     public function name() : Attribute
     {
         return new Attribute(
-            get: fn() => $this->first_name .' '. $this->middle_name . ' '. $this->last_name
+            get: fn() =>  str($this->first_name .' '. $this->middle_name . ' '. $this->last_name)
+            ->title()
+            ->value()
         );
     }
 }
