@@ -42,7 +42,7 @@ class PayrollPreview extends Component implements HasTable,HasForms,HasActions
             return TextColumn::make(str($deduction->name)->lower()->value());
         })->all();
 
-        $deductions = Employee::query()->active()->with('employeeDeduction')->get()
+        $deductions = Employee::query()->active()->with('employeeDeductions')->get()
             ->map(function (Employee $employee) {
 
                 $employee->employeeDeduction?->map(function (Deduction $deduction) {
