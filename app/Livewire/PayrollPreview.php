@@ -3,13 +3,7 @@
 namespace App\Livewire;
 
 use App\Filament\Resources\EmployeeResource;
-use App\Models\Benefit;
-use App\Models\Deduction;
-use App\Models\Employee;
-use App\Models\EmployeeBenefit;
-use App\Models\EmployeeDeduction;
-use App\Models\IPayroll;
-use App\Models\StatutoryDeduction;
+
 use App\Models\TempPayroll;
 use App\Services\PayrollService;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -50,7 +44,18 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
             foreach ($payroll->temp as $index => $value)
             {
-                $columns[] = TextColumn::make($index)->default($value);
+                if (! in_array($index, ["net_pay",'paye','employee_id',"net_payee",'car_benefits','housing_benefits','personal_relief','insurance_relief']))
+                {
+
+                    $columns[] = TextColumn::make($index)->default($value);
+                }
+                else{
+                    $columns['personal_relief'] = TextColumn::make('personal_relief')->default($payroll->temp['personal_relief']);
+                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->default($payroll->temp['insurance_relief']);
+                    $columns['paye'] = TextColumn::make('paye')->default($payroll->temp['paye']);
+                    $columns['net_payee'] = TextColumn::make('net_payee')->default($payroll->temp['net_payee']);
+                    $columns['net_pay'] = TextColumn::make('net_pay')->default($payroll->temp['net_pay']);
+                }
             }
         }
 
@@ -59,7 +64,8 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
         return $table
             ->query(TempPayroll::query())
             ->columns([
-                ...$columns,
+                TextColumn::make("employee_name"),
+                ...collect($columns)->reverse()->toArray(),
             ])
             ->filters([
 

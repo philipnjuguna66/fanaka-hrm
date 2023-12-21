@@ -29,7 +29,7 @@ class CreateTempPayroll extends Command
     {
         $temp = (new PayrollService)->runPayrollForAllEmployee();
 
-$data = [];
+        $data = [];
 
         foreach ($temp as $payroll_datum){
 
@@ -47,11 +47,7 @@ $data = [];
 
             }
 
-           /* foreach ($payrollData['statutory'] as $index => $statutory)
-            {
-                $data[$index] =  $statutory;
 
-            }*/
 
             foreach ($payrollData['deductions'] as $index => $deduction)
             {
@@ -70,7 +66,9 @@ $data = [];
         {
 
 
+
             TempPayroll::create([
+                'employee_name' => $datum['employee_name'],
                 'employee_id' => $datum['employee_id'],
                 'temp' => $datum,
             ]);

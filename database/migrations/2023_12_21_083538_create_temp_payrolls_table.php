@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('temp_payrolls', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id');
+            $table->string('employee_name');
             $table->json("temp");
             $table->timestamps();
         });
