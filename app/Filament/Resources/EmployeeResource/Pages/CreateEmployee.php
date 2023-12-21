@@ -124,47 +124,46 @@ class CreateEmployee extends CreateRecord
                     Forms\Components\TextInput::make('first_name')
                         ->required(),
                     Forms\Components\TextInput::make('middle_name'),
-                    Forms\Components\TextInput::make('last_name')->required(),
+                    Forms\Components\TextInput::make('last_name')->nullable(),
                     Forms\Components\Select::make('gender')
                         ->options([
                             'm' => "Male",
                             'f' => "Female",
-                        ])->required(),
+                        ])->nullable(),
                     Forms\Components\Select::make('marital_status')
                         ->options([
                             'married' => "Married",
                             'single' => "Single",
-                        ])->required(),
+                        ])->nullable(),
                     Forms\Components\DatePicker::make('date_of_birth')
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Select::make('residential_status')
                         ->options([
                             'resident' => "Resident",
                             'non-resident' => "Non-Resident",
-                        ])->required(),
+                        ])->nullable(),
                     Forms\Components\Select::make('nationality')
                         ->options([
                             'kenyan' => "Kenyan",
                             'tanzanian' => "Tanzanian",
-                        ])->required(),
+                        ])->nullable(),
                     Forms\Components\Select::make('legal_document_type')
                         ->options([
                             'national_id' => "National ID",
                             'passport' => "Passport",
-                        ])->required(),
+                        ])->nullable(),
                     Forms\Components\TextInput::make('legal_document_number')
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\TextInput::make('kra_pin_no')
                         ->label('KRA PIN')
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\TextInput::make('nssf_no')
                         ->label('NSSF NUMBER')
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\TextInput::make('nhif_no')
                         ->label('NHIF NUMBER')
-                        ->required(),
+                        ->nullable(),
                     Forms\Components\Toggle::make('should_pay_payee')
-
                         ->required()
                         ->live(),
                 ])
