@@ -215,8 +215,9 @@ class PayrollService
             return 0;
         }
 
-
-        return 2400;
+        if ($this->calculatePayee($employee, $this->getTaxableIncome($employee)))
+            return 2400;
+        return 0;
     }
 
     protected function calculateInsuranceRelief($employee)
