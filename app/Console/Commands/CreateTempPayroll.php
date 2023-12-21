@@ -41,9 +41,6 @@ class CreateTempPayroll extends Command
 
             $data[] = $payroll_datum;
 
-
-
-
         }
 
 

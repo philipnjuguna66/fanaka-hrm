@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Filament\Resources\EmployeeResource;
 
+use App\Models\Benefit;
+use App\Models\Deduction;
 use App\Models\IPayroll;
 use App\Models\TempPayroll;
 use App\Services\PayrollService;
@@ -96,4 +98,5 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 // ...
             ])->striped();
     }
+
 }
