@@ -23,36 +23,10 @@ class IPayroll extends Model
 
     public function getRows()
     {
-        $data = [];
-
-        $payroll_data =(new PayrollService)->runPayrollForAllEmployee();
-
-        foreach ($payroll_data as $payroll_datum){
-
-            $payrollData = $payroll_datum;
-
-            unset($payroll_datum['statutory']);
-            unset($payroll_datum['benefits']);
-            unset($payroll_datum['deductions']);
-
-            $data[] = $payroll_datum;
-
-            /*foreach ($payrollData['benefits'] as $index => $benefit)
-            {
-                $data[$index] =  $benefit;
-
-            }
-
-            foreach ($payrollData['deductions'] as $index => $deduction)
-            {
-                $data[$index] =  $deduction;
-
-            }*/
-
-        }
-
-
-        return $data;
+       return TempPayroll::query()->get()->map(function (TempPayroll $payroll){
+           return ['employee_id' => $payroll->employee_id, 'employee_name' => $payroll->employee_name, ...$payroll->temp];
+       })
+           ->toArray();
     }
 
 }

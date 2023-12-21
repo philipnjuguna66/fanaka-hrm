@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Filament\Resources\EmployeeResource;
 
+use App\Models\IPayroll;
 use App\Models\TempPayroll;
 use App\Services\PayrollService;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -44,13 +45,19 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
         foreach ($temps as  $payroll) {
 
+            $basicPay=  $payroll->temp['basic_pay'];
+            $grossPay =  $payroll->temp;
+
+            $grossAndBasic = [
+                TextColumn::make('gross_pay')->default($basicPay),
+                TextColumn::make('basic_pay')->default($grossPay),
+            ];
+
             foreach ($payroll->temp as $index => $value)
             {
-                $grossAndBasic = [
-                    TextColumn::make('basic_pay')->default($payroll->temp['basic_pay']),
-                    TextColumn::make('gross_pay')->default($payroll->temp['gross_pay']),
-                ];
-                if (! in_array($index, ["net_pay",'paye','gross_pay','basic_pay','employee_id',"net_payee",'car_benefits','housing_benefits','personal_relief','insurance_relief']))
+
+
+                if (! in_array($index, ["net_pay",'paye','employee_id',"gross_pay", "net_payee",'car_benefits','housing_benefits','personal_relief','insurance_relief']))
                 {
 
                     $columns[] = TextColumn::make($index)->default($value);
@@ -68,9 +75,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
 
         return $table
-            ->query(TempPayroll::query())
+            ->query(IPayroll::query())
             ->columns([
-                TextColumn::make("employee_name"),
+                TextColumn::make("employee_name")->searchable(),
                 ...$grossAndBasic,
                 ...collect($columns)->reverse()->toArray(),
             ])
