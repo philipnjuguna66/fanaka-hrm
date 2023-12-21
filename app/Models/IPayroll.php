@@ -56,7 +56,7 @@ class IPayroll extends Model
 
             $data[] = $payroll_datum;
 
-            foreach ($payrollData['benefits'] as $index => $benefit)
+            /*foreach ($payrollData['benefits'] as $index => $benefit)
             {
                 $data[$index] =  $benefit;
 
@@ -66,7 +66,7 @@ class IPayroll extends Model
             {
                 $data[$index] =  $deduction;
 
-            }
+            }*/
 
         }
 
