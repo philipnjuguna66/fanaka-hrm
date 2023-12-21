@@ -32,7 +32,7 @@ class PayrollService
 
         return [
             'employee_id' => $employee->id,
-            'employee_name' => $employee->first_name,
+            'employee_name' => $employee->name,
             'basic_pay' => $employee->salaryDetail->basic_salary,
             'gross_pay' => $gross,
             'tax_allowable_deductions' => $this->calculateTaxAllowableDeductions($employee),
