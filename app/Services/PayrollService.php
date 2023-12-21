@@ -292,7 +292,7 @@ class PayrollService
 
         return $employee->employeeBenefits?->map(function (Benefit $benefit) {
             return [
-                $benefit->name => $benefit->pivot->amount,
+                str($benefit->name)->lower()->value() => $benefit->pivot->amount,
             ];
         })
             ->collapse()->all();
@@ -306,7 +306,7 @@ class PayrollService
 
         return $employee->employeeDeductions?->map(function (Deduction $deduction) {
             return [
-                $deduction->name => $deduction->pivot->amount,
+                 str($deduction->name)->lower()->value() => $deduction->pivot->amount,
             ];
         })
             ->collapse()->all();
