@@ -41,12 +41,6 @@ class PayrollLinesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('tax_allowable_deductions')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('car_benefits')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('housing_benefits')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('taxable_income')
                     ->numeric()
                     ->sortable(),
@@ -54,6 +48,9 @@ class PayrollLinesRelationManager extends RelationManager
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nssf')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('house_levy')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('paye')
