@@ -60,9 +60,11 @@ class PayrollService
             return 0;
         }
 
-        if ($incomeTaX >= 24_001)
+        $gross =  $this->getGrossSalary($employee);
+
+        if ($gross >= 24_001)
         {
-            return (5 / 100) * $incomeTaX;
+            return (5 / 100) * $gross;
         }
 
         return  0;
