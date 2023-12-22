@@ -35,7 +35,7 @@ class EmployeeResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Position' => $record->loadMissing('hrDetail.jobTitle')?->hrDetail?->jobTitle->title,
+            'Position' => $record->loadMissing('jobTitle')?->jobTitle?->title,
             'Name' => $record->name,
         ];
     }
