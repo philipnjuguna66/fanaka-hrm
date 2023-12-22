@@ -245,6 +245,11 @@ class PayrollService
 
         }
 
+        if (($this->calculatePayee($employee, $this->getTaxableIncome($employee)) - $this->getPersonalRelief($employee)) <= 0)
+        {
+            return  0;
+        }
+
         return  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief($employee)
             - $this->calculateInsuranceRelief($employee));
