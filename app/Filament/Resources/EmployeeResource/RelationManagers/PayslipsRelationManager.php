@@ -54,6 +54,21 @@ class PayslipsRelationManager extends RelationManager
 
                     })
                     ->color('primary')->icon('heroicon-o-arrow-down-tray'),
+                Tables\Actions\Action::make('Email Payslip')
+                    ->action(function (PaySlip $paySlip){
+
+                        (new DownloadPayslip())
+                            ->handle($paySlip);
+
+                        (new DownloadPayslip())
+                            ->mail(
+                                path: public_path('templates/results/'.$paySlip->payrollLine?->employee?->name.'-payslip.docx'),
+                                to: $paySlip->payrollLine?->employee?->hrContact?->official_email,
+                                subject: "Payslip for the Month of ". $paySlip->payrollLine->created_at->format('Y-M'),
+                            );
+
+                    })
+                    ->color('primary')->icon('heroicon-o-envelope'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -16,6 +16,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmployeeResource extends Resource
@@ -25,6 +26,12 @@ class EmployeeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationGroup = "HR";
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['first_name', 'middle_name','last_name'];
+    }
+#Multi
 
     public static function form(Form $form): Form
     {
