@@ -68,8 +68,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                     $columns['net_pay'] = TextColumn::make('net_pay')
                         ->default(number_format($payroll->temp['net_pay'] , 2))
                     ->numeric(2);
-                    $columns['paye'] = TextColumn::make('paye')->default(number_format($payroll->temp['paye'], 2 ))->numeric(2);;
-                    $columns['net_payee'] = TextColumn::make('net_payee')->default(number_format($payroll->temp['net_payee'], 2 ))->numeric(2);;
+                   // $columns['paye'] = TextColumn::make('paye')->default(number_format($payroll->temp['paye'], 2 ))->numeric(2);;
+                    $columns['net_payee'] = TextColumn::make('net_payee')
+                        ->label('Payee')->default(number_format($payroll->temp['net_payee'], 2 ))->numeric(2);;
                     $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default(number_format($payroll->temp['insurance_relief'], 2 ));
                     $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default(number_format($payroll->temp['personal_relief'], 2 ));
                 }

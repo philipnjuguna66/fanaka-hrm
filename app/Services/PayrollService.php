@@ -89,6 +89,7 @@ class PayrollService
             $bands[] = ($taxableIncome - 24000) * 0.25;
         }
 
+
         if ($taxableIncome > 32332) {
             $bands[] = 24000 * 0.1;
             $bands[] = (32332 - 24000) * 0.25;
@@ -200,11 +201,13 @@ class PayrollService
 
     private function getTaxableIncome($employee)
     {
-
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
         $gross = $this->getGrossSalary($employee);
 
-        return $gross/* + $this->calculateTaxAllowableDeductions($employee)*/;
+        return $gross - $this->calculateTaxAllowableDeductions($employee);
     }
 
     private function getPersonalRelief(?Employee $employee = null): int
@@ -229,11 +232,9 @@ class PayrollService
 
         $gross = $this->getGrossSalary($employee);
 
+        $nhif =  StatutoryDeduction::query()->where('name', 'NHIF')->first();
 
-
-        return 0.15 *  StatutoryDeduction::all()->map(function ($deduction) use ($gross, $employee) {
-                return [str($deduction->name)->lower()->value() => $deduction->getAmount(employee: $employee, gross: $gross)];
-            })->collapse()->all()['nhif'];
+        return ($nhif->getAmount($employee, $gross)) *0.15;
 
     }
 
@@ -256,7 +257,6 @@ class PayrollService
         return $this->getGrossSalary($employee)
            - $this->getWithhodlingTax($employee, $this->getTaxableIncome($employee))
             - $this->getNetPayee($employee)
-            + $this->calculateInsuranceRelief($employee)
             - $this->totalStatutoryDeductions($employee)
             - $this->getAllDeductions($employee);
     }
