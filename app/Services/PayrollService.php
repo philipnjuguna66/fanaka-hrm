@@ -216,7 +216,9 @@ class PayrollService
         }
 
         if ($this->calculatePayee($employee, $this->getTaxableIncome($employee)))
+        {
             return 2400;
+        }
         return 0;
     }
 
@@ -262,7 +264,7 @@ class PayrollService
         $netPayee =  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief($employee)
             - $this->calculateInsuranceRelief($employee)) ;
-        return  $netPayee < 0 ? $netPayee *-1 : $netPayee ;
+        return  $netPayee ;
     }
 
     private function getNetPay(Employee $employee)
