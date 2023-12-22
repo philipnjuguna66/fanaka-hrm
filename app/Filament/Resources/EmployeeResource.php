@@ -176,6 +176,11 @@ class EmployeeResource extends Resource
         ];
     }
 
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return self::getUrl('edit', ['record' => $record]);
+    }
+
     public static function getPages(): array
     {
         return [
