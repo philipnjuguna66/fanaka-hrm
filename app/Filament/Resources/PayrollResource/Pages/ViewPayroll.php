@@ -30,12 +30,18 @@ class ViewPayroll extends ViewRecord
             Actions\Action::make('NHIF')->action(function (){
                 return Excel::download(new PayrollExport($this->record,PayrollReport::NHIF), 'nhif.xlsx');
             })->label('N.H.I.F')->color('primary')->icon('heroicon-o-arrow-down-tray'),
+
             Actions\Action::make('NSSF')->action(function (){
                 return Excel::download(new PayrollExport($this->record,PayrollReport::NSSF), 'nssf.xlsx');
             })->label('N.S.S.F')->color('primary')->icon('heroicon-o-arrow-down-tray'),
-            Actions\Action::make('NSSF')->action(function (){
+
+            Actions\Action::make('P.A.Y.E')->action(function (){
                 return Excel::download(new PayrollExport($this->record,PayrollReport::PAYE), 'paye.xlsx');
-            })->label('PAYE')->color('primary')->icon('heroicon-o-arrow-down-tray'),
+            })->label('P.A.Y.E')->color('primary')->icon('heroicon-o-arrow-down-tray'),
+
+            Actions\Action::make('HOUSE LEVY')->action(function (){
+                return Excel::download(new PayrollExport($this->record,PayrollReport::HOUSE_LEVY), 'house_levy.xlsx');
+            })->label('House Levy')->color('primary')->icon('heroicon-o-arrow-down-tray'),
         ];
     }
 }

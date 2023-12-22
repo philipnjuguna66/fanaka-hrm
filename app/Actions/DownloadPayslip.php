@@ -71,6 +71,7 @@ class DownloadPayslip
 
         $line= $paySlip->payrollLine;
 
+
         return response()
             ->download(
                 public_path('templates/results/'.$line->employee?->name.'-payslip.docx')
