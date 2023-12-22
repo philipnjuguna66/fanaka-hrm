@@ -249,7 +249,7 @@ class PayrollService
             - $this->getPersonalRelief($employee)
             - $this->calculateInsuranceRelief($employee));
 
-        return  $netPayee < 0 ? $netPayee *-1 : $netPayee;
+        return  $netPayee;
 
     }
 
