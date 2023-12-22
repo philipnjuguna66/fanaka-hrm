@@ -229,8 +229,13 @@ class PayrollService
         if (! $employee->should_pay_payee) {
             return 0;
         }
-
         $gross = $this->getGrossSalary($employee);
+
+        if ($gross < 24000)
+        {
+            return  0;
+        }
+
 
         $nhif =  StatutoryDeduction::query()->where('name', 'NHIF')->first();
 
