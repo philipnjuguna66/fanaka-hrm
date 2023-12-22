@@ -227,7 +227,11 @@ class PayrollService
             return 0;
         }
 
-        return 0.15 * $this-> $statutory = StatutoryDeduction::all()->map(function ($deduction) use ($gross, $employee) {
+        $gross = $this->getGrossSalary($employee);
+
+
+
+        return 0.15 *  StatutoryDeduction::all()->map(function ($deduction) use ($gross, $employee) {
                 return [str($deduction->name)->lower()->value() => $deduction->getAmount(employee: $employee, gross: $gross)];
             })->collapse()->all()['nhif'];
 
