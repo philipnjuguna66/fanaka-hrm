@@ -245,9 +245,11 @@ class PayrollService
 
         }
 
-        return ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
+        $netPayee =  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief($employee)
-            - $this->calculateInsuranceRelief($employee)) ;
+            - $this->calculateInsuranceRelief($employee));
+
+        return  $netPayee < 0 ? $netPayee *-1 : $netPayee;
 
     }
 
