@@ -200,9 +200,7 @@ class PayrollService
 
     private function getTaxableIncome($employee)
     {
-        if ($employee->should_pay_payee) {
-            return 0;
-        }
+
 
         $gross = $this->getGrossSalary($employee);
 
@@ -261,10 +259,10 @@ class PayrollService
 
         }
 
-        $netPayee =  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
+        return ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief($employee)
             - $this->calculateInsuranceRelief($employee)) ;
-        return  $netPayee ;
+
     }
 
     private function getNetPay(Employee $employee)
