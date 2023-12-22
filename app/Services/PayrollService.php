@@ -204,7 +204,7 @@ class PayrollService
 
         $gross = $this->getGrossSalary($employee);
 
-        return $gross + $this->calculateCarBenefits($employee) + $this->calculateHousingBenefits($employee, $gross) - $this->calculateTaxAllowableDeductions($employee);
+        return $gross + $this->calculateTaxAllowableDeductions($employee);
     }
 
     private function getPersonalRelief(?Employee $employee = null): int
