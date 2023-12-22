@@ -223,27 +223,13 @@ class PayrollService
     protected function calculateInsuranceRelief($employee)
     {
 
-        $gross = $this->getGrossSalary($employee);
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
 
-        return $employee->employeeDeductions
-            ->filter(fn($deduction) => (bool)$deduction->deductionType?->tax_relief)
-            ->groupBy('deduction_type_id')
-            ->sum(function (Collection $deductions) use ($gross, $employee) {
-                /** @var Deduction $deduction */
-                $deduction = $deductions->first();
-                $statutory_additions = $deduction->deductionType?->statutoryDeductions->sum(fn(StatutoryDeduction $deduction) => $deduction->getAmount($employee, $gross));
-                $capped = $deduction->deductionType?->capped;
-                $limit = $deduction->deductionType?->cap_limit;
-                $total = $deductions->sum('pivot.amount') + $statutory_additions;
-                if ($capped) return min($total, $limit);
-                return $total;
-            });
-
-
-
-        // $percentage = (0.15 * $tax_relief_deductions);
-
-        //  return min($percentage, 5000); //todo add Insurance Relief rate monthly max
+        return 0.15 * $this-> $statutory = StatutoryDeduction::all()->map(function ($deduction) use ($gross, $employee) {
+                return [str($deduction->name)->lower()->value() => $deduction->getAmount(employee: $employee, gross: $gross)];
+            })->collapse()->all()['nhif'];
 
     }
 
