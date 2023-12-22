@@ -51,7 +51,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             $grossPay = floatval( $payroll->temp);
 
             $grossAndBasic = [
-                TextColumn::make('basic_pay')->numeric(2)->default(number_format($grossPay, 2)),
+                TextColumn::make('basic_pay')->numeric(2)->default(number_format($grossPay, 2))->searchable(),
                 TextColumn::make('gross_pay')->numeric(2)->default(number_format($basicPay , 2)),
             ];
 
