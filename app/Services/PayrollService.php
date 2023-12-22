@@ -245,20 +245,28 @@ class PayrollService
 
         }
 
-        $netPayee =  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
+        return  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief($employee)
             - $this->calculateInsuranceRelief($employee));
 
-        return  $netPayee;
+
 
     }
 
     private function getNetPay(Employee $employee)
     {
+        $payee  = $this->getNetPayee($employee);
+
+        if ($payee < 1)
+        {
+            $payee = $payee * -1 ;
+        }
+
 
         return $this->getGrossSalary($employee)
            - $this->getWithhodlingTax($employee, $this->getTaxableIncome($employee))
             - $this->getNetPayee($employee)
+                + $payee
             - $this->totalStatutoryDeductions($employee)
             - $this->getAllDeductions($employee);
     }
