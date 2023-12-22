@@ -32,7 +32,17 @@ class EmployeeResource extends Resource
         return ['first_name', 'middle_name','last_name'];
     }
 #Multi
-
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Position' => $record->loadMissing('hrDetail.jobTitle')?->hrDetail?->jobTitle->name,
+            'Name' => $record->name,
+        ];
+    }
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name;
+    }
     public static function form(Form $form): Form
     {
         return $form
