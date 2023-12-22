@@ -230,7 +230,7 @@ class PayrollService
 
         $gross = $this->getGrossSalary($employee);
 
-        $tax_relief_deductions = $employee->employeeDeductions
+        return $employee->employeeDeductions
             ->filter(fn($deduction) => (bool)$deduction->deductionType?->tax_relief)
             ->groupBy('deduction_type_id')
             ->sum(function (Collection $deductions) use ($gross, $employee) {
@@ -244,7 +244,7 @@ class PayrollService
                 return $total;
             });
 
-        return $tax_relief_deductions;
+
 
         // $percentage = (0.15 * $tax_relief_deductions);
 
