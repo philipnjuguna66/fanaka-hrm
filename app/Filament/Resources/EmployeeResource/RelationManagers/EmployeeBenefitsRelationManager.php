@@ -49,7 +49,7 @@ class EmployeeBenefitsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('amount'),
+                Tables\Columns\TextColumn::make('amount')->money(currency: "ksh", divideBy: 100),
             ])
             ->filters([
                 //
