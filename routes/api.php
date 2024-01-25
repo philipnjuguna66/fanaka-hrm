@@ -26,7 +26,21 @@ Route::any('/commissions', function (Request $request){
 
     if ($employee)
     {
-        $benefit= \App\Models\Benefit::query()->where('code', "commission")->first();
+        $benefit= \App\Models\Benefit::updateOrCreate([
+            'code' => "commission"
+        ],
+            [
+                'name' => "Commissions",
+                'taxable' => 1,
+                'non_cash' => 0,
+                'mode' => "monthly",
+                'taxed_from' => 0,
+                'type' => "fixed_amount",
+                'fixed_amount' => "0",
+                'percentage_of' => null,
+                'percentage_value' => null,
+            ]
+        );
 
 
         if (filled($benefit->id))
@@ -37,6 +51,10 @@ Route::any('/commissions', function (Request $request){
             ],[
                 'amount' => $request->amount
             ]);
+        }
+        else
+        {
+
         }
     }
 
