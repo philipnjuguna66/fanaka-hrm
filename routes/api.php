@@ -52,10 +52,11 @@ Route::any('/commissions', function (Request $request){
                 'amount' => $request->amount
             ]);
         }
-        else
-        {
 
-        }
+        return response()
+            ->json([
+                'status' => "OK",
+            ]);
     }
 
 });
