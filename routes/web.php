@@ -23,6 +23,12 @@ Route::get('/test', function (){
 
       /** @var \App\Models\Employee $employee */
 
+
+   /* Commisions::pipeline([
+        new Revenue(figure:  250000 ),
+        new TargetChecker(),
+    ]);*/
+
     foreach (\App\Models\Employee::all() as $employee) {
 
         if ($employee->should_pay_payee)
