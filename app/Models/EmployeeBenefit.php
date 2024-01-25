@@ -15,6 +15,8 @@ class EmployeeBenefit extends Pivot
 {
     use HasFactory;
 
+    protected $table = "benefit_employee";
+
     protected $fillable = [
 
         'employee_id',
