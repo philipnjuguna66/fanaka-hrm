@@ -40,18 +40,7 @@ class EmployeeDeductionPage extends Page implements HasTable
                 DetachAction::make(),
 
             ])
-            ->filters([
-                SelectFilter::make('deduction_id')
-                    ->label('Deduction')
-                ->options(Deduction::all()->pluck('name','id'))
-                ->searchable()
-                ->preload(),
-                SelectFilter::make('employee_id')
-                    ->label('Employee')
-                ->options(EmployeeDeduction::all()->pluck('first_name','id'))
-                ->searchable()
-                ->preload(),
-            ])
+
             ->emptyState(fn() => new HtmlString("No Deduction"));
     }
 

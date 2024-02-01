@@ -6,6 +6,7 @@ use App\Models\Deduction;
 use App\Models\EmployeeBenefit;
 use App\Models\EmployeeDeduction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Columns\TextColumn;
@@ -33,21 +34,12 @@ class EmployeeBenefitPage extends Page implements HasTable
     {
         return  $table->query(EmployeeBenefit::query())
             ->columns([
-                TextColumn::make('employee.name'),
+                TextColumn::make('employee.name')->searchable(),
                 TextColumn::make('benefit.name'),
                 TextColumn::make('amount')->numeric(),
             ])
             ->filters([
-                SelectFilter::make('deduction_id')
-                    ->label('Deduction')
-                    ->options(Deduction::all()->pluck('name','id'))
-                    ->searchable()
-                    ->preload(),
-                SelectFilter::make('employee_id')
-                    ->label('Employee')
-                    ->options(EmployeeDeduction::all()->pluck('first_name','id'))
-                    ->searchable()
-                    ->preload(),
+
             ])
             ->actions([
                 DetachAction::make(),
