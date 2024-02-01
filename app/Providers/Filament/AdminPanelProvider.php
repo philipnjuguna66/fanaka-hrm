@@ -56,6 +56,8 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->spa()
+            ->collapsedSidebarWidth('250px')
+            ->topNavigation()
             ->authMiddleware([
                 Authenticate::class,
             ]);
