@@ -27,10 +27,10 @@ Route::any('/commissions', function (Request $request){
         ->where('deduction_id', 6)
         ->get();
 
-    $benefit = \App\Models\Benefit::query()->where('code','cash_award')
+    $benefit = \App\Models\Benefit::query()->where('code','cash-award')
         ->first();
 
-    if (! $benefit)
+    if (! filled($benefit->id))
     {
         $benefit = \App\Models\Benefit::create([
             'name' => 'Cash Award',
