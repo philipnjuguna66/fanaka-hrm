@@ -25,7 +25,9 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Eloquent\Builder as BuilderContract;
+use Illuminate\Contracts\Queue\QueueableCollection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 
 class EmployeeBenefitPage extends Page implements HasTable
@@ -129,6 +131,11 @@ class EmployeeBenefitPage extends Page implements HasTable
 
                     })
 
+            ])
+            ->bulkActions([
+                \Filament\Tables\Actions\Action::make('remove')
+                ->requiresConfirmation()
+                ->action(fn (Collection $records) => $records->each->delete())
             ])
             ->headerActions([
                 \Filament\Tables\Actions\Action::make('Add Benefit')

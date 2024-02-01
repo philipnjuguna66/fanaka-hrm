@@ -27,6 +27,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Eloquent\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 
@@ -58,6 +59,11 @@ class EmployeeDeductionPage extends Page implements HasTable
                 TextColumn::make('employee.name')->searchable(),
                 TextColumn::make('deduction.name'),
                 TextColumn::make('amount')->numeric(),
+            ])
+            ->bulkActions([
+                \Filament\Tables\Actions\Action::make('remove')
+                    ->requiresConfirmation()
+                    ->action(fn (Collection $records) => $records->each->delete())
             ])
             ->headerActions([
                 \Filament\Tables\Actions\Action::make('Add Deduction')
