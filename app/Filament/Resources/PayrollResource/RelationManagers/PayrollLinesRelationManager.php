@@ -79,7 +79,7 @@ class PayrollLinesRelationManager extends RelationManager
 
 
         return $table
-            ->query(FinalPayroll::query())->where('payroll_id', $this->getOwnerRecord()->getKey())
+            ->query(FinalPayroll::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
             ->columns([
                 TextColumn::make("employee_name")->searchable(),
                 ...$grossAndBasic,
