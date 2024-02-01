@@ -32,7 +32,7 @@ class FinalPayroll extends Model
         foreach ($payrolls as $index =>  $payroll) {
 
             $data[] = [
-                'employee_name' => $payroll->employee_name,
+                'employee_name' => $payroll->employee->name,
                 'employee_id' => $payroll->employee_id,
                 'payroll_id' => $payroll->payroll_id,
                 ... $payroll->deductions,

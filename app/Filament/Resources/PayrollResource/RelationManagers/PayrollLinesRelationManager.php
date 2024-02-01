@@ -50,12 +50,6 @@ class PayrollLinesRelationManager extends RelationManager
         foreach ($temps as  $payroll) {
 
 
-
-            $grossAndBasic = [
-                TextColumn::make('basic_pay')->numeric(2)->searchable(),
-                TextColumn::make('gross_pay')->numeric(2),
-            ];
-
             foreach ($payroll->deductions as $index => $value)
             {
 
@@ -82,8 +76,17 @@ class PayrollLinesRelationManager extends RelationManager
             ->query(FinalPayroll::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
             ->columns([
                 TextColumn::make("employee_name")->searchable(),
+                TextColumn::make('basic_pay')->numeric(2)->searchable(),
+                TextColumn::make('gross_pay')->numeric(2),
+                TextColumn::make('tax_allowable_deductions')->numeric(2),
+                TextColumn::make('taxable_income')->numeric(2),
+
                 ...$grossAndBasic,
                 ...collect($columns)->reverse()->toArray(),
+                TextColumn::make('personal_relief')->numeric(2),
+                TextColumn::make('insurance_relief')->numeric(2),
+                TextColumn::make('net_payee')->numeric(2),
+                TextColumn::make('net_pay')->numeric(2),
             ])
             ->filters([
 
