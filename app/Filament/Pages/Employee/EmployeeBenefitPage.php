@@ -23,6 +23,8 @@ class EmployeeBenefitPage extends Page implements HasTable
     protected static ?string $navigationGroup = "HR";
 
 
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
     public function table(Table $table): Table
     {
         return  $table->query(EmployeeBenefit::query())
