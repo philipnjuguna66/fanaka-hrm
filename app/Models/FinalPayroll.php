@@ -33,6 +33,14 @@ class FinalPayroll extends Model
 
             $data[] = [
                 'employee_name' => $payroll->employee->name,
+                'basic_pay' => $payroll->basic_pay,
+                'gross_pay' => $payroll->gross_pay,
+                'tax_allowable_deductions' => $payroll->tax_allowable_deductions,
+                'taxable_income' => $payroll->taxable_income,
+                'personal_relief' => $payroll->personal_relief,
+                'insurance_relief' => $payroll->insurance_relief,
+                'net_payee' => $payroll->net_payee,
+                'net_pay' => $payroll->net_pay,
                 'employee_id' => $payroll->employee_id,
                 'payroll_id' => $payroll->payroll_id,
                 ... $payroll->deductions,
