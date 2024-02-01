@@ -18,6 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -61,9 +62,10 @@ class EmployeeDeductionPage extends Page implements HasTable
                 TextColumn::make('amount')->numeric(),
             ])
             ->bulkActions([
-                \Filament\Tables\Actions\Action::make('remove')
+                BulkAction::make('remove')
                     ->requiresConfirmation()
                     ->action(fn (Collection $records) => $records->each->delete())
+                    ->deselectRecordsAfterCompletion()
             ])
             ->headerActions([
                 \Filament\Tables\Actions\Action::make('Add Deduction')
