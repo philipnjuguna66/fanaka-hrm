@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PayrollResource\RelationManagers;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\EmployeeResource;
 use App\Models\Benefit;
@@ -82,6 +83,9 @@ class PayrollLinesRelationManager extends RelationManager
                 ])
                 ->filters([
 
+                ])
+                ->headerActions([
+                    FilamentExportBulkAction::make('Export')
                 ])
                 ->bulkActions([
                     // ...
