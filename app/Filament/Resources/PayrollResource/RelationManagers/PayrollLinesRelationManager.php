@@ -94,8 +94,6 @@ class PayrollLinesRelationManager extends RelationManager
             ])
             ->headerActions([
                 FilamentExportBulkAction::make('Export'),
-                Action::make('refresh payroll')
-                    ->action(fn() => Artisan::call("app:temp-payroll"))
             ])
             ->actions([
                 Action::make('view')->url(fn(Model $row) => EmployeeResource::getUrl(name: 'edit', parameters: ['record' => $row->employee_id]))
