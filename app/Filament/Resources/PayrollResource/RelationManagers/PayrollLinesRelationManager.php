@@ -78,17 +78,17 @@ class PayrollLinesRelationManager extends RelationManager
 
             foreach ($payroll->benefits as $index => $value) {
 
-                $benefits[$payroll->employee_id] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+                $benefits[$payroll->employee_id] = TextColumn::make($index)->numeric(2);
 
             }
             foreach ($payroll->statutory as $index => $value) {
 
-                $statutory[$payroll->employee_id] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+                $statutory[$payroll->employee_id] = TextColumn::make($index)->numeric(2);
 
             }
             foreach ($payroll->deductions as $index => $value) {
 
-                $deductions[$payroll->employee_id] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+                $deductions[$payroll->employee_id] = TextColumn::make($index)->numeric(2);
 
             }
 
