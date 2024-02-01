@@ -104,21 +104,26 @@ class EmployeeDeductionPage extends Page implements HasTable
                         'amount' => $data['amount']
                     ]);
 
+                    if (6 === $data['deduction_id'] )
+                    {
+                        EmployeeBenefit::updateOrCreate([
+                            'employee_id' => $data['employee_id'],
+                            'benefit_id' => Benefit::query()->where('code', 'cash-award')->firstOrCreate([
+                                'name' => 'Cash Award',
+                                'code' => 'cash-award',
+                                'taxable' => true,
+                                'non_cash' => false,
+                                'mode' => "monthly",
+                                'taxed_from_amount' => 0,
+                                'type' => "fixed_amount",
+                            ])->id,
+                        ],[
+                            'amount' => $data['amount']
+                        ]);
+                    }
 
-                    EmployeeBenefit::updateOrCreate([
-                        'employee_id' => $data['employee_id'],
-                        'benefit_id' => Benefit::query()->where('code', 'cash-award')->firstOrCreate([
-                            'name' => 'Cash Award',
-                            'code' => 'cash-award',
-                            'taxable' => true,
-                            'non_cash' => false,
-                            'mode' => "monthly",
-                            'taxed_from_amount' => 0,
-                            'type' => "fixed_amount",
-                        ])->id,
-                    ],[
-                        'amount' => $data['amount']
-                    ]);
+
+
 
                     return Notification::make('success')
                         ->success()
