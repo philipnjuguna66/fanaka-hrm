@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\EmployeeResource;
 
 use App\Models\Benefit;
@@ -91,6 +92,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
             ])
             ->headerActions([
+                FilamentExportBulkAction::make('Export'),
                 Action::make('refresh payroll')
                 ->action(fn() => Artisan::call("app:temp-payroll"))
             ])
