@@ -27,6 +27,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Eloquent\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 
 class EmployeeDeductionPage extends Page implements HasTable
@@ -148,6 +149,24 @@ class EmployeeDeductionPage extends Page implements HasTable
                             'amount' => $data['amount'],
                         ]);
 
+                        if (6 === $employeeDeduction->deduction_id )
+                        {
+                            EmployeeBenefit::updateOrCreate([
+                                'employee_id' => $employeeDeduction->employee_id,
+                                'benefit_id' => Benefit::query()->where('code', 'cash-award')->firstOrCreate([
+                                    'name' => 'Cash Award',
+                                    'code' => 'cash-award',
+                                    'taxable' => true,
+                                    'non_cash' => false,
+                                    'mode' => "monthly",
+                                    'taxed_from_amount' => 0,
+                                    'type' => "fixed_amount",
+                                ])->id,
+                            ],[
+                                'amount' => $data['amount']
+                            ]);
+                        }
+
 
 
                         return Notification::make('success')
@@ -161,13 +180,53 @@ class EmployeeDeductionPage extends Page implements HasTable
                     ->requiresConfirmation()
                     ->action(function (  EmployeeDeduction $employeeDeduction){
 
-                        $employeeDeduction->deleteQuietly();
+
+                        try {
+                            DB::beginTransaction();
+
+                            if (6 === $employeeDeduction->deduction_id )
+                            {
+                                $benefit = Benefit::query()->where('code', 'cash-award')->firstOrCreate([
+                                    'name' => 'Cash Award',
+                                    'code' => 'cash-award',
+                                    'taxable' => true,
+                                    'non_cash' => false,
+                                    'mode' => "monthly",
+                                    'taxed_from_amount' => 0,
+                                    'type' => "fixed_amount",
+                                ]);
 
 
-                        return Notification::make('success')
-                            ->success()
-                            ->body('deleted')
-                            ->send();
+                                EmployeeBenefit::query()
+                                    ->where([
+                                        'benefit_id' => $benefit->id,
+                                        'employee_id' => $employeeDeduction->employee_id
+                                    ])
+                                    ->delete();
+                            }
+
+                            $employeeDeduction->deleteQuietly();
+
+                            DB::commit();
+
+                            return Notification::make('success')
+                                ->success()
+                                ->body('deleted')
+                                ->send();
+                        }
+                        catch (\Exception $exception)
+                        {
+                            DB::rollBack();
+
+                            return Notification::make('success')
+                                ->success()
+                                ->body($exception->getMessage())
+                                ->send();
+
+                        }
+
+
+
 
                     })
 
