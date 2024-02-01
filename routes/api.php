@@ -32,7 +32,7 @@ Route::any('/commissions', function (Request $request){
 
     if (! $benefit)
     {
-        \App\Models\Benefit::create([
+        $benefit = \App\Models\Benefit::create([
             'name' => 'Cash Award',
             'code' => 'cash-award',
             'taxable' => true,

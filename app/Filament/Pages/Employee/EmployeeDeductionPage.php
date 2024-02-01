@@ -186,15 +186,22 @@ class EmployeeDeductionPage extends Page implements HasTable
 
                             if (6 === $employeeDeduction->deduction_id )
                             {
-                                $benefit = Benefit::query()->where('code', 'cash-award')->firstOrCreate([
-                                    'name' => 'Cash Award',
-                                    'code' => 'cash-award',
-                                    'taxable' => true,
-                                    'non_cash' => false,
-                                    'mode' => "monthly",
-                                    'taxed_from_amount' => 0,
-                                    'type' => "fixed_amount",
-                                ]);
+                                $benefit = \App\Models\Benefit::query()->where('code','cash_award')
+                                    ->first();
+
+                                if (! $benefit)
+                                {
+                                    $benefit = \App\Models\Benefit::create([
+                                        'name' => 'Cash Award',
+                                        'code' => 'cash-award',
+                                        'taxable' => true,
+                                        'non_cash' => false,
+                                        'mode' => "monthly",
+                                        'taxed_from_amount' => 0,
+                                        'type' => "fixed_amount",
+                                    ]);
+                                }
+
 
 
                                 EmployeeBenefit::query()
