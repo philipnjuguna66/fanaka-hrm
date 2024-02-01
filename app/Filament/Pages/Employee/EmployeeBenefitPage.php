@@ -25,7 +25,7 @@ class EmployeeBenefitPage extends Page implements HasTable
 
     public function table(Table $table): Table
     {
-        return  $table->query(EmployeeBenefit::query()->with('employee','deduction'))
+        return  $table->query(EmployeeBenefit::query())
             ->columns([
                 TextColumn::make('employee.name'),
                 TextColumn::make('deduction.name'),
