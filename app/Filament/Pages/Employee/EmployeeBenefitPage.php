@@ -30,12 +30,16 @@ class EmployeeBenefitPage extends Page implements HasTable
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+
+    protected static ?int $navigationSort = 10;
+
+
     public function table(Table $table): Table
     {
         return  $table->query(EmployeeBenefit::query())
             ->columns([
                 TextColumn::make('employee.name')->searchable(),
-                TextColumn::make('benefit.name'),
+                TextColumn::make('benefit.name')->getStateUsing(fn(EmployeeBenefit $record) => $record->benefit),
                 TextColumn::make('amount')->numeric(),
             ])
             ->filters([
