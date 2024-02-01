@@ -112,4 +112,26 @@ class Employee extends Model implements HasMedia
             ->value()
         );
     }
+    public function firstName() : Attribute
+    {
+        return new Attribute(
+            get: fn($value) =>  str($value)
+            ->title()
+            ->value()
+        );
+    } public function lastName() : Attribute
+    {
+        return new Attribute(
+            get: fn($value) =>  str($value)
+            ->title()
+            ->value()
+        );
+    } public function middleName() : Attribute
+    {
+        return new Attribute(
+            get: fn($value) =>  str($value)
+            ->title()
+            ->value()
+        );
+    }
 }

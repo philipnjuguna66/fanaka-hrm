@@ -39,7 +39,14 @@ class EmployeeBenefitPage extends Page implements HasTable
                 TextColumn::make('amount')->numeric(),
             ])
             ->filters([
-
+                SelectFilter::make('Benefit')
+                    ->relationship('benefit', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('Employee')
+                    ->relationship('employee', 'first_name')
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 DetachAction::make(),

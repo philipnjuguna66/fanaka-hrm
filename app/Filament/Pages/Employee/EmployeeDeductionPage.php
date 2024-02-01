@@ -30,7 +30,7 @@ class EmployeeDeductionPage extends Page implements HasTable
 
     public function table(Table $table): Table
     {
-        return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 4))
+        return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 7))
             ->columns([
                 TextColumn::make('employee.name')->searchable(),
                 TextColumn::make('deduction.name'),
@@ -40,7 +40,16 @@ class EmployeeDeductionPage extends Page implements HasTable
                 DetachAction::make(),
 
             ])
-
+            ->filters([
+                SelectFilter::make('Deduction')
+                    ->relationship('deduction', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('Employee')
+                    ->relationship('employee', 'first_name')
+                    ->searchable()
+                    ->preload(),
+            ])
             ->emptyState(fn() => new HtmlString("No Deduction"));
     }
 
