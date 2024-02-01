@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Employee;
 
 use App\Enums\EmployeeStatusEnum;
+use App\Models\Benefit;
 use App\Models\Deduction;
 use App\Models\Employee;
 use App\Models\EmployeeBenefit;
@@ -130,7 +131,7 @@ class EmployeeBenefitPage extends Page implements HasTable
 
             ])
             ->headerActions([
-                \Filament\Tables\Actions\Action::make('Add Deduction')
+                \Filament\Tables\Actions\Action::make('Add Benefit')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->form(fn(Form $form): Form => $form->schema([
@@ -151,13 +152,13 @@ class EmployeeBenefitPage extends Page implements HasTable
                             })
                             ->searchable()
                             ->preload(),
-                        Select::make('deduction_id')
-                            ->label('Deduction')
+                        Select::make('benefit_id')
+                            ->label('Benefit')
                             ->options(function () : array {
 
                                 $options = [];
 
-                                foreach (Deduction::query()->cursor() as $deduction) {
+                                foreach (Benefit::query()->cursor() as $deduction) {
                                     $options[$deduction->id] = $deduction->name;
 
                                 }
