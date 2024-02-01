@@ -88,12 +88,12 @@ Route::any('/commissions', function (Request $request){
 
         if (filled($benefit->id))
         {
-            \App\Models\EmployeeBenefit::updateOrCreate([
+           /* \App\Models\EmployeeBenefit::updateOrCreate([
                 'benefit_id' => $benefit->id,
                 'employee_id' => $employee->employee_id,
             ],[
                 'amount' => $request->amount
-            ]);
+            ]);*/
         }
 
         return response()
