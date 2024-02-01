@@ -47,7 +47,28 @@ class PayrollLinesRelationManager extends RelationManager
         $benefits = [];
 
 
+        $data = [];
+
         foreach ($temps as $payroll) {
+
+
+            foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->deductions))->get() as $deduction) {
+
+                $data[$deduction->name] = TextColumn::make($deduction->name)->default(number_format(0, 2))->numeric(2);
+
+            }
+
+            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->benefits))->get() as $benefit) {
+
+                $data[$benefit->name] = TextColumn::make($benefit->name)->default(number_format(0, 2))->numeric(2);
+
+            }
+
+            foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->statutory))->get() as $statutory) {
+
+                $data[$statutory->name] = TextColumn::make($statutory->name)->default(number_format(0, 2))->numeric(2);
+
+            }
 
 
             $grossAndBasic = [
@@ -71,31 +92,34 @@ class PayrollLinesRelationManager extends RelationManager
 
             }
 
-            return $table
-                ->query(PayrollLine::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
-                ->recordTitleAttribute('employee.first_name')
-                ->columns([
-                    TextColumn::make("employee.name")->searchable(),
-                    ...$grossAndBasic,
-                    ...$benefits,
-                    TextColumn::make('insurance_relief')->numeric(2),
-                    TextColumn::make('insurance_relief')->numeric(2),
-                    TextColumn::make('tax_allowable_deductions')->numeric(2),
-                    TextColumn::make('taxable_income')->numeric(2),
-                    ...$statutory,
-                    ...collect($deductions)->reverse()->toArray(),
-                    TextColumn::make('net_payee')->numeric(2),
-                    TextColumn::make('net_pay')->numeric(2),
-                ])
-                ->filters([
 
-                ])
-                ->headerActions([
-                    FilamentExportBulkAction::make('Export')
-                ])
-                ->bulkActions([
-                    // ...
-                ])->striped();
         }
+
+        return $table
+            ->query(PayrollLine::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
+            ->recordTitleAttribute('employee.first_name')
+            ->columns([
+                TextColumn::make("employee.name")->searchable(),
+                ...$grossAndBasic,
+                ...$benefits,
+                ...$data,
+                TextColumn::make('insurance_relief')->numeric(2),
+                TextColumn::make('insurance_relief')->numeric(2),
+                TextColumn::make('tax_allowable_deductions')->numeric(2),
+                TextColumn::make('taxable_income')->numeric(2),
+                ...$statutory,
+                ...collect($deductions)->reverse()->toArray(),
+                TextColumn::make('net_payee')->numeric(2),
+                TextColumn::make('net_pay')->numeric(2),
+            ])
+            ->filters([
+
+            ])
+            ->headerActions([
+                FilamentExportBulkAction::make('Export')
+            ])
+            ->bulkActions([
+                // ...
+            ])->striped();
     }
 }
