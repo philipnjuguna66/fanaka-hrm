@@ -28,6 +28,10 @@ class EmployeeBenefit extends Pivot
     {
         return $this->belongsTo(Employee::class);
     }
+    public function employee(): belongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
 
     public function benefit(): BelongsTo
     {
