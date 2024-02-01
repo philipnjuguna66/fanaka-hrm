@@ -22,6 +22,8 @@ class EmployeeBenefitPage extends Page implements HasTable
 
     protected static ?string $navigationGroup = "HR";
 
+    protected static ?string $navigationLabel = "Employee Deductions";
+
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
