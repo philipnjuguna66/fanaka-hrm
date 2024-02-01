@@ -10,6 +10,7 @@ use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\EditAction;
 use Filament\Facades\Filament;
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -53,6 +54,8 @@ class EmployeeDeductionPage extends Page implements HasTable
             ])
             ->headerActions([
                 \Filament\Tables\Actions\Action::make('Add Deduction')
+                    ->slideOver()
+                    ->closeModalByClickingAway()
                 ->form(fn(Form $form): Form => $form->schema([
                     Select::make('employee_id')
                         ->label('Employee')
@@ -92,6 +95,17 @@ class EmployeeDeductionPage extends Page implements HasTable
                 ]))
                 ->action(function (array $data){
 
+                    EmployeeDeduction::updateOrCreate([
+                        'employee_id' => $data['employee_id'],
+                        'deduction_id' => $data['deduction_id'],
+                    ],[
+                        'amount' => $data['amount']
+                    ]);
+
+                    return Notification::make('success')
+                        ->success()
+                        ->body('Updated')
+                        ->send();
                 })
             ])
             ->actions([
@@ -99,6 +113,9 @@ class EmployeeDeductionPage extends Page implements HasTable
                 \Filament\Tables\Actions\Action::make('edit')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
+                    ->mountUsing(fn(ComponentContainer $form , EmployeeDeduction $record) => $form->fill([
+                        'amount' => $record->amount
+                    ]))
                     ->form(fn(Form $form) : Form => $form->schema([
                         TextInput::make('amount')->required()->numeric(),
                     ]))
@@ -138,6 +155,7 @@ class EmployeeDeductionPage extends Page implements HasTable
                     ->searchable()
                     ->preload(),
                 Filter::make('employee')
+
                     ->form([
                         Select::make('employee_id')
                         ->label('Employee')
