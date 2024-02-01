@@ -7,6 +7,7 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\EmployeeResource;
 use App\Models\Benefit;
 use App\Models\Deduction;
+use App\Models\FinalPayroll;
 use App\Models\IPayroll;
 use App\Models\PayrollLine;
 use App\Models\StatutoryDeduction;
@@ -42,81 +43,59 @@ class PayrollLinesRelationManager extends RelationManager
 
         $temps = PayrollLine::query()->where('payroll_id', $this->getOwnerRecord()->getKey())->get();
 
-        $deductions = [];
-        $statutory = [];
-        $benefits = [];
+        $columns = [];
 
+        $grossAndBasic = [];
 
-        $data = [];
+        foreach ($temps as  $payroll) {
 
-        foreach ($temps as $payroll) {
-
-
-            foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->deductions))->get() as $deduction) {
-
-                $data[$payroll->employee_id] = TextColumn::make($deduction->name)->default(number_format(0, 2))->numeric(2);
-
-            }
-
-            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->benefits))->get() as $benefit) {
-
-                $data[$payroll->employee_id] = TextColumn::make($benefit->name)->default(number_format(0, 2))->numeric(2);
-
-            }
-
-            foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->statutory))->get() as $statutory) {
-
-                $data[$payroll->employee_id] = TextColumn::make($statutory->name)->default(number_format(0, 2))->numeric(2);
-
-            }
 
 
             $grossAndBasic = [
-                TextColumn::make('basic_pay')->numeric(2),
+                TextColumn::make('basic_pay')->numeric(2)->searchable(),
                 TextColumn::make('gross_pay')->numeric(2),
             ];
 
-            foreach ($payroll->benefits as $index => $value) {
+            foreach ($payroll->deductions as $index => $value)
+            {
 
-                $benefits[$payroll->employee_id] = TextColumn::make($index)->numeric(2);
-
-            }
-            foreach ($payroll->statutory as $index => $value) {
-
-                $statutory[$payroll->employee_id] = TextColumn::make($index)->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
-            foreach ($payroll->deductions as $index => $value) {
+            foreach ($payroll->benefits as $index => $value)
+            {
 
-                $deductions[$payroll->employee_id] = TextColumn::make($index)->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
+            foreach ($payroll->statutory as $index => $value)
+            {
 
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
+            }
         }
 
+
+
         return $table
-            ->query(PayrollLine::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
-            ->recordTitleAttribute('employee.first_name')
+            ->query(FinalPayroll::query())->where('payroll_id', $this->getOwnerRecord()->getKey())
             ->columns([
-                TextColumn::make("employee.name")->searchable(),
+                TextColumn::make("employee_name")->searchable(),
                 ...$grossAndBasic,
-                ...$benefits,
-                ...$data,
-                TextColumn::make('insurance_relief')->numeric(2),
-                TextColumn::make('insurance_relief')->numeric(2),
-                TextColumn::make('tax_allowable_deductions')->numeric(2),
-                TextColumn::make('taxable_income')->numeric(2),
-                ...$statutory,
-                ...$deductions,
-                TextColumn::make('net_payee')->numeric(2),
-                TextColumn::make('net_pay')->numeric(2),
+                ...collect($columns)->reverse()->toArray(),
             ])
             ->filters([
 
+
             ])
             ->headerActions([
-                FilamentExportBulkAction::make('Export')
+                FilamentExportBulkAction::make('Export'),
+                Action::make('refresh payroll')
+                    ->action(fn() => Artisan::call("app:temp-payroll"))
+            ])
+            ->actions([
+                Action::make('view')->url(fn(Model $row) => EmployeeResource::getUrl(name: 'edit', parameters: ['record' => $row->employee_id]))
             ])
             ->bulkActions([
                 // ...

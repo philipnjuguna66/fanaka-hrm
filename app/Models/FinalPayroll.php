@@ -34,20 +34,29 @@ class FinalPayroll extends Model
             $data[] = [
                 'employee_name' => $payroll->employee_name,
                 'employee_id' => $payroll->employee_id,
-                ... $payroll->temp
+                'payroll_id' => $payroll->payroll_id,
+                ... $payroll->deductions,
+                ... $payroll->benefits,
+                ... $payroll->statutory,
             ];
 
 
 
-            foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $deduction) {
+            foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->deductions))->get() as $deduction) {
 
              $data[$index][str($deduction->name)->lower()->value()] = 0;
 
             }
 
-            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $benefit) {
+            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->benefits))->get() as $benefit) {
 
                 $data[$index][str($benefit->name)->lower()->value()] = 0;
+
+            }
+
+            foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->statutory))->get() as $statutory) {
+
+                $data[$index][str($statutory->name)->lower()->value()] = 0;
 
             }
 
