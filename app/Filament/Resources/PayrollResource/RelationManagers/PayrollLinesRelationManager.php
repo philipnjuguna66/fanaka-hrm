@@ -108,7 +108,7 @@ class PayrollLinesRelationManager extends RelationManager
                 TextColumn::make('tax_allowable_deductions')->numeric(2),
                 TextColumn::make('taxable_income')->numeric(2),
                 ...$statutory,
-                ...collect($deductions)->reverse()->toArray(),
+                ...$deductions,
                 TextColumn::make('net_payee')->numeric(2),
                 TextColumn::make('net_pay')->numeric(2),
             ])
