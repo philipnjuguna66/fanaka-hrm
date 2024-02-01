@@ -39,7 +39,7 @@ class EmployeeBenefitPage extends Page implements HasTable
         return  $table->query(EmployeeBenefit::query())
             ->columns([
                 TextColumn::make('employee.name')->searchable(),
-                TextColumn::make('benefit_id'),
+                TextColumn::make('benefit.name'),
                 TextColumn::make('amount')->numeric(),
             ])
             ->filters([
