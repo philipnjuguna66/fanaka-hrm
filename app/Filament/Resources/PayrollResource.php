@@ -62,9 +62,7 @@ class PayrollResource extends Resource
             ->filters([
                 //
             ])
-            ->headerActions([
-                FilamentExportHeaderAction::make('export')
-            ])
+
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

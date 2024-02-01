@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PayrollResource\RelationManagers;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -81,7 +82,9 @@ class PayrollLinesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                FilamentExportHeaderAction::make('export'),
+
+             //   Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
