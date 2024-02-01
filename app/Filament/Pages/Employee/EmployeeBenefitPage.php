@@ -22,7 +22,7 @@ class EmployeeBenefitPage extends Page implements HasTable
 
     protected static ?string $navigationGroup = "HR";
 
-    protected static ?string $navigationLabel = "Employee Deductions";
+    protected static ?string $navigationLabel = "Employee Benefits";
 
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
@@ -31,7 +31,7 @@ class EmployeeBenefitPage extends Page implements HasTable
     {
         return  $table->query(EmployeeBenefit::query())
             ->columns([
-                TextColumn::make('employee_name')->getStateUsing(fn(EmployeeBenefit $benefit) => $benefit->employee->name),
+                TextColumn::make('employee.name'),
                 TextColumn::make('benefit.name'),
                 TextColumn::make('amount')->numeric(),
             ])
