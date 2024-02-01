@@ -51,6 +51,7 @@ Route::any('/commissions', function (Request $request){
 
 
 
+    dd('die');
 
 
     $employee = \App\Models\HrDetail::query()->where('staff_number', $request->employee_id)->first();
