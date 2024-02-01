@@ -47,6 +47,10 @@ class EmployeeDeductionPage extends Page implements HasTable
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+
+    protected static ?int $navigationSort  = 10;
+
+
     public function table(Table $table): Table
     {
         return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 4))
@@ -186,7 +190,7 @@ class EmployeeDeductionPage extends Page implements HasTable
 
                             if (6 === $employeeDeduction->deduction_id )
                             {
-                                $benefit = \App\Models\Benefit::query()->where('code','cash_award')
+                                $benefit = \App\Models\Benefit::query()->where('code','cash-award')
                                     ->first();
 
                                 if (! $benefit)
