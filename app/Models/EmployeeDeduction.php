@@ -3,19 +3,19 @@
 namespace App\Models;
 
 
-use App\Services\PayrollService;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
 
-class EmployeeDeduction extends Pivot
+
+class EmployeeDeduction extends Model
 {
     use HasFactory;
 
-    protected $table = "deduction_employees";
+    protected $table = "deduction_employee";
     public $incrementing = true;
 
     protected $fillable = [
@@ -24,9 +24,9 @@ class EmployeeDeduction extends Pivot
         'amount',
     ];
 
-    public function employee(): BelongsToMany
+    public function employee(): belongsTo
     {
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function deduction(): BelongsTo

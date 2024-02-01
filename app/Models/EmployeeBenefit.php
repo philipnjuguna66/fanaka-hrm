@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 
-class EmployeeBenefit extends Pivot
+class EmployeeBenefit extends Model
 {
     use HasFactory;
 
@@ -24,9 +24,9 @@ class EmployeeBenefit extends Pivot
         'amount'
     ];
 
-    public function employees(): BelongsToMany
+    public function employees(): belongsTo
     {
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function benefit(): BelongsTo

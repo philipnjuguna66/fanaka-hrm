@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages\Employee;
 
+use App\Models\Deduction;
 use App\Models\EmployeeDeduction;
 use Filament\Actions\EditAction;
 use Filament\Pages\Page;
@@ -9,6 +10,7 @@ use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 
@@ -25,7 +27,7 @@ class EmployeeDeductionPage extends Page implements HasTable
 
     public function table(Table $table): Table
     {
-        return  $table->query(EmployeeDeduction::query())
+        return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 4))
             ->columns([
                 TextColumn::make('employee.name'),
                 TextColumn::make('deduction.name'),
@@ -34,6 +36,9 @@ class EmployeeDeductionPage extends Page implements HasTable
             ->actions([
                 DetachAction::make(),
 
+            ])
+            ->filters([
+                SelectFilter::make('deduction')
             ])
             ->emptyState(fn() => new HtmlString("No Deduction"));
     }

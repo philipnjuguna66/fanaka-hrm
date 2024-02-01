@@ -29,15 +29,15 @@ class EmployeeBenefitPage extends Page implements HasTable
     {
         return  $table->query(EmployeeBenefit::query())
             ->columns([
-                TextColumn::make('employee.name'),
-                TextColumn::make('deduction.name'),
+                TextColumn::make('employee_name')->getStateUsing(fn(EmployeeBenefit $benefit) => $benefit->employee->name),
+                TextColumn::make('benefit.name'),
                 TextColumn::make('amount')->numeric(),
             ])
             ->actions([
                 DetachAction::make(),
 
             ])
-            ->emptyState(fn() => new HtmlString("No Deduction"));
+            ->emptyState(fn() => new HtmlString("No Benefits"));
     }
 
 
