@@ -27,6 +27,10 @@ class ViewPayroll extends ViewRecord
                 dispatch(new EmailPayslip(payroll: $payroll));
 
             }),
+            Actions\Action::make('Payroll')->action(function (){
+                return Excel::download(new PayrollExport($this->record,PayrollReport::PAYROLL), 'payroll.xlsx');
+            })->label('PAYROLL')->color('primary')->icon('heroicon-o-arrow-down-tray'),
+
             Actions\Action::make('NHIF')->action(function (){
                 return Excel::download(new PayrollExport($this->record,PayrollReport::NHIF), 'nhif.xlsx');
             })->label('N.H.I.F')->color('primary')->icon('heroicon-o-arrow-down-tray'),

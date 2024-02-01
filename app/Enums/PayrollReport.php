@@ -8,4 +8,5 @@ enum PayrollReport:string
    case  NSSF = 'NSSF';
    case  PAYE = 'PAYE';
    case  HOUSE_LEVY = 'HOUSE_LEVY';
+   case  PAYROLL = 'PAYROLL';
 }

@@ -3,10 +3,14 @@
 namespace App\Filament\Resources\PayrollResource\RelationManagers;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
+use App\Models\Benefit;
+use App\Models\Deduction;
+use App\Models\StatutoryDeduction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,6 +31,50 @@ class PayrollLinesRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $deductions = Deduction::query()
+            ->get();
+
+        $benefits = Benefit::query()
+            ->get();
+        $statutoryDeductions = StatutoryDeduction::query()
+            ->get();
+
+        $deductionColumns = [];
+
+        $statutoryDeductionColumns = [];
+
+        foreach ($deductions as $deduction) {
+
+            $deductionColumns[] = TextColumn::make($deduction->name)->searchable()->numeric(2)
+                ->toggleable(isToggledHiddenByDefault: true);
+
+        }
+        $benefitColumns = [];
+
+        foreach ($benefits as $benefit) {
+
+            $benefitColumns[] = TextColumn::make($benefit->name)->searchable()->numeric(2)
+                ->toggleable(isToggledHiddenByDefault: true);
+
+        }
+
+
+        $benefitColumns = [];
+
+        foreach ($benefits as $benefit) {
+
+            $benefitColumns[] = TextColumn::make($benefit->name)->searchable()->numeric(2)
+                ->toggleable(isToggledHiddenByDefault: true);
+
+        }
+
+        foreach ($statutoryDeductions as $statutoryDeduction) {
+
+            $statutoryDeductionColumns[] = TextColumn::make($statutoryDeduction->name)->searchable()->numeric(2)
+                ->toggleable(isToggledHiddenByDefault: true);
+
+        }
+
         return $table
             ->recordTitleAttribute('employee.first_name')
             ->columns([
@@ -45,15 +93,6 @@ class PayrollLinesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('taxable_income')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nhif')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('nssf')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('house_levy')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('paye')
                     ->numeric()
                     ->sortable(),
@@ -63,6 +102,9 @@ class PayrollLinesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('insurance_relief')
                     ->numeric()
                     ->sortable(),
+                ...$deductionColumns,
+                ...$benefitColumns,
+                ...$statutoryDeductionColumns,
                 Tables\Columns\TextColumn::make('net_payee')
                     ->numeric()
                     ->sortable(),

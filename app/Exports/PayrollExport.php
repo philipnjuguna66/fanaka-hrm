@@ -30,6 +30,18 @@ class PayrollExport implements FromCollection,WithHeadings
         ];
     }
 
+    protected function payrollHeadings(): array
+    {
+        return [
+            'PAYROLL NO',
+            'LAST NAME',
+            'FIRST NAME',
+            'ID NO',
+            'NHIF NO',
+            'AMOUNT',
+        ];
+    }
+
     protected function nhifCollections()
     {
         return $this->payroll->payrollLines->map(fn(PayrollLine $line) => [
@@ -131,6 +143,7 @@ class PayrollExport implements FromCollection,WithHeadings
             PayrollReport::PAYE => $this->payeHeadings(),
             PayrollReport::NHIF => $this->nhifHeadings(),
             PayrollReport::HOUSE_LEVY => $this->houseLevyHeadings(),
+            PayrollReport::PAYROLL => $this->payrollHeadings(),
         };
     }
 
