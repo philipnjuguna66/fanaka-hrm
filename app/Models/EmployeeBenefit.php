@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 
-class EmployeeBenefit extends Model
+class EmployeeBenefit extends Pivot
 {
     use HasFactory;
 
