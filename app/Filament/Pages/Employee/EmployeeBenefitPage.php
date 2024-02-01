@@ -132,6 +132,7 @@ class EmployeeBenefitPage extends Page implements HasTable
             ])
             ->headerActions([
                 \Filament\Tables\Actions\Action::make('Add Benefit')
+                    ->label('Add Benefit')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->form(fn(Form $form): Form => $form->schema([

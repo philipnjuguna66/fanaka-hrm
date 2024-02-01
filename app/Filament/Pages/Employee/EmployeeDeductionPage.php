@@ -61,6 +61,7 @@ class EmployeeDeductionPage extends Page implements HasTable
             ])
             ->headerActions([
                 \Filament\Tables\Actions\Action::make('Add Deduction')
+                    ->label('Add Deduction')
                     ->slideOver()
                     ->closeModalByClickingAway()
                 ->form(fn(Form $form): Form => $form->schema([
