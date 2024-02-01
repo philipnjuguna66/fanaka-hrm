@@ -10,6 +10,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
 
 class PayrollMaster extends Page
@@ -67,7 +68,9 @@ class PayrollMaster extends Page
 
                    foreach ($payroll_data as $payroll_datum){
                        $payroll_datum['created_at'] = $date;
+
                        unset($payroll_datum['employee_name']);
+
 
                        $data[] = [
                            'employee_id' => $payroll_datum['employee_id'],
@@ -87,7 +90,7 @@ class PayrollMaster extends Page
                            'net_pay' => $payroll_datum['net_pay'],
                            'statutory' => $payroll_datum['statutory'],
                            'deductions' => $payroll_datum['deductions'],
-                           'benefits' => $payroll_datum['deductions'],
+                           'benefits' => $payroll_datum['benefits'],
                        ];
                    }
 
