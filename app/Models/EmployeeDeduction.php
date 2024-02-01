@@ -15,7 +15,7 @@ class EmployeeDeduction extends Pivot
 {
     use HasFactory;
 
-
+    protected $table = "deduction_employee";
     public $incrementing = true;
 
     protected $fillable = [

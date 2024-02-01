@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages\Employee;
 
+use App\Models\EmployeeBenefit;
 use App\Models\EmployeeDeduction;
 use Filament\Actions\EditAction;
 use Filament\Pages\Page;
@@ -12,7 +13,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 
-class EmployeeDeductionPage extends Page implements HasTable
+class EmployeeBenefitPage extends Page implements HasTable
 {
     use InteractsWithTable;
 
@@ -24,7 +25,7 @@ class EmployeeDeductionPage extends Page implements HasTable
 
     public function table(Table $table): Table
     {
-        return  $table->query(EmployeeDeduction::query()->with('employee','deduction'))
+        return  $table->query(EmployeeBenefit::query()->with('employee','deduction'))
             ->columns([
                 TextColumn::make('employee.name'),
                 TextColumn::make('deduction.name'),
