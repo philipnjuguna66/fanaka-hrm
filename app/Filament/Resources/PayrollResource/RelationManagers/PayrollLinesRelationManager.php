@@ -42,44 +42,50 @@ class PayrollLinesRelationManager extends RelationManager
 
         $temps = PayrollLine::query()->where('payroll_id', $this->getOwnerRecord()->getKey())->get();
 
-        $columns = [];
+        $deductions = [];
+        $statutory = [];
+        $benefits = [];
 
-        $grossAndBasic = [];
 
         foreach ($temps as $payroll) {
 
-            $basicPay = floatval($payroll->temp['basic_pay']);
-            $grossPay = floatval($payroll->temp);
 
             $grossAndBasic = [
-                TextColumn::make('basic_pay')->numeric(2)->default(number_format($grossPay, 2))->searchable(),
-                TextColumn::make('gross_pay')->numeric(2)->default(number_format($basicPay, 2)),
+                TextColumn::make('basic_pay')->numeric(2)->searchable(),
+                TextColumn::make('gross_pay')->numeric(2),
             ];
 
-            foreach ($payroll->temp as $index => $value) {
+            foreach ($payroll->benefits as $index => $value) {
 
+                $benefits[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
 
-                if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', 'housing_benefits', 'personal_relief', 'insurance_relief'])) {
-
-                    $columns[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
-                } else {
-                    $columns['net_pay'] = TextColumn::make('net_pay')
-                        ->default(number_format($payroll->temp['net_pay'], 2))
-                        ->numeric(2);
-                    // $columns['paye'] = TextColumn::make('paye')->default(number_format($payroll->temp['paye'], 2 ))->numeric(2);;
-                    $columns['net_payee'] = TextColumn::make('net_payee')
-                        ->label('Payee')->default(number_format($payroll->temp['net_payee'], 2))->numeric(2);;
-                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default(number_format($payroll->temp['insurance_relief'], 2));
-                    $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default(number_format($payroll->temp['personal_relief'], 2));
-                }
             }
+            foreach ($payroll->statutory as $index => $value) {
+
+                $statutory[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+
+            }
+            foreach ($payroll->deductions as $index => $value) {
+
+                $deductions[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+
+            }
+
             return $table
                 ->query(PayrollLine::query())
                 ->recordTitleAttribute('employee.first_name')
                 ->columns([
                     TextColumn::make("employee.name")->searchable(),
                     ...$grossAndBasic,
-                    ...collect($columns)->reverse()->toArray(),
+                    ...$benefits,
+                    TextColumn::make('insurance_relief')->numeric(2),
+                    TextColumn::make('insurance_relief')->numeric(2),
+                    TextColumn::make('tax_allowable_deductions')->numeric(2),
+                    TextColumn::make('taxable_income')->numeric(2),
+                    ...$statutory,
+                    ...collect($deductions)->reverse()->toArray(),
+                    TextColumn::make('net_payee')->numeric(2),
+                    TextColumn::make('net_pay')->numeric(2),
                 ])
                 ->filters([
 
