@@ -54,19 +54,19 @@ class PayrollLinesRelationManager extends RelationManager
 
             foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->deductions))->get() as $deduction) {
 
-                $data[$deduction->name] = TextColumn::make($deduction->name)->default(number_format(0, 2))->numeric(2);
+                $data[$payroll->employee_id] = TextColumn::make($deduction->name)->default(number_format(0, 2))->numeric(2);
 
             }
 
             foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->benefits))->get() as $benefit) {
 
-                $data[$benefit->name] = TextColumn::make($benefit->name)->default(number_format(0, 2))->numeric(2);
+                $data[$payroll->employee_id] = TextColumn::make($benefit->name)->default(number_format(0, 2))->numeric(2);
 
             }
 
             foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->statutory))->get() as $statutory) {
 
-                $data[$statutory->name] = TextColumn::make($statutory->name)->default(number_format(0, 2))->numeric(2);
+                $data[$payroll->employee_id] = TextColumn::make($statutory->name)->default(number_format(0, 2))->numeric(2);
 
             }
 
@@ -78,17 +78,17 @@ class PayrollLinesRelationManager extends RelationManager
 
             foreach ($payroll->benefits as $index => $value) {
 
-                $benefits[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+                $benefits[$payroll->employee_id] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
 
             }
             foreach ($payroll->statutory as $index => $value) {
 
-                $statutory[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+                $statutory[$payroll->employee_id] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
 
             }
             foreach ($payroll->deductions as $index => $value) {
 
-                $deductions[] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
+                $deductions[$payroll->employee_id] = TextColumn::make($index)->default(number_format(floatval($value), 2))->numeric(2);
 
             }
 
