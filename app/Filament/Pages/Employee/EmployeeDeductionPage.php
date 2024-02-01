@@ -30,7 +30,7 @@ class EmployeeDeductionPage extends Page implements HasTable
 
     public function table(Table $table): Table
     {
-        return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 7))
+        return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 4))
             ->columns([
                 TextColumn::make('employee.name')->searchable(),
                 TextColumn::make('deduction.name'),
