@@ -19,6 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\Artisan;
 class PayrollLinesRelationManager extends RelationManager
 {
     protected static string $relationship = 'payrollLines';
+
+    protected $footer = [];
 
     public function form(Form $form): Form
     {
@@ -47,11 +50,14 @@ class PayrollLinesRelationManager extends RelationManager
 
         $grossAndBasic = [];
 
+        $footer = [];
+
         foreach ($temps as  $payroll) {
 
 
             foreach ($payroll->deductions as $index => $value)
             {
+                $footer[$index] = $index;
 
                 $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
@@ -70,6 +76,7 @@ class PayrollLinesRelationManager extends RelationManager
             }
         }
 
+        $this->footer = $footer;
 
 
         return $table
@@ -90,7 +97,6 @@ class PayrollLinesRelationManager extends RelationManager
             ])
             ->filters([
 
-
             ])
             ->headerActions([
                 FilamentExportBulkAction::make('Export'),
@@ -101,5 +107,22 @@ class PayrollLinesRelationManager extends RelationManager
             ->bulkActions([
                 // ...
             ])->striped();
+    }
+
+    protected function getTableContentFooter(): ?View
+    {
+        return  view('table.footer', [
+            'calc_columns' => [
+                'basic_pay',
+                'gross_pay',
+                'tax_allowable_deductions',
+                'taxable_income',
+                'personal_relief',
+                'insurance_relief',
+                'net_payee',
+                'net_pay',
+                ...$this->footer
+            ]
+        ]);
     }
 }
