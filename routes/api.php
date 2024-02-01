@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::any('/commissions', function (Request $request){
+Route::get('/test', function (Request $request) {
 
 
     $deductions = \App\Models\EmployeeDeduction::query()
@@ -57,6 +57,11 @@ Route::any('/commissions', function (Request $request){
 
 
     dd('die');
+
+});
+
+
+Route::any('/commissions', function (Request $request){
 
 
     $employee = \App\Models\HrDetail::query()->where('staff_number', $request->employee_id)->first();
