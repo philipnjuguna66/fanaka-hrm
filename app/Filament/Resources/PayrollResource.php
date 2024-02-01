@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\PayrollResource\Pages;
 use App\Filament\Resources\PayrollResource\RelationManagers;
 use App\Models\Payroll;
@@ -60,6 +61,9 @@ class PayrollResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                FilamentExportHeaderAction::make('export')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
