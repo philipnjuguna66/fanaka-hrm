@@ -23,13 +23,16 @@ class EmployeeDeductionPage extends Page implements HasTable
 
     protected static ?string $navigationGroup = "HR";
 
+    protected static ?string $navigationLabel = "Employee Deductions";
+
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public function table(Table $table): Table
     {
         return  $table->query(EmployeeDeduction::query()->where('deduction_id', '!=', 4))
             ->columns([
-                TextColumn::make('employee.name'),
+                TextColumn::make('employee.name')->searchable(),
                 TextColumn::make('deduction.name'),
                 TextColumn::make('amount')->numeric(),
             ])
@@ -38,7 +41,16 @@ class EmployeeDeductionPage extends Page implements HasTable
 
             ])
             ->filters([
-                SelectFilter::make('deduction')
+                SelectFilter::make('deduction_id')
+                    ->label('Deduction')
+                ->options(Deduction::all()->pluck('name','id'))
+                ->searchable()
+                ->preload(),
+                SelectFilter::make('employee_id')
+                    ->label('Employee')
+                ->options(EmployeeDeduction::all()->pluck('first_name','id'))
+                ->searchable()
+                ->preload(),
             ])
             ->emptyState(fn() => new HtmlString("No Deduction"));
     }
