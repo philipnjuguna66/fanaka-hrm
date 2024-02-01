@@ -28,7 +28,11 @@ Route::any('/commissions', function (Request $request){
         ->get();
 
     $benefit = \App\Models\Benefit::query()->where('code','cash_award')
-        ->firstOrCreate([
+        ->first();
+
+    if (! $benefit)
+    {
+        \App\Models\Benefit::create([
             'name' => 'Cash Award',
             'code' => 'cash-award',
             'taxable' => true,
@@ -37,6 +41,7 @@ Route::any('/commissions', function (Request $request){
             'taxed_from_amount' => 0,
             'type' => "fixed_amount",
         ]);
+    }
 
     foreach ($deductions as $deduction) {
 
