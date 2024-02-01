@@ -51,7 +51,7 @@ class PayrollLinesRelationManager extends RelationManager
 
 
             $grossAndBasic = [
-                TextColumn::make('basic_pay')->numeric(2)->searchable(),
+                TextColumn::make('basic_pay')->numeric(2),
                 TextColumn::make('gross_pay')->numeric(2),
             ];
 
@@ -72,7 +72,7 @@ class PayrollLinesRelationManager extends RelationManager
             }
 
             return $table
-                ->query(PayrollLine::query())
+                ->query(PayrollLine::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
                 ->recordTitleAttribute('employee.first_name')
                 ->columns([
                     TextColumn::make("employee.name")->searchable(),
