@@ -6,9 +6,13 @@ use App\Enums\EmployeeStatusEnum;
 use App\Models\Deduction;
 use App\Models\Employee;
 use App\Models\EmployeeDeduction;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Columns\TextColumn;
@@ -44,7 +48,41 @@ class EmployeeDeductionPage extends Page implements HasTable
                 TextColumn::make('amount')->numeric(),
             ])
             ->actions([
-                DetachAction::make(),
+
+                Action::make('edit')
+                ->slideOver()
+                ->closeModalByClickingAway(false)
+                ->form(fn(Form $form) : Form => $form->schema([
+                    TextInput::make('amount')->required()->numeric(),
+                ]))
+                ->action(function (array $data,EmployeeDeduction $employeeDeduction){
+
+                    $employeeDeduction->updateQuietly([
+                        'amount' => $data['amount'],
+                    ]);
+
+
+
+                    return Notification::make('success')
+                        ->success()
+                        ->body('Updated')
+                        ->send();
+
+                }),
+
+                Action::make('delete')
+                    ->requiresConfirmation()
+                    ->action(function (  EmployeeDeduction $employeeDeduction){
+
+                        $employeeDeduction->deleteQuietly();
+
+
+                        return Notification::make('success')
+                            ->success()
+                            ->body('deleted')
+                            ->send();
+
+                    })
 
             ])
             ->filters([
