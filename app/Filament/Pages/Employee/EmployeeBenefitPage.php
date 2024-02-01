@@ -33,7 +33,7 @@ class EmployeeBenefitPage extends Page implements HasTable
             ])
             ->actions([
                 DetachAction::make(),
-                EditAction::make(),
+
             ])
             ->emptyState(fn() => new HtmlString("No Deduction"));
     }

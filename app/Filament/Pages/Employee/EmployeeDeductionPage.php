@@ -32,7 +32,7 @@ class EmployeeDeductionPage extends Page implements HasTable
             ])
             ->actions([
                 DetachAction::make(),
-                EditAction::make(),
+
             ])
             ->emptyState(fn() => new HtmlString("No Deduction"));
     }
