@@ -7,6 +7,7 @@ use App\Models\Deduction;
 use App\Models\Employee;
 use App\Models\EmployeeDeduction;
 use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\EditAction;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
@@ -29,6 +30,9 @@ class EmployeeDeductionPage extends Page implements HasTable
 {
     use InteractsWithTable;
 
+    use InteractsWithActions;
+
+
     protected static string $view = "filament.pages.employee.deduction-page";
 
 
@@ -47,30 +51,73 @@ class EmployeeDeductionPage extends Page implements HasTable
                 TextColumn::make('deduction.name'),
                 TextColumn::make('amount')->numeric(),
             ])
-            ->actions([
+            ->headerActions([
+                \Filament\Tables\Actions\Action::make('Add Deduction')
+                ->form(fn(Form $form): Form => $form->schema([
+                    Select::make('employee_id')
+                        ->label('Employee')
+                        ->options(function () : array {
 
-                Action::make('edit')
-                ->slideOver()
-                ->closeModalByClickingAway(false)
-                ->form(fn(Form $form) : Form => $form->schema([
+                            $options = [];
+
+                            foreach (Employee::query()->where('status', EmployeeStatusEnum::ACTIVE)->cursor() as $employee) {
+                                $options[$employee->id] = $employee->name;
+
+                            }
+
+                            return  $options;
+
+
+                        })
+                        ->searchable()
+                        ->preload(),
+                    Select::make('deduction_id')
+                        ->label('Deduction')
+                        ->options(function () : array {
+
+                            $options = [];
+
+                            foreach (Deduction::query()->cursor() as $deduction) {
+                                $options[$deduction->id] = $deduction->name;
+
+                            }
+
+                            return  $options;
+
+
+                        })
+                        ->searchable()
+                        ->preload(),
                     TextInput::make('amount')->required()->numeric(),
                 ]))
-                ->action(function (array $data,EmployeeDeduction $employeeDeduction){
+                ->action(function (array $data){
 
-                    $employeeDeduction->updateQuietly([
-                        'amount' => $data['amount'],
-                    ]);
+                })
+            ])
+            ->actions([
+
+                \Filament\Tables\Actions\Action::make('edit')
+                    ->slideOver()
+                    ->closeModalByClickingAway(false)
+                    ->form(fn(Form $form) : Form => $form->schema([
+                        TextInput::make('amount')->required()->numeric(),
+                    ]))
+                    ->action(function (array $data,EmployeeDeduction $employeeDeduction){
+
+                        $employeeDeduction->updateQuietly([
+                            'amount' => $data['amount'],
+                        ]);
 
 
 
-                    return Notification::make('success')
-                        ->success()
-                        ->body('Updated')
-                        ->send();
+                        return Notification::make('success')
+                            ->success()
+                            ->body('Updated')
+                            ->send();
 
-                }),
+                    }),
 
-                Action::make('delete')
+                \Filament\Tables\Actions\Action::make('delete')
                     ->requiresConfirmation()
                     ->action(function (  EmployeeDeduction $employeeDeduction){
 

@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\EmployeeBenefit;
 use App\Models\EmployeeDeduction;
 use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -28,6 +29,8 @@ use Illuminate\Support\HtmlString;
 class EmployeeBenefitPage extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    use InteractsWithActions;
 
     protected static string $view = "filament.pages.employee.deduction-page";
 
@@ -87,7 +90,7 @@ class EmployeeBenefitPage extends Page implements HasTable
             ])
             ->actions([
 
-                Action::make('edit')
+                \Filament\Tables\Actions\Action::make('edit')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->form(fn(Form $form) : Form => $form->schema([
@@ -108,7 +111,7 @@ class EmployeeBenefitPage extends Page implements HasTable
 
                     }),
 
-                Action::make('delete')
+                \Filament\Tables\Actions\Action::make('delete')
                     ->requiresConfirmation()
                     ->action(function (  EmployeeBenefit $employeeBenefit){
 
@@ -121,6 +124,49 @@ class EmployeeBenefitPage extends Page implements HasTable
 
                     })
 
+            ])
+            ->headerActions([
+                \Filament\Tables\Actions\Action::make('Add Deduction')
+                    ->form(fn(Form $form): Form => $form->schema([
+                        Select::make('employee_id')
+                            ->label('Employee')
+                            ->options(function () : array {
+
+                                $options = [];
+
+                                foreach (Employee::query()->where('status', EmployeeStatusEnum::ACTIVE)->cursor() as $employee) {
+                                    $options[$employee->id] = $employee->name;
+
+                                }
+
+                                return  $options;
+
+
+                            })
+                            ->searchable()
+                            ->preload(),
+                        Select::make('deduction_id')
+                            ->label('Deduction')
+                            ->options(function () : array {
+
+                                $options = [];
+
+                                foreach (Deduction::query()->cursor() as $deduction) {
+                                    $options[$deduction->id] = $deduction->name;
+
+                                }
+
+                                return  $options;
+
+
+                            })
+                            ->searchable()
+                            ->preload(),
+                        TextInput::make('amount')->required()->numeric(),
+                    ]))
+                    ->action(function (array $data){
+
+                    })
             ])
             ->emptyState(fn() => new HtmlString("No Benefits"));
     }
