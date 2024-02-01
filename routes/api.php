@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\EmployeeBenefit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,37 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::any('/commissions', function (Request $request){
+
+
+    $deductions = \App\Models\EmployeeDeduction::query()
+        ->where('deduction_id', 6)
+        ->get();
+
+    $benefit = \App\Models\Benefit::query()->where('code','cash_award')
+        ->firstOrCreate([
+            'name' => 'Cash Award',
+            'code' => 'cash-award',
+            'taxable' => true,
+            'non_cash' => false,
+            'mode' => "monthly",
+            'taxed_from_amount' => 0,
+            'type' => "fixed_amount",
+        ]);
+
+    foreach ($deductions as $deduction) {
+
+
+        EmployeeBenefit::updateOrCreate([
+            'employee_id' => $deduction->employee_id,
+            'benefit_id' => $benefit->id,
+        ],[
+            'amount' => $deduction->amount
+        ]);
+    }
+
+
+
+
 
     $employee = \App\Models\HrDetail::query()->where('staff_number', $request->employee_id)->first();
 

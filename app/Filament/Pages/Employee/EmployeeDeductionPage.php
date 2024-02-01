@@ -3,8 +3,10 @@
 namespace App\Filament\Pages\Employee;
 
 use App\Enums\EmployeeStatusEnum;
+use App\Models\Benefit;
 use App\Models\Deduction;
 use App\Models\Employee;
+use App\Models\EmployeeBenefit;
 use App\Models\EmployeeDeduction;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -98,6 +100,22 @@ class EmployeeDeductionPage extends Page implements HasTable
                     EmployeeDeduction::updateOrCreate([
                         'employee_id' => $data['employee_id'],
                         'deduction_id' => $data['deduction_id'],
+                    ],[
+                        'amount' => $data['amount']
+                    ]);
+
+
+                    EmployeeBenefit::updateOrCreate([
+                        'employee_id' => $data['employee_id'],
+                        'benefit_id' => Benefit::query()->where('code', 'cash-award')->firstOrCreate([
+                            'name' => 'Cash Award',
+                            'code' => 'cash-award',
+                            'taxable' => true,
+                            'non_cash' => false,
+                            'mode' => "monthly",
+                            'taxed_from_amount' => 0,
+                            'type' => "fixed_amount",
+                        ])->id,
                     ],[
                         'amount' => $data['amount']
                     ]);
