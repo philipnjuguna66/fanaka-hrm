@@ -65,7 +65,7 @@ class DownloadPayslip
         }
 
 
-        $payslipTemplate->saveAs(public_path('templates/results/'.str($line?->employee->name)->slug() .'-payslip.docx'));
+        $payslipTemplate->saveAs(public_path('templates/results/'.str($line?->employee->name)->slug() .'.docx'));
 
     }
 
@@ -83,14 +83,14 @@ class DownloadPayslip
 
 
         PdfOutPut::make(
-            filePath:   public_path('templates/results/'. str($line->employee?->name)->slug('-') .'-payslip.docx'),
+            filePath:   public_path('templates/results/'. str($line->employee?->name)->slug('-') .'.docx'),
             fileName: $line->employee?->name
         )->output();
 
 
         return response()
             ->download(
-                public_path("templates/results/".  str($line->employee?->name)->slug('-') ."_payslip.pdf")
+                public_path("templates/results/".  str($line->employee?->name)->slug('-') .".pdf")
             )
             ->deleteFileAfterSend();
 
@@ -104,6 +104,8 @@ class DownloadPayslip
             fileName: $fileName
         )->output();
 
+
+        $path = str($path)->replace(".docx",".pdf")->toString();
 
         Mail::raw("Payslip", fn($message) => $message->to($to)
             ->subject($subject)

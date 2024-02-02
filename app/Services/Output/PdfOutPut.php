@@ -56,7 +56,7 @@ class PdfOutPut
 
         // Save the PDF to the specified file
         file_put_contents(
-            public_path("templates/results/". str($this->fileName)->slug() ."_payslip.pdf"),
+            public_path("templates/results/". str($this->fileName)->slug() .".pdf"),
             $dompdf->output()
         );
 
