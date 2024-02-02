@@ -69,7 +69,11 @@ class DownloadPayslip
 
     }
 
-    public function download(PaySlip $paySlip)
+    /**
+     * @throws CopyFileException
+     * @throws CreateTemporaryFileExceptionls
+     */
+    public function download(PaySlip $paySlip): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $paySlip = $paySlip->loadMissing('payrollLine.employee','payrollLine.payroll');
 
@@ -92,7 +96,7 @@ class DownloadPayslip
 
     }
 
-    public function mail(string $path, string $to, string $subject)
+    public function mail(string $path, string $to, string $subject): void
     {
 
 
