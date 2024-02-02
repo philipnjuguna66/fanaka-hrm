@@ -36,18 +36,12 @@ class PdfOutPut
 
         $dompdf = new Dompdf();
 
-
         $htmlWriter = new HTML($phpWord);
-
 
         $html = $htmlWriter->getWriterPart('Body')->write();
 
-
         $html =  str($html)
             ->prepend($this->style());
-
-
-
 
         // Load HTML into Dompdf
 
@@ -56,10 +50,6 @@ class PdfOutPut
         // Set paper size and orientation (optional)
 
         $dompdf->setPaper('A5', 'portrait');
-
-
-
-
 
         // Render PDF (output as a string)
         $dompdf->render();
