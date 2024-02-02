@@ -40,13 +40,26 @@ class PdfOutPut
         $htmlWriter = new HTML($phpWord);
 
 
+        $html = $htmlWriter->getWriterPart('Body')->write();
+
+
+        $html =  str($html)
+            ->prepend($this->style());
+
+
+
 
         // Load HTML into Dompdf
-        $dompdf->loadHtml($htmlWriter->getContent());
+
+        $dompdf->loadHtml($html->toHtmlString());
 
         // Set paper size and orientation (optional)
 
         $dompdf->setPaper('A5', 'portrait');
+
+
+
+
 
         // Render PDF (output as a string)
         $dompdf->render();
@@ -57,6 +70,90 @@ class PdfOutPut
             $dompdf->output()
         );
 
+
+    }
+
+    private function style()
+    {
+        ob_start();
+
+        ?>
+        <head>
+            <meta charset="UTF-8" />
+            <title><?= $this->fileName ?></title>
+            <meta name="author" content="philip" />
+            <style>
+                * {
+                    font-family: Arial;
+                    font-size: 11pt;
+                    font-weight: normal; /* Remove bold */
+                }
+
+                a.NoteRef {
+                    text-decoration: none;
+                }
+
+                hr {
+                    height: 1px;
+                    padding: 0;
+                    margin: 1em 0;
+                    border: 0;
+                    border-top: 1px solid #CCC;
+                }
+
+                table {
+                    border: 0; /* Set border to 0px */
+                    border-spacing: 0px;
+                    width: 100%;
+                }
+
+                td {
+                    border: 1px dashed #CCC;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+
+                .Normal {
+                    margin-bottom: 8pt;
+                }
+
+                .Body Text {
+                    font-family: 'Tahoma';
+                    font-size: 8pt;
+                    font-weight: normal; /* Remove bold */
+                }
+
+                .Body Text Char {
+                    font-family: 'Tahoma';
+                    font-size: 8pt;
+                    font-weight: normal; /* Remove bold */
+                }
+
+                .Title {
+                    font-family: 'Arial';
+                    font-size: 8pt;
+                    font-weight: normal; /* Remove bold */
+                }
+
+                .Title Char {
+                    font-family: 'Arial';
+                    font-size: 8pt;
+                    font-weight: normal; /* Remove bold */
+                }
+
+                .header {
+                    margin-bottom: 0pt;
+                }
+
+                .footer {
+                    margin-bottom: 0pt;
+                }
+            </style>
+        </head>
+
+        <?php
+
+        return ob_get_clean();
 
     }
 }
