@@ -94,6 +94,8 @@ class DownloadPayslip
 
     public function mail(string $path, string $to, string $subject)
     {
+
+
         Mail::raw("Payslip", fn($message) => $message->to($to)
             ->subject($subject)
             ->attach($path, ['as' => "payslip.pdf"])

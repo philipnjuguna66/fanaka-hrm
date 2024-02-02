@@ -5,6 +5,7 @@ namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Actions\DownloadPayslip;
 use App\Models\Employee;
 use App\Models\PaySlip;
+use App\Services\Output\PdfOutPut;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -59,6 +60,11 @@ class PayslipsRelationManager extends RelationManager
 
                         (new DownloadPayslip())
                             ->handle($paySlip);
+
+                        PdfOutPut::make(
+                            filePath:   public_path('templates/results/'.$paySlip->payrollLine?->employee?->name.'-payslip.docx'),
+                            fileName: $paySlip->payrollLine?->employee?->name
+                        )->output();
 
                         (new DownloadPayslip())
                             ->mail(
