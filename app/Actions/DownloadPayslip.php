@@ -87,7 +87,8 @@ class DownloadPayslip
         return response()
             ->download(
                 public_path("templates/results/". $line->employee?->name ."_payslip.pdf")
-            );
+            )
+            ->deleteFileAfterSend();
 
     }
 
