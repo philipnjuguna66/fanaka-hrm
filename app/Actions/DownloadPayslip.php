@@ -50,6 +50,12 @@ class DownloadPayslip
             $payslipTemplate->setValue("benefits#{$no}", $employeeBenefit->name);
             $payslipTemplate->setValue("benefit_amount#{$no}", number_format($employeeBenefit->pivot->amount, 2));
         }
+        foreach ($line->statutory as $index => $statutory) {
+
+
+            $payslipTemplate->setValue("house_levy", $statutory);
+
+        }
 
         foreach ($line->employee->employeeDeductions as $index => $employeeDeduction) {
 
@@ -60,12 +66,6 @@ class DownloadPayslip
 
 
         $payslipTemplate->saveAs(public_path('templates/results/'.$line->employee?->name.'-payslip.docx'));
-
-
-        PdfOutPut::make(
-            filePath:   public_path('templates/results/'.$line->employee?->name.'-payslip.docx'),
-            fileName: $line->employee?->name
-        )->output();
 
     }
 
