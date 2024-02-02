@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\PaySlip;
+use App\Services\Output\PdfOutPut;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpWord\Exception\CopyFileException;
@@ -61,6 +62,11 @@ class DownloadPayslip
         $payslipTemplate->saveAs(public_path('templates/results/'.$line->employee?->name.'-payslip.docx'));
 
 
+        PdfOutPut::make(
+            filePath:   public_path('templates/results/'.$line->employee?->name.'-payslip.docx'),
+            fileName: $line->employee?->name
+        )->output();
+
     }
 
     public function download(PaySlip $paySlip)
@@ -72,9 +78,15 @@ class DownloadPayslip
         $line= $paySlip->payrollLine;
 
 
+        PdfOutPut::make(
+            filePath:   public_path('templates/results/'.$line->employee?->name.'-payslip.docx'),
+            fileName: $line->employee?->name
+        )->output();
+
+
         return response()
             ->download(
-                public_path('templates/results/'.$line->employee?->name.'-payslip.docx')
+                public_path("templates/results/". $line->employee?->name ."_payslip.pdf")
             );
 
     }
@@ -83,10 +95,12 @@ class DownloadPayslip
     {
         Mail::raw("Payslip", fn($message) => $message->to($to)
             ->subject($subject)
-            ->attach($path, ['as' => "payslip.docx"])
+            ->attach($path, ['as' => "payslip.pdf"])
         );
 
 
     }
+
+
 
 }

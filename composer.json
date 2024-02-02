@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "larastan/larastan": "^2.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
@@ -53,6 +54,9 @@
         }
     },
     "scripts": {
+        "pint" : "./vendor/bin/pint",
+        "stan" : "./vendor/bin/phpstan analyse --memory-limit=2G",
+
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",

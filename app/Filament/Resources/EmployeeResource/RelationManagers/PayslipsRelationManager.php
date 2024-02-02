@@ -49,7 +49,7 @@ class PayslipsRelationManager extends RelationManager
                 Tables\Actions\Action::make('Download')
                     ->action(function (PaySlip $paySlip){
 
-                      return   (new DownloadPayslip())
+                         return (new DownloadPayslip())
                             ->download($paySlip);
 
                     })
@@ -62,7 +62,7 @@ class PayslipsRelationManager extends RelationManager
 
                         (new DownloadPayslip())
                             ->mail(
-                                path: public_path('templates/results/'.$paySlip->payrollLine?->employee?->name.'-payslip.docx'),
+                                path: public_path('templates/results/'.$paySlip->payrollLine?->employee?->name.'-payslip.pdf'),
                                 to: $paySlip->payrollLine?->employee?->hrContact?->official_email,
                                 subject: "Payslip for the Month of ". $paySlip->payrollLine->created_at->format('Y-M'),
                             );
