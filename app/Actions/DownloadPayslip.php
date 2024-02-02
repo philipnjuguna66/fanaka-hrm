@@ -96,8 +96,13 @@ class DownloadPayslip
 
     }
 
-    public function mail(string $path, string $to, string $subject): void
+    public function mail(string $path, string $to,string $fileName, string $subject): void
     {
+
+        PdfOutPut::make(
+            filePath:   $path,
+            fileName: $fileName
+        )->output();
 
 
         Mail::raw("Payslip", fn($message) => $message->to($to)
