@@ -65,7 +65,7 @@ class DownloadPayslip
         }
 
 
-        $payslipTemplate->saveAs(public_path('templates/results/'.$line->employee_id.'-payslip.docx'));
+        $payslipTemplate->saveAs(public_path('templates/results/'.str($line?->employee->name)->slug() .'-payslip.docx'));
 
     }
 
@@ -83,14 +83,14 @@ class DownloadPayslip
 
 
         PdfOutPut::make(
-            filePath:   public_path('templates/results/'.$line->employee_id.'-payslip.docx'),
+            filePath:   public_path('templates/results/'. str($line->employee?->name)->slug('-') .'-payslip.docx'),
             fileName: $line->employee?->name
         )->output();
 
 
         return response()
             ->download(
-                public_path("templates/results/". $line->employee_id ."_payslip.pdf")
+                public_path("templates/results/".  str($line->employee?->name)->slug('-') ."_payslip.pdf")
             )
             ->deleteFileAfterSend();
 

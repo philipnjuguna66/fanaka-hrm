@@ -62,13 +62,13 @@ class PayslipsRelationManager extends RelationManager
                             ->handle($paySlip);
 
                         PdfOutPut::make(
-                            filePath:   public_path('templates/results/'.$paySlip->payrollLine?->employee_id.'-payslip.docx'),
+                            filePath:   public_path('templates/results/'.str($paySlip->payrollLine?->employee->name)->slug().'-payslip.docx'),
                             fileName: $paySlip->payrollLine?->employee?->name
                         )->output();
 
                         (new DownloadPayslip())
                             ->mail(
-                                path: public_path('templates/results/'.$paySlip->payrollLine?->employee_id.'-payslip.pdf'),
+                                path: public_path('templates/results/'.str($paySlip->payrollLine?->employee->name)->slug().'-payslip.pdf'),
                                 to: $paySlip->payrollLine?->employee?->hrContact?->official_email,
                                 subject: "Payslip for the Month of ". $paySlip->payrollLine->created_at->format('Y-M'),
                             );
