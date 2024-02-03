@@ -94,11 +94,13 @@ class PdfOutPut
                 table {
                     border: 0; /* Set border to 0px */
                     border-spacing: 0px;
-                    width: 100%;
+                    width: 80%;
+                    padding: 0.5px;
+                    line-height: 0.4cm;
                 }
 
                 td {
-                    border: 1px dashed #CCC;
+                    border: 0 dashed #CCC;
                     padding-left: 1px;
                     padding-right: 1px;
                 }
