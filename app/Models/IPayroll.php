@@ -38,6 +38,11 @@ class IPayroll extends Model
             ];
 
 
+            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $benefit) {
+
+                $data[$index][str($benefit->name)->lower()->value()] = 0;
+
+            }
 
             foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $deduction) {
 
@@ -45,11 +50,6 @@ class IPayroll extends Model
 
             }
 
-            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $benefit) {
-
-                $data[$index][str($benefit->name)->lower()->value()] = 0;
-
-            }
 
 
 
