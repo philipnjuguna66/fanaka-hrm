@@ -146,11 +146,21 @@ class EmployeeResource extends Resource
             ])
             ->filters([
 
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->preload(true)
+                    ->searchable()
+                    ->options([
+                        EmployeeStatusEnum::ACTIVE->value => "Active",
+                        EmployeeStatusEnum::NOT_ACTIVE->value => 'Not Active',
+                    ]),
+
                 SelectFilter::make('jobTitle')
                     ->label('Job Title')
                     ->preload(true)
                     ->searchable()
                     ->relationship('hrDetail.jobTitle', 'label'),
+
                 SelectFilter::make('department')
                     ->label('Department')
                     ->preload(true)
