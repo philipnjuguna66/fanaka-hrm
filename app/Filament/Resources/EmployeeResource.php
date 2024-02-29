@@ -62,7 +62,7 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
-                SpatieMediaLibraryImageColumn::make('photo')->label('Passport')->square(),
+               // SpatieMediaLibraryImageColumn::make('photo')->label('Passport')->square(),
                 Tables\Columns\TextColumn::make('first_name')->label('First Name')
                     ->wrapHeader()
                     ->searchable(),
