@@ -64,22 +64,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
                 if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', 'housing_benefits', 'personal_relief', 'insurance_relief'])) {
 
-                    $benefits = Benefit::query()->whereNotIn('name', array_keys($payroll->temp))->get();
 
-                    foreach($benefits as $benefit) {
+                    $columns[] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
-                        $benefitColumns[] =  TextColumn::make($benefit->name)
-                            ->numeric(2)
-                            ->default(number_format(floatval($value), 2))
-                            ->searchable();
-
-                    }
-
-
-                    if( ! in_array($index , $benefits->pluck('name')->toArray()))
-                    {
-                        $columns[] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
-                    }
 
                 } else {
                     $columns['net_pay'] = TextColumn::make('net_pay')
@@ -91,11 +78,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                     $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default(number_format($payroll->temp['insurance_relief'], 2));
                     $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default(number_format($payroll->temp['personal_relief'], 2));
                 }
-
-
             }
-
-
         }
 
 
@@ -103,7 +86,10 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             ->query(IPayroll::query())
             ->columns([
                 TextColumn::make("employee_name")->searchable(),
-                ...$grossAndBasic,
+                TextColumn::make("house allowance")->searchable(),
+                TextColumn::make("transport allowance")->searchable(),
+                TextColumn::make("medical allowance")->searchable(),
+                TextColumn::make("fuel allowance")->searchable(),
                 ... $benefitColumns,
                 TextColumn::make('gross_pay')->numeric(2)->default(number_format($basicPay, 2)),
                 ...collect($columns)->reverse()->toArray(),
