@@ -61,18 +61,15 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             foreach ($payroll->temp as $index => $value) {
 
 
-
                 if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', 'housing_benefits', 'personal_relief', 'insurance_relief'])) {
 
 
                     $columns[] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
-                    $columns["employee_nssf"] = TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2);
                     $columns["employer_nssf"] = TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2);
 
 
-
                 } else {
-                  $columns['net_pay'] = TextColumn::make('net_pay')
+                    $columns['net_pay'] = TextColumn::make('net_pay')
                         ->default(number_format($payroll->temp['net_pay'], 2))
                         ->numeric(2);
                     // $columns['paye'] = TextColumn::make('paye')->default(number_format($payroll->temp['paye'], 2 ))->numeric(2);;
@@ -94,6 +91,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 TextColumn::make("transport allowance")->searchable(),
                 TextColumn::make("medical allowance")->searchable(),
                 TextColumn::make("fuel allowance")->searchable(),
+                TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2),
                 ... $benefitColumns,
                 TextColumn::make('gross_pay')->numeric(2)->default(number_format($basicPay, 2)),
                 ...collect($columns)->reverse()->toArray(),
