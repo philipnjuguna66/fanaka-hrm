@@ -48,6 +48,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
         $benefitColumns = [];
 
+
+        $nssf = [];
+
         foreach ($temps as $payroll) {
 
             $basicPay = floatval($payroll->temp['basic_pay']);
@@ -72,6 +75,10 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
 
                 } else {
+
+                    $nssf["nssf"] =  TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2);
+                    $nssf["tax_allowable_deductions"] =  TextColumn::make("nssf")->label('Employer N.S.S.F')->searchable()->numeric(2);
+
                     $columns['net_pay'] = TextColumn::make('net_pay')
                         ->default(number_format($payroll->temp['net_pay'], 2))
                         ->numeric(2);
@@ -94,10 +101,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 TextColumn::make("transport allowance")->searchable(),
                 TextColumn::make("medical allowance")->searchable(),
                 TextColumn::make("fuel allowance")->searchable(),
-                TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2),
-                TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2),
-                ... $benefitColumns,
                 TextColumn::make('gross_pay')->numeric(2),
+                ...$nssf,
+                ... $benefitColumns,
                 ...collect($columns)->reverse()->toArray(),
             ])
             ->filters([
