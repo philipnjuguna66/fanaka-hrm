@@ -56,6 +56,15 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
             ];
 
+            $benefits = [];
+
+
+            foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $benefit) {
+
+               $benefit [] =  TextColumn::make($benefit->name)->numeric(2)->default(number_format($grossPay, 2))->searchable();
+
+            }
+
             foreach ($payroll->temp as $index => $value) {
 
 
