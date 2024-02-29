@@ -93,7 +93,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 TextColumn::make("fuel allowance")->searchable(),
                 TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2),
                 ... $benefitColumns,
-                TextColumn::make('gross_pay')->numeric(2)->default(number_format($basicPay, 2)),
+                TextColumn::make('gross_pay')->numeric(2),
                 ...collect($columns)->reverse()->toArray(),
             ])
             ->filters([
