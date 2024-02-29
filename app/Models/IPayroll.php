@@ -48,6 +48,10 @@ class IPayroll extends Model
 
              $data[$index][str($deduction->name)->lower()->value()] = 0;
 
+            } foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $statutory) {
+
+             $data[$index][str($statutory->name)->lower()->value()] = 0;
+
             }
 
 

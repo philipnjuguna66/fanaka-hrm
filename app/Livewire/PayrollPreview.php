@@ -86,6 +86,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             ->query(IPayroll::query())
             ->columns([
                 TextColumn::make("employee_name")->searchable(),
+                ...$grossAndBasic,
                 TextColumn::make("house allowance")->searchable(),
                 TextColumn::make("transport allowance")->searchable(),
                 TextColumn::make("medical allowance")->searchable(),
