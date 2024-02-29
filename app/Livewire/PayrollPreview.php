@@ -46,6 +46,8 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
         $grossAndBasic = [];
 
+        $benefits = [];
+
         foreach ($temps as $payroll) {
 
             $basicPay = floatval($payroll->temp['basic_pay']);
@@ -56,12 +58,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
             ];
 
-            $benefits = [];
-
-
             foreach (Benefit::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $benefit) {
 
-               $benefit [] =  TextColumn::make($benefit->name)->numeric(2)->default(number_format($grossPay, 2))->searchable();
+               $benefits[] =  TextColumn::make($benefit->name)->numeric(2)->default(number_format($grossPay, 2))->searchable();
 
             }
 
@@ -90,6 +89,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             ->columns([
                 TextColumn::make("employee_name")->searchable(),
                 ...$grossAndBasic,
+                ... $benefits,
                 TextColumn::make('gross_pay')->numeric(2)->default(number_format($basicPay, 2)),
                 ...collect($columns)->reverse()->toArray(),
             ])
