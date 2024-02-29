@@ -76,7 +76,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 } else {
 
                     $nssf["nssf"] = TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2);
-                    $nssf["tax_allowable_deductions"] = TextColumn::make("nssf")->label('Employer N.S.S.F')->searchable()->numeric(2);
+                    $nssf["tax_allowable_deductions"] = TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2);
 
                     $columns['net_pay'] = TextColumn::make('net_pay')
                         ->default(number_format($payroll->temp['net_pay'], 2))
