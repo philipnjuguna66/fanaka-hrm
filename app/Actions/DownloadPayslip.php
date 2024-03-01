@@ -53,7 +53,7 @@ class DownloadPayslip
         foreach ($line->statutory as $index => $statutory) {
 
 
-            $payslipTemplate->setValue("house_levy", number_format($statutory,2));
+            $payslipTemplate->setValue("house_levy", 0);
 
         }
 
