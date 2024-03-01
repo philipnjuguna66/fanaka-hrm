@@ -20,7 +20,7 @@ class EmailPayslip implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(readonly  public  Payroll $payroll)
+    public function __construct(readonly public Payroll $payroll)
     {
         //
     }
@@ -34,14 +34,14 @@ class EmailPayslip implements ShouldQueue
         /** @var PayrollLine $payrollLine */
         foreach ($this->payroll->payrollLines as $payrollLine) {
             (new DownloadPayslip())
-            ->handle($payrollLine->payslip);
+                ->handle($payrollLine->payslip);
 
             (new DownloadPayslip())
                 ->mail(
-                    path: public_path('templates/results/'.str($payrollLine?->employee->name)->slug().'.docx'),
+                    path: public_path('templates/results/' . str($payrollLine?->employee->name)->slug() . '.docx'),
                     to: $payrollLine?->employee?->hrContact?->official_email,
                     fileName: $payrollLine?->employee->name,
-                    subject: "Payslip for the Month of ". $payrollLine->created_at->format('Y-M'),
+                    subject: "Payslip for the Month of " . $payrollLine->created_at->format('Y-M'),
                 );
         }
     }
