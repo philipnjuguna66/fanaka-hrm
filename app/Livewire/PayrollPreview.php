@@ -57,7 +57,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
             $grossPay = floatval($payroll->temp);
 
             $grossAndBasic = [
-                TextColumn::make('basic_pay')->numeric(2)->default(number_format($grossPay, 2))->searchable(),
+                TextColumn::make('basic_pay')->numeric(2)->default($grossPay)->searchable(),
 
             ];
 
@@ -70,7 +70,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', "nssf", "tax_allowable_deductions", 'housing_benefits', 'personal_relief', 'insurance_relief'])) {
 
 
-                    $columns[] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
+                    $columns[] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
 
 
                 } else {
@@ -79,13 +79,12 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                     $nssf["tax_allowable_deductions"] = TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2);
 
                     $columns['net_pay'] = TextColumn::make('net_pay')
-                        ->default(number_format($payroll->temp['net_pay'], 2))
+                        ->default($payroll->temp['net_pay'])
                         ->numeric(2);
-                    // $columns['paye'] = TextColumn::make('paye')->default(number_format($payroll->temp['paye'], 2 ))->numeric(2);;
                     $columns['net_payee'] = TextColumn::make('net_payee')
-                        ->label('Payee')->default(number_format($payroll->temp['net_payee'], 2))->numeric(2);;
-                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default(number_format($payroll->temp['insurance_relief'], 2));
-                    $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default(number_format($payroll->temp['personal_relief'], 2));
+                        ->label('Payee')->default($payroll->temp['net_payee'])->numeric(2);;
+                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default($payroll->temp['insurance_relief']);
+                    $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default($payroll->temp['personal_relief']);
                 }
             }
         }
