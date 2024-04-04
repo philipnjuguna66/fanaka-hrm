@@ -38,10 +38,10 @@ class EmailPayslip implements ShouldQueue
 
             (new DownloadPayslip())
                 ->mail(
-                    path: public_path('templates/results/' . str($payrollLine?->employee->name)->slug() . '.docx'),
+                    path: public_path('templates/results/'.str($payrollLine?->employee->name)->slug().'.docx'),
                     to: $payrollLine?->employee?->hrContact?->official_email,
-                    fileName: $payrollLine?->employee->name,
-                    subject: "Payslip for the Month of " . $payrollLine->created_at->format('Y-M'),
+                    fileName: str($payrollLine?->employee->name)->slug()->toString(),
+                    subject: "Payslip for the Month of ". $payrollLine->created_at->format('Y-M'),
                 );
         }
     }
