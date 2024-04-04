@@ -52,8 +52,12 @@ class DownloadPayslip
         }
         foreach ($line->statutory as $index => $statutory) {
 
+            $name = str($index)->lower()->slug('_')->toString();
 
-           // $payslipTemplate->setValue("house_levy", 0);
+            if ($name == 'house_levy')
+            {
+                $payslipTemplate->setValue("house_levy", 0);
+            }
 
         }
 
