@@ -84,7 +84,7 @@ class DownloadPayslip
 
         PdfOutPut::make(
             filePath:   public_path('templates/results/'. str($line->employee?->name)->slug('-') .'.docx'),
-            fileName: $line->employee?->name
+            fileName:  str($line->employee?->name)->slug('-')
         )->output();
 
 
