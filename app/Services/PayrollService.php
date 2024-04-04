@@ -86,16 +86,16 @@ class PayrollService
             return 0;
         }
 
-        if ($taxableIncome < 32332) {
+        if ($taxableIncome <= 32_333) {
             $bands[] = 24000 * 0.1;
             $bands[] = ($taxableIncome - 24000) * 0.25;
         }
 
 
-        if ($taxableIncome > 32332) {
+        if ($taxableIncome >= 32_334) {
             $bands[] = 24000 * 0.1;
-            $bands[] = (32332 - 24000) * 0.25;
-            $bands[] = ($taxableIncome - 32332) * 0.30;
+            $bands[] = (32_333 - 24000) * 0.25;
+            $bands[] = ($taxableIncome - 32_333) * 0.30;
         }
 
         return round(array_sum($bands));
