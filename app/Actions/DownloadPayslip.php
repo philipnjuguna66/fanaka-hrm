@@ -50,6 +50,8 @@ class DownloadPayslip
             $payslipTemplate->setValue("benefits#{$no}", $employeeBenefit->name);
             $payslipTemplate->setValue("benefit_amount#{$no}", number_format($employeeBenefit->pivot->amount, 2));
         }
+
+
         foreach ($line->statutory as $index => $statutory) {
 
             $name = str($index)->lower()->slug('_')->toString();
