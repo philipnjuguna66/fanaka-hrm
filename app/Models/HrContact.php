@@ -30,12 +30,12 @@ class HrContact extends Model
         'social_links',
         'address'
     ];
-
+/*
    public function officialEmail() : Attribute
     {
         return  new Attribute(
             get: fn() => "philipnjuguna66@gmail.com",
         );
-    }
+    }*/
 
 }
