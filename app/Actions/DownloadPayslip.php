@@ -47,7 +47,10 @@ class DownloadPayslip
 
 
             $no =  $index + 1;
+
             $payslipTemplate->setValue("benefits#{$no}", $employeeBenefit->name);
+
+
             $payslipTemplate->setValue("benefit_amount#{$no}", number_format($employeeBenefit->pivot->amount, 2));
         }
 
@@ -56,9 +59,10 @@ class DownloadPayslip
 
             $name = str($index)->lower()->slug('_')->toString();
 
+
             if ($name == 'house_levy')
             {
-                $payslipTemplate->setValue("house_levy", 0);
+                $payslipTemplate->setValue("house_levy", $statutory);
             }
 
         }
