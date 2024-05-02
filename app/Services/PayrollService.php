@@ -44,6 +44,7 @@ class PayrollService
             'withholding_tax' => $this->getWithhodlingTax(employee: $employee, incomeTaX: $this->getTaxableIncome($employee)),
             'personal_relief' => $this->getPersonalRelief($employee),
             'insurance_relief' => $this->calculateInsuranceRelief($employee),
+            'housing_relief' => $this->calculateHousingRelief($employee),
             'net_payee' => $this->getNetPayee($employee),
             'net_pay' => $this->getNetPay($employee),
             'deductions' => $this->getAllDeductionArrayKeys($employee),
@@ -225,6 +226,26 @@ class PayrollService
         return 0;
     }
 
+    protected function calculateHousingRelief($employee)
+    {
+
+        if (! $employee->should_pay_payee) {
+            return 0;
+        }
+        $gross = $this->getGrossSalary($employee);
+
+        if ($gross < 24000)
+        {
+            return  0;
+        }
+
+
+        $housing =  StatutoryDeduction::query()->where('name', 'HOUSE LEVY')->first();
+
+        return ($housing?->getAmount($employee, $gross)) *0.15;
+
+    }
+
     protected function calculateInsuranceRelief($employee)
     {
 
@@ -259,6 +280,7 @@ class PayrollService
 
         return  ($this->calculatePayee($employee, $this->getTaxableIncome($employee))
             - $this->getPersonalRelief($employee)
+            - $this->calculateHousingRelief($employee)
             - $this->calculateInsuranceRelief($employee));
 
 
