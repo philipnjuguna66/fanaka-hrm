@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->integer('payroll_number')->unique();
+            $table->string('payroll_number')->unique();
             $table->timestamps();
         });
     }

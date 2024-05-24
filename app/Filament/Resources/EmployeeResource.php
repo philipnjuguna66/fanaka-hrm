@@ -247,7 +247,10 @@ class EmployeeResource extends Resource
                                 ->success()
                                 ->body('Updated')
                                 ->send();
-                        })
+                        }),
+
+
+
                     //Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->striped();

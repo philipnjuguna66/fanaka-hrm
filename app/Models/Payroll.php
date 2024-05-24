@@ -18,9 +18,6 @@ class Payroll extends Model
         'created_at',
     ];
 
-    protected $casts = [
-        'payroll_number' => PayrollNumber::class
-    ];
 
 
 

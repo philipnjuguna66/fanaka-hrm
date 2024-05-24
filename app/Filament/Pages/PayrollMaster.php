@@ -59,10 +59,12 @@ class PayrollMaster extends Page
 
                try{
                    DB::beginTransaction();
+
                    $date = Carbon::parse($data['start_month'])->startOfMonth()->startOfDay()->toDateTimeString();
 
                    $payroll =  Payroll::firstOrCreate([
                        'created_at' => $date,
+                       'payroll_number' => Carbon::parse($date)->format('Y-m'),
                    ]);
                    $data = [];
 
