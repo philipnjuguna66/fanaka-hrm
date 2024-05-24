@@ -57,15 +57,15 @@ class PayrollLinesRelationManager extends RelationManager
 
             foreach ($payroll->deductions as $index => $value)
             {
-                $footer[str($index)->slug('_')->value()] = str($index)->slug('_')->value();
+                $footer[$index] = $index;
 
-                $columns[str($index)->slug('_')->value()] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
             foreach ($payroll->benefits as $index => $value)
             {
 
-                $columns[str($index)->slug('_')->value()] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
             foreach ($payroll->statutory as $index => $value)
