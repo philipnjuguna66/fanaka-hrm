@@ -21,6 +21,7 @@ class IPayroll extends Model
     ];
 
 
+
     public function getRows()
     {
         $payrolls = TempPayroll::query()
@@ -28,7 +29,7 @@ class IPayroll extends Model
 
         $data = [];
 
-        foreach ($payrolls as $index => $payroll) {
+        foreach ($payrolls as $index =>  $payroll) {
 
             $data[] = [
                 'employee_name' => $payroll->employee_name,
@@ -45,36 +46,21 @@ class IPayroll extends Model
 
             foreach (Deduction::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $deduction) {
 
-                $data[$index][str($deduction->name)->lower()->value()] = 0;
+             $data[$index][str($deduction->name)->lower()->value()] = 0;
+
+            } foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $statutory) {
+
+             $data[$index][str($statutory->name)->lower()->value()] = 0;
 
             }
-            foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->temp))->get() as $statutory) {
-
-                $data[$index][str($statutory->name)->lower()->value()] = 0;
 
 
-
-                foreach ($payroll->statutory as $statutory => $value) {
-
-
-                    if (str($statutory)->lower()->slug('_')->value() == 'house_levy')
-                    {
-
-                        $data[$index]['housing_levy_relief'] =  floatval($value)* 0.15;
-
-
-                    }
-                }
-
-            }
 
 
         }
 
 
-
-
-        return $data;
+       return $data;
     }
 
 }
