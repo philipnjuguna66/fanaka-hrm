@@ -68,9 +68,9 @@ class FinalPayroll extends Model
                 $data[$index][str($statutory->name)->lower()->value()] = 0;
 
 
-                if (str($index)->slug('_')->lower()->value() == 'house_levy')
+                if ([str($statutory->name)->lower()->value()] == 'house_levy')
                 {
-                    $data['housing_levy'] = 0;
+                    $data['housing_relief'] = 0;
                 }
 
 
