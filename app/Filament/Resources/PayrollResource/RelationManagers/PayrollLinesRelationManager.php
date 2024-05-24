@@ -91,7 +91,7 @@ class PayrollLinesRelationManager extends RelationManager
                 ...collect($columns)->reverse()->toArray(),
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
-                TextColumn::make('housing_levy_relief')->numeric(2),
+                TextColumn::make('housing_relief')->numeric(2),
                 TextColumn::make('net_payee')->numeric(2),
                 TextColumn::make('net_pay')->numeric(2),
             ])
