@@ -67,6 +67,17 @@ class FinalPayroll extends Model
 
                 $data[$index][str($statutory->name)->lower()->value()] = 0;
             }
+
+            foreach ($payroll->statutory as $statutory => $value) {
+
+
+                if (str($statutory)->lower()->slug('_')->value() == 'house_levy')
+                {
+
+                    $data[$index]['housing_relief'] =  floatval($value)* 0.15;
+
+                }
+            }
         }
 
        return $data;
