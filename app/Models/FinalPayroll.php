@@ -44,6 +44,7 @@ class FinalPayroll extends Model
                 'net_pay' => $payroll->net_pay,
                 'employee_id' => $payroll->employee_id,
                 'payroll_id' => $payroll->payroll_id,
+                'statutory' => $payroll->statutory,
                 ... $payroll->deductions,
                 ... $payroll->benefits,
                 ... $payroll->statutory,
