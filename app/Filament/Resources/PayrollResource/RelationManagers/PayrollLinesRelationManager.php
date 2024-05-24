@@ -96,6 +96,8 @@ class PayrollLinesRelationManager extends RelationManager
                 ...collect($columns)->reverse()->toArray(),
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
+                TextColumn::make('hoys')
+                    ->getStateUsing(fn($record) => $record)->numeric(2),
                 ...$relief,
                 TextColumn::make('net_payee')->numeric(2),
                 TextColumn::make('net_pay')->numeric(2),
