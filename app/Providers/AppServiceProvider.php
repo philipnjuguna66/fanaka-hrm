@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use App\Support\Macros\CreateUpdateOrDelete;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\TextInput;
+use Filament\Support\RawJs;
+use Filament\Support\View\Components\Modal;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +26,20 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-               $this->addCreateUpdateOrDeleteHasManyMacro();
+        $this->addCreateUpdateOrDeleteHasManyMacro();
+
+        Filament::serving(function () {
+
+            Modal::closedByClickingAway(false);
+
+            TextInput::macro('money', fn(): static => $this->numeric()
+                ->prefix('Ksh')
+                ->mask(RawJs::make('$money($input)'))
+                ->stripCharacters(',')
+            );
+
+
+        });
 
     }
 
