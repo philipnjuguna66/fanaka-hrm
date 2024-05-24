@@ -44,7 +44,6 @@ class FinalPayroll extends Model
                 'net_pay' => $payroll->net_pay,
                 'employee_id' => $payroll->employee_id,
                 'payroll_id' => $payroll->payroll_id,
-                'statutory' => $payroll->statutory,
                 ... $payroll->deductions,
                 ... $payroll->benefits,
                 ... $payroll->statutory,
@@ -67,6 +66,13 @@ class FinalPayroll extends Model
             foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->statutory))->get() as $statutory) {
 
                 $data[$index][str($statutory->name)->lower()->value()] = 0;
+
+
+                if (str($index)->slug('_')->lower()->value() == 'house_levy')
+                {
+                    $data['housing_levy'] = 0;
+                }
+
 
             }
 

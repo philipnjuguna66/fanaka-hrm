@@ -52,26 +52,31 @@ class PayrollLinesRelationManager extends RelationManager
 
         $footer = [];
 
-        foreach ($temps as  $payroll) {
+
+        $relief = [];
+
+        foreach ($temps as $payroll) {
 
 
-            foreach ($payroll->deductions as $index => $value)
-            {
+            foreach ($payroll->deductions as $index => $value) {
                 $footer[$index] = $index;
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
             }
-            foreach ($payroll->benefits as $index => $value)
-            {
+            foreach ($payroll->benefits as $index => $value) {
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
             }
-            foreach ($payroll->statutory as $index => $value)
-            {
+            foreach ($payroll->statutory as $index => $value) {
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+
+                if ("housing_levy" == str($index)->slug("_")->value()) {
+                    $relief[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
+                }
+
 
             }
         }
@@ -87,29 +92,11 @@ class PayrollLinesRelationManager extends RelationManager
                 TextColumn::make('gross_pay')->numeric(2),
                 TextColumn::make('tax_allowable_deductions')->numeric(2),
                 TextColumn::make('taxable_income')->numeric(2),
-
                 ...$grossAndBasic,
                 ...collect($columns)->reverse()->toArray(),
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
-                TextColumn::make('housing_relief')
-                    ->getStateUsing(function (FinalPayroll $payroll) {
-
-
-                        foreach ($payroll->statutory as $index => $statutory) {
-
-                            if (str($index)->slug('_')->lower()->value() == "house_levy")
-                            {
-                                return 0.15 * $statutory;
-                            }
-
-                        }
-                        return  0;
-
-
-                    })
-                    ->money('kes')
-                    ->numeric(2),
+                ...$relief,
                 TextColumn::make('net_payee')->numeric(2),
                 TextColumn::make('net_pay')->numeric(2),
             ])
@@ -129,7 +116,7 @@ class PayrollLinesRelationManager extends RelationManager
 
     protected function getTableContentFooter(): ?View
     {
-        return  view('table.footer', [
+        return view('table.footer', [
             'calc_columns' => [
                 'basic_pay',
                 'gross_pay',
