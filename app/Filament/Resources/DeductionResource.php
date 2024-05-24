@@ -114,6 +114,8 @@ class DeductionResource extends Resource
             Forms\Components\Select::make('percentage_of')
                 ->selectablePlaceholder(fn(string $context) => $context === 'create')
                 ->options(DeductionPercentageOf::getKeyValueOptions())->visible(fn(Forms\Get $get) => $get('type') == 'percentage')
+                ->searchable()
+                ->preload()
                 ->required(fn(Forms\Get $get) => $get('type') == 'percentage'),
             Forms\Components\TextInput::make('fixed_amount')
                 ->visible(fn(Forms\Get $get) => $get('type') == 'fixed_amount')

@@ -92,6 +92,18 @@ class EmployeeDeductionPage extends Page implements HasTable
                         ->preload(),
                     Select::make('deduction_id')
                         ->label('Deduction')
+                        ->createOptionForm(fn(Form $form) : Form => $form->schema([
+                            'name' => 'Cash Award',
+                            'code' => 'cash-award',
+                            'taxable' => true,
+                            'non_cash' => false,
+                            'mode' => "monthly",
+                            'taxed_from_amount' => 0,
+                            'type' => "fixed_amount",
+
+                            TextInput::make('name')->required()
+                            ->unique('deductions','')
+                        ]))
                         ->options(function () : array {
 
                             $options = [];
