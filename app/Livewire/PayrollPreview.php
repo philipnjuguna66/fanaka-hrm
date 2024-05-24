@@ -72,9 +72,8 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                     $columns[$index] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
 
                 } else {
-
-                    $nssf["nssf"] = TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2);
                     $nssf["nhif"] = TextColumn::make("nhif")->label('N.H.I.F')->searchable()->numeric(2);
+                    $nssf["nssf"] = TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2);
                     $nssf["tax_allowable_deductions"] = TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2);
 
                     $columns['net_pay'] = TextColumn::make('net_pay')
@@ -100,6 +99,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 TextColumn::make("medical allowance")->searchable(),
                 TextColumn::make("fuel allowance")->searchable(),
                 TextColumn::make('gross_pay')->numeric(2),
+                TextColumn::make('nhif')->label('N.H.I.F')->numeric(2),
                 ...$nssf,
                 ... $benefitColumns,
                 ...collect($columns)->reverse()->toArray(),
