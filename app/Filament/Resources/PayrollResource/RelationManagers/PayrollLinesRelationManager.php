@@ -94,12 +94,19 @@ class PayrollLinesRelationManager extends RelationManager
                 TextColumn::make('insurance_relief')->numeric(2),
                 TextColumn::make('housing_relief')
                     ->getStateUsing(function (FinalPayroll $payroll) {
-                        if (filled($payroll?->house_levy))
-                        {
-                            return $payroll->house_levy *0.15;
+
+
+                        foreach ($payroll->statutory as $index => $statutory) {
+
+                            if (str($index)->slug('_')->lower()->value() == "house_levy")
+                            {
+                                return 0.15 * $statutory;
+                            }
+
                         }
-                         return  $payroll->statutory;
                         return  0;
+
+
                     })
                     ->money('kes')
                     ->numeric(2),
