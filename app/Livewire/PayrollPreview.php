@@ -88,6 +88,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
         }
 
 
+
         return $table
             ->query(IPayroll::query())
             ->columns([
