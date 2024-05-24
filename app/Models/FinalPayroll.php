@@ -25,6 +25,7 @@ class FinalPayroll extends Model
     public function getRows()
     {
         $payrolls = PayrollLine::query()
+            ->with('employee')
             ->get();
 
         $data = [];
@@ -38,6 +39,7 @@ class FinalPayroll extends Model
                 'tax_allowable_deductions' => $payroll->tax_allowable_deductions,
                 'taxable_income' => $payroll->taxable_income,
                 'personal_relief' => $payroll->personal_relief,
+                'house_relief' => (new PayrollService())->calculateHousingRelief($payroll->employee),
                 'insurance_relief' => $payroll->insurance_relief,
                 'net_payee' => $payroll->net_payee,
                 'net_pay' => $payroll->net_pay,
