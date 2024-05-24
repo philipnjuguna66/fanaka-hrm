@@ -74,7 +74,7 @@ class PayrollLinesRelationManager extends RelationManager
 
 
                 if ("house_levy" == str($index)->slug("_")->value()) {
-                    $relief["housing_relief_calculated"] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) * 0.15 , 2))->numeric(2);
+                    $relief["housing_relief_calculated"] = TextColumn::make("housing_relief_calculated")->searchable()->default(number_format(floatval($value) * 0.15 , 2))->numeric(2);
                 }
 
 
