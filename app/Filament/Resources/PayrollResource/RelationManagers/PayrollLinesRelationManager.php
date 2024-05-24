@@ -93,6 +93,12 @@ class PayrollLinesRelationManager extends RelationManager
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
                 TextColumn::make('house_relief')
+                    ->getStateUsing(function (FinalPayroll $payroll) {
+
+
+
+                        return $payroll->house_levy *0.15;
+                    })
                     ->money('kes')
                     ->numeric(2),
                 TextColumn::make('net_payee')->numeric(2),
