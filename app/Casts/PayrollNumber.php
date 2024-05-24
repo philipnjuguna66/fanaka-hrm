@@ -14,7 +14,7 @@ class PayrollNumber implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return 'PAYR-';
+        return 'PAYR-'. $value;
     }
 
     /**
