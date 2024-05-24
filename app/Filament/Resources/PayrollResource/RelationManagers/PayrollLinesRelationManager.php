@@ -98,7 +98,7 @@ class PayrollLinesRelationManager extends RelationManager
                         {
                             return $payroll->house_levy *0.15;
                         }
-                         return  $payroll->house_levy;
+                         return  $payroll;
                         return  0;
                     })
                     ->money('kes')
