@@ -92,7 +92,7 @@ class PayrollLinesRelationManager extends RelationManager
                 ...collect($columns)->reverse()->toArray(),
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
-                TextColumn::make('house_relief')
+                TextColumn::make('housing_relief')
                     ->getStateUsing(function (FinalPayroll $payroll) {
                         if (filled($payroll?->house_levy))
                         {
