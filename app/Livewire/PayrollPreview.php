@@ -67,9 +67,9 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                 //  TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2),
 
 
-                if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', "nssf", "tax_allowable_deductions", 'housing_benefits', 'personal_relief','insurance_relief', 'insurance_relief'])) {
+                if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', "nssf", "tax_allowable_deductions", 'housing_benefits', 'personal_relief', 'insurance_relief'])) {
 
-                    $columns[$index] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
+                    $columns[] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
 
                 } else {
 
@@ -79,14 +79,14 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                     $columns['net_pay'] = TextColumn::make('net_pay')
                         ->default($payroll->temp['net_pay'])
                         ->numeric(2);
-                    $columns['net_payee'] = TextColumn::make('net_payee')->label('Payee')->default($payroll->temp['net_payee'])->numeric(2);;
+                    $columns['net_payee'] = TextColumn::make('net_payee')
+                        ->label('Payee')->default($payroll->temp['net_payee'])->numeric(2);;
                     $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default($payroll->temp['insurance_relief']);
                     $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default($payroll->temp['personal_relief']);
-                    $columns['housing_levy_relief'] = TextColumn::make('housing_levy_relief')->numeric(2);
+                    $columns['housing_relief'] = TextColumn::make('housing_relief')->numeric(2)->default($payroll->temp['housing_relief']);
                 }
             }
         }
-
 
 
         return $table
