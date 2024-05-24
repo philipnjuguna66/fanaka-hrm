@@ -57,21 +57,21 @@ class PayrollLinesRelationManager extends RelationManager
 
             foreach ($payroll->deductions as $index => $value)
             {
-                $footer[$index] = $index;
+                $footer[str($index)->slug('_')->value()] = str($index)->slug('_')->value();
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[str($index)->slug('_')->value()] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
             foreach ($payroll->benefits as $index => $value)
             {
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[str($index)->slug('_')->value()] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
             foreach ($payroll->statutory as $index => $value)
             {
 
-                $columns[$index] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[str($index)->slug('_')->value()] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
         }
