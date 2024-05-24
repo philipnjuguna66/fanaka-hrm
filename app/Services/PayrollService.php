@@ -229,7 +229,7 @@ class PayrollService
     public function calculateHousingRelief($employee)
     {
 
-        return  0;
+        return 0;
 
         if (! $employee->should_pay_payee) {
             return 0;
