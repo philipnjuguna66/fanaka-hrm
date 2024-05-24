@@ -96,8 +96,9 @@ class PayrollLinesRelationManager extends RelationManager
                     ->getStateUsing(function (FinalPayroll $payroll) {
                         if (filled($payroll?->house_levy))
                         {
-                            return $payroll?->house_levy *0.15;
+                            return $payroll->house_levy *0.15;
                         }
+                         return  $payroll->house_levy;
                         return  0;
                     })
                     ->money('kes')

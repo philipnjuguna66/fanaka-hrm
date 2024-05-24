@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->collapsedSidebarWidth('250px')
             ->sidebarCollapsibleOnDesktop()
             ->databaseTransactions()
-            ->databaseNotifications()
+           // ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
