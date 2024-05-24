@@ -74,7 +74,7 @@ class FinalPayroll extends Model
                 if (str($statutory)->lower()->slug('_')->value() == 'house_levy')
                 {
 
-                    if (Carbon::parse($payroll->created_at)->isBefore(Carbon::create(year: 2024,month: 04,day: 01)))
+                    if (Carbon::parse($payroll->created_at)->isSameMonth(Carbon::create(year: 2024,month: 04,day: 01)))
                     {
                         $data[$index]['housing_relief'] =  floatval($value)* 0.15;
                     }
