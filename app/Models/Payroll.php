@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\PayrollNumber;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,20 +21,16 @@ class Payroll extends Model
 
 
 
-
-
     public function payrollLines(): HasMany
     {
         return $this->hasMany(PayrollLine::class);
     }
 
 
-    public static function boot(): void
+    public function payrollNumber(): Attribute
     {
-        parent::boot();
-
-        self::creating(function ($model) {
-            $model->payroll_number = DB::table('payrolls')->max('payroll_number') + 1;
-        });
+        return Attribute::make(
+            get: fn($value) : string => 'PAYR-'. $value,
+        );
     }
 }
