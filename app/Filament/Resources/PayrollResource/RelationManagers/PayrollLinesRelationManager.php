@@ -61,17 +61,17 @@ class PayrollLinesRelationManager extends RelationManager
             foreach ($payroll->deductions as $index => $value) {
                 $footer[$index] = $index;
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->size(TextColumn\TextColumnSize::ExtraSmall)->default(number_format(floatval($value), 2))->numeric(2);
 
             }
             foreach ($payroll->benefits as $index => $value) {
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->size(TextColumn\TextColumnSize::ExtraSmall)->default(number_format(floatval($value), 2))->numeric(2);
 
             }
             foreach ($payroll->statutory as $index => $value) {
 
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->size(TextColumn\TextColumnSize::ExtraSmall)->default(number_format(floatval($value), 2))->numeric(2);
 
             }
         }
@@ -82,18 +82,18 @@ class PayrollLinesRelationManager extends RelationManager
         return $table
             ->query(FinalPayroll::query()->where('payroll_id', $this->getOwnerRecord()->getKey()))
             ->columns([
-                TextColumn::make("employee_name")->searchable(),
-                TextColumn::make('basic_pay')->numeric(2)->searchable(),
-                TextColumn::make('gross_pay')->numeric(2),
-                TextColumn::make('tax_allowable_deductions')->numeric(2),
-                TextColumn::make('taxable_income')->numeric(2),
+                TextColumn::make("employee_name")->size(TextColumn\TextColumnSize::ExtraSmall)->searchable(),
+                TextColumn::make('basic_pay')->numeric(2)->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('gross_pay')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('tax_allowable_deductions')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('taxable_income')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
                 ...$grossAndBasic,
                 ...collect($columns)->reverse()->toArray(),
-                TextColumn::make('personal_relief')->numeric(2),
-                TextColumn::make('insurance_relief')->numeric(2),
-                TextColumn::make('housing_relief')->numeric(2),
-                TextColumn::make('net_payee')->numeric(2),
-                TextColumn::make('net_pay')->numeric(2),
+                TextColumn::make('personal_relief')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('insurance_relief')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('housing_relief')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('net_payee')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('net_pay')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
             ])
             ->filters([
 

@@ -69,21 +69,21 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
                 if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', "nssf", "tax_allowable_deductions", 'housing_benefits', 'personal_relief', 'insurance_relief','housing_relief'])) {
 
-                    $columns[$index] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
+                    $columns[$index] = TextColumn::make($index)->size(TextColumn\TextColumnSize::ExtraSmall)->searchable()->default(floatval($value))->numeric(2);
 
                 } else {
-                    $nssf["nhif"] = TextColumn::make("nhif")->label('N.H.I.F')->searchable()->numeric(2);
-                    $nssf["nssf"] = TextColumn::make("nssf")->label('Employee N.S.S.F')->searchable()->numeric(2);
-                    $nssf["tax_allowable_deductions"] = TextColumn::make("tax_allowable_deductions")->label('Employer N.S.S.F')->searchable()->numeric(2);
+                    $nssf["nhif"] = TextColumn::make("nhif")->size(TextColumn\TextColumnSize::ExtraSmall)->label('N.H.I.F')->searchable()->numeric(2);
+                    $nssf["nssf"] = TextColumn::make("nssf")->size(TextColumn\TextColumnSize::ExtraSmall)->label('Employee N.S.S.F')->searchable()->numeric(2);
+                    $nssf["tax_allowable_deductions"] = TextColumn::make("tax_allowable_deductions")->size(TextColumn\TextColumnSize::ExtraSmall)->label('Employer N.S.S.F')->searchable()->numeric(2);
 
                     $columns['net_pay'] = TextColumn::make('net_pay')
                         ->default($payroll->temp['net_pay'])
                         ->numeric(2);
-                    $columns['net_payee'] = TextColumn::make('net_payee')
-                        ->label('Payee')->default($payroll->temp['net_payee'])->numeric(2);;
-                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default($payroll->temp['insurance_relief']);
-                    $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default($payroll->temp['personal_relief']);
-                    $columns['housing_relief'] = TextColumn::make('housing_relief')->numeric(2)->default($payroll->temp['housing_relief']);
+                    $columns['net_payee'] = TextColumn::make('net_payee')->size(TextColumn\TextColumnSize::ExtraSmall)
+                        ->label('Payee')->default($payroll->temp['net_payee'])->size(TextColumn\TextColumnSize::ExtraSmall)->numeric(2);;
+                    $columns['insurance_relief'] = TextColumn::make('insurance_relief')->size(TextColumn\TextColumnSize::ExtraSmall)->numeric(2)->default($payroll->temp['insurance_relief']);
+                    $columns['personal_relief'] = TextColumn::make('personal_relief')->size(TextColumn\TextColumnSize::ExtraSmall)->numeric(2)->default($payroll->temp['personal_relief']);
+                    $columns['housing_relief'] = TextColumn::make('housing_relief')->size(TextColumn\TextColumnSize::ExtraSmall)->numeric(2)->default($payroll->temp['housing_relief']);
                 }
             }
         }
@@ -92,14 +92,14 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
         return $table
             ->query(IPayroll::query())
             ->columns([
-                TextColumn::make("employee_name")->searchable(),
+                TextColumn::make("employee_name")->size(TextColumn\TextColumnSize::ExtraSmall)->searchable(),
                 ...$grossAndBasic,
-                TextColumn::make("house allowance")->searchable(),
-                TextColumn::make("transport allowance")->searchable(),
-                TextColumn::make("medical allowance")->searchable(),
-                TextColumn::make("fuel allowance")->searchable(),
-                TextColumn::make('gross_pay')->numeric(2),
-                TextColumn::make('nhif')->label('N.H.I.F')->numeric(2),
+                TextColumn::make("house allowance")->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make("transport allowance")->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make("medical allowance")->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make("fuel allowance")->searchable()->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('gross_pay')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('nhif')->label('N.H.I.F')->numeric(2)->size(TextColumn\TextColumnSize::ExtraSmall),
                 ...$nssf,
                 ... $benefitColumns,
                 ...collect($columns)->reverse()->toArray(),
