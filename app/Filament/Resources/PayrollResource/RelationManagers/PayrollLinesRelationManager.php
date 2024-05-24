@@ -73,8 +73,8 @@ class PayrollLinesRelationManager extends RelationManager
                 $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
 
-                if ("housing_levy" == str($index)->slug("_")->value()) {
-                    $relief[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
+                if ("house_levy" == str($index)->slug("_")->value()) {
+                    $relief[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) * 0.15 , 2))->numeric(2);
                 }
 
 
