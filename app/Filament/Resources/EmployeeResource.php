@@ -156,7 +156,8 @@ class EmployeeResource extends Resource
 
                 SelectFilter::make('status')
                     ->label('Status')
-                    ->preload(true)
+                    ->default( EmployeeStatusEnum::ACTIVE->value)
+                    ->preload()
                     ->searchable()
                     ->options([
                         EmployeeStatusEnum::ACTIVE->value => "Active",
