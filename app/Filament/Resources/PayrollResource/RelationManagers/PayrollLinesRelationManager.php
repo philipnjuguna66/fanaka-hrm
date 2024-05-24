@@ -70,8 +70,8 @@ class PayrollLinesRelationManager extends RelationManager
 
             }
             foreach ($payroll->statutory as $index => $value) {
-                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
                 if ("house_levy" == str($index)->slug("_")->value()) {
                     $relief[$index] = TextColumn::make("housing_relief")->searchable()->default(number_format(floatval($value) * 0.15 , 2))->numeric(2);
@@ -97,7 +97,6 @@ class PayrollLinesRelationManager extends RelationManager
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
                 ...$relief,
-                TextColumn::make('housing_levy')->numeric(2),
                 TextColumn::make('net_payee')->numeric(2),
                 TextColumn::make('net_pay')->numeric(2),
             ])
