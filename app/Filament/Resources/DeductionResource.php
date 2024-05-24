@@ -99,6 +99,8 @@ class DeductionResource extends Resource
         return [
             Forms\Components\Select::make('deduction_type_id')
                 ->required()
+                ->searchable()
+                ->preload()
                 ->relationship('deductionType','name'),
             Forms\Components\TextInput::make('name')
                 ->required()
