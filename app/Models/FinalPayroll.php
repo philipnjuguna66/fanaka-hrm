@@ -69,7 +69,8 @@ class FinalPayroll extends Model
                 $data[$index]['housing_relief'] = 0;
 
                   foreach ($payroll->statutory as $index => $value) {
-                      if ([str($statutory->name)->lower()->value()] == 'house_levy')
+
+                      if ([str($statutory->name)->lower()->slug('_')->value()] == 'house_levy')
                       {
 
                           $data[$index]['housing_relief'] = $value * 0.15;
