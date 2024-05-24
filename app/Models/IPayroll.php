@@ -53,6 +53,7 @@ class IPayroll extends Model
                 $data[$index][str($statutory->name)->lower()->value()] = 0;
 
 
+
                 foreach ($payroll->statutory as $statutory => $value) {
 
 
