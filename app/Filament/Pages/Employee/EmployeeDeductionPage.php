@@ -19,6 +19,7 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -68,7 +69,7 @@ class EmployeeDeductionPage extends Page implements HasTable
                     ->deselectRecordsAfterCompletion()
             ])
             ->headerActions([
-                \Filament\Tables\Actions\Action::make('Add Deduction')
+                CreateAction::make('Add Deduction')
                     ->label('Add Deduction')
                     ->slideOver()
                     ->closeModalByClickingAway()
