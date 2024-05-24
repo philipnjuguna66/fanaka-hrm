@@ -66,7 +66,7 @@ class FinalPayroll extends Model
 
             foreach (StatutoryDeduction::query()->whereNotIn('name', array_keys($payroll->statutory))->get() as $statutory) {
 
-                $data[$index][str($statutory->name)->lower()->slug('_')->value()] = 0;
+                $data[$index][str($statutory->name)->lower()->value()] = 0;
 
             }
 

@@ -71,7 +71,7 @@ class PayrollLinesRelationManager extends RelationManager
             foreach ($payroll->statutory as $index => $value)
             {
 
-                $columns[str($index)->slug('_')->value()] = TextColumn::make(str($index)->slug('_')->value())->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
+                $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value) , 2))->numeric(2);
 
             }
         }
