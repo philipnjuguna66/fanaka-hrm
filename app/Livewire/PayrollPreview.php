@@ -83,7 +83,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
                         ->label('Payee')->default($payroll->temp['net_payee'])->numeric(2);;
                     $columns['insurance_relief'] = TextColumn::make('insurance_relief')->numeric(2)->default($payroll->temp['insurance_relief']);
                     $columns['personal_relief'] = TextColumn::make('personal_relief')->numeric(2)->default($payroll->temp['personal_relief']);
-                    $columns['housing_relief'] = TextColumn::make('housing_relief')->numeric(2)->default($payroll->temp['housing_relief']);
+                    $columns['housing_levy_relief'] = TextColumn::make('housing_levy_relief')->numeric(2)->default($payroll->temp['housing_levy_relief']);
                 }
             }
         }

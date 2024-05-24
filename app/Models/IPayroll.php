@@ -59,7 +59,7 @@ class IPayroll extends Model
                     if (str($statutory)->lower()->slug('_')->value() == 'house_levy')
                     {
 
-                        $data[$index]['housing_relief'] =  floatval($value)* 0.15;
+                        $data[$index]['housing_levy_relief'] =  floatval($value)* 0.15;
 
 
                     }
