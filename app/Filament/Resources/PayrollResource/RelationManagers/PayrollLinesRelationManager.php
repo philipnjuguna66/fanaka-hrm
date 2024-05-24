@@ -74,6 +74,12 @@ class PayrollLinesRelationManager extends RelationManager
                 $columns[$index] = TextColumn::make($index)->searchable()->default(number_format(floatval($value), 2))->numeric(2);
 
 
+                if ([str($index)->lower()->slug('_')->value()] == 'house_levy')
+                {
+
+                    $relief['housing_relief'] = TextColumn::make("housing_relief")->searchable()->default(number_format(floatval($value)* 0.15, 2))->numeric(2);
+
+                }
             }
         }
 
@@ -93,8 +99,7 @@ class PayrollLinesRelationManager extends RelationManager
                 TextColumn::make('personal_relief')->numeric(2),
                 TextColumn::make('insurance_relief')->numeric(2),
                 TextColumn::make('housing_relief')->numeric(2),
-                TextColumn::make('house_relief')->getStateUsing(fn($record) => $record),
-
+                 ...$relief,
                 TextColumn::make('net_payee')->numeric(2),
                 TextColumn::make('net_pay')->numeric(2),
             ])
