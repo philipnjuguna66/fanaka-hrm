@@ -69,7 +69,7 @@ class PayrollPreview extends Component implements HasTable, HasForms, HasActions
 
                 if (!in_array($index, ["net_pay", 'paye', 'employee_id', "gross_pay", "net_payee", 'car_benefits', "nssf", "tax_allowable_deductions", 'housing_benefits', 'personal_relief', 'insurance_relief'])) {
 
-                    $columns[] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
+                    $columns[$index] = TextColumn::make($index)->searchable()->default(floatval($value))->numeric(2);
 
                 } else {
 
