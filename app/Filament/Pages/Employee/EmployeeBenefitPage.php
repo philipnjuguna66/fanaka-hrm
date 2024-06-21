@@ -59,7 +59,7 @@ class EmployeeBenefitPage extends Page implements HasTable
                 TextColumn::make('employee.first_name')
                     ->getStateUsing(fn(EmployeeBenefit $record) => $record->employee->name)->searchable(),
                 TextColumn::make('benefit.name'),
-                TextInputColumn::make('amount')->numeric(),
+                TextInputColumn::make('amount')->formatStateUsing(fn($state) => Number::currency($state ?? 0 , 'kes')),
             ])
             ->filters([
                 SelectFilter::make('Benefit')
