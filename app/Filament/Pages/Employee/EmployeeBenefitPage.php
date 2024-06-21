@@ -30,6 +30,7 @@ use Illuminate\Contracts\Queue\QueueableCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
+use Filament\Tables\Columns\TextInputColumn;
 
 class EmployeeBenefitPage extends Page implements HasTable
 {
@@ -58,7 +59,7 @@ class EmployeeBenefitPage extends Page implements HasTable
                 TextColumn::make('employee.first_name')
                     ->getStateUsing(fn(EmployeeBenefit $record) => $record->employee->name)->searchable(),
                 TextColumn::make('benefit.name'),
-                TextColumn::make('amount')->numeric(),
+                TextInputColumn::make('amount')->numeric(),
             ])
             ->filters([
                 SelectFilter::make('Benefit')
