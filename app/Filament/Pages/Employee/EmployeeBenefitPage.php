@@ -99,7 +99,7 @@ class EmployeeBenefitPage extends Page implements HasTable
                 \Filament\Tables\Actions\Action::make('edit')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
-                    ->mountUsing(fn(ComponentContainer $form , EmployeeDeduction $record) => $form->fill([
+                    ->mountUsing(fn(ComponentContainer $form , EmployeeBenefit $record) => $form->fill([
                         'amount' => $record->amount
                     ]))
                     ->form(fn(Form $form) : Form => $form->schema([
