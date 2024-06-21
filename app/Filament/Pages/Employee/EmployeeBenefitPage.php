@@ -20,6 +20,7 @@ use Filament\Pages\Page;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInput;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
@@ -58,7 +59,7 @@ class EmployeeBenefitPage extends Page implements HasTable
                 TextColumn::make('employee.first_name')
                     ->getStateUsing(fn(EmployeeBenefit $record) => $record->employee->name)->searchable(),
                 TextColumn::make('benefit.name'),
-                TextColumn::make('amount')->numeric(),
+                TextInput::make('amount')->numeric(),
             ])
             ->filters([
                 SelectFilter::make('Benefit')
