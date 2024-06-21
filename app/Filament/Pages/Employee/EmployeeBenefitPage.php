@@ -59,7 +59,12 @@ class EmployeeBenefitPage extends Page implements HasTable
                 TextColumn::make('employee.first_name')
                     ->getStateUsing(fn(EmployeeBenefit $record) => $record->employee->name)->searchable(),
                 TextColumn::make('benefit.name'),
-                TextInputColumn::make('amount'),
+                TextInputColumn::make('amount')
+                ->beforeStateUpdated(function ($record, $state, $action) {
+
+                    return $action->requiresConfirmation();
+                    // Runs before the state is saved to the database.
+                }),
             ])
             ->filters([
                 SelectFilter::make('Benefit')
